@@ -2,11 +2,9 @@
   "name": "online-market",
   "version": "1.0.0",
   "description": "",
-  "main": "server/index.js",
+  "main": "server/index.mjs",
   "scripts": {
-    "start": "node server/index.js",
-    "build": "webpack --mode development",
-    "dev": "webpack --mode development && node server/index.js",
+    "start": "nodemon --watch client --watch server server/main.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -31,13 +29,18 @@
     "react-dom": "^16.9.0"
   },
   "devDependencies": {
+    "@babel/cli": "^7.5.5",
     "@babel/core": "^7.5.5",
     "@babel/plugin-proposal-class-properties": "^7.5.5",
     "@babel/preset-env": "^7.5.5",
     "@babel/preset-react": "^7.0.0",
+    "@babel/register": "^7.5.5",
     "babel-loader": "^8.0.0-beta.6",
     "html-webpack-plugin": "^3.2.0",
+    "nodemon": "^1.19.1",
     "webpack": "^4.39.1",
-    "webpack-cli": "^3.3.6"
-  }
+    "webpack-cli": "^3.3.6",
+    "webpack-dev-middleware": "^3.7.0"
+  },
+  "type": "module"
 }
