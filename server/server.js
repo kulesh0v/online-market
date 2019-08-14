@@ -9,6 +9,7 @@ const app = express();
 const products = [
   {
     name: 'Sneakers',
+    id: '1',
     products: [
       {
         id: '1',
@@ -67,6 +68,7 @@ const products = [
   },
   {
     name: "Electronics",
+    id: '2',
     products: [
       {
         id: '7',
@@ -123,25 +125,28 @@ app.get('/products', (req, res) => {
   res.send(products);
 });
 
-app.get('/products/:categoryName', (req, res) => {
-  const {categoryName} = req.params;
+app.get('/categories/:categoryId', (req, res) => {
+  const {categoryId} = req.params;
   try {
-    const result = ProductsManager.filterProducts(categoryName, req.query, products);
+    const result = ProductsManager.filterProducts(categoryId, req.query, products);
     res.send(result);
   } catch (e) {
     res.status(404).send('Category not found');
   }
 });
 
-app.get('/products/:categoryName/:id', (req, res) => {
-  const {id, categoryName} = req.params;
+app.get('/categories/:categoryId/product/:productId', (req, res) => {
+  const {productId, categoryId} = req.params;
   try {
-    const result = ProductsManager.findProduct(id, categoryName, products);
-    if (result) res.send(result);
+    const result = ProductsManager.findProduct(productId, categoryId, products);
+    if (result) {
+      res.send(result);
+    } else {
+      res.status(404).send('Product not found');
+    }
   } catch (e) {
     res.status(404).send('Category not found');
   }
-  res.status(404).send('Product not found');
 });
 
 
