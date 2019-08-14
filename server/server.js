@@ -122,6 +122,7 @@ app.use(middleware(compiler));
 app.get('/products', (req, res) => {
   res.send(products);
 });
+
 app.get('/products/:categoryName', (req, res) => {
   const {categoryName} = req.params;
   try {
