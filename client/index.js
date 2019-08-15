@@ -2,6 +2,16 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import Shop from './components/Shop.js'
 
+const categories = [
+  {
+    name: 'Sneakers',
+    id: '1'
+  },
+  {
+    name: "Electronics",
+    id: '2',
+  }
+];
 const products = [
   {
     id: '1',
@@ -103,4 +113,4 @@ const products = [
     inBasket: 0,
   }
 ];
-ReactDOM.render(<Shop products={products}/>, document.getElementById('root'));
+ReactDOM.render(<Shop products={products} categories={categories}/>, document.getElementById('root'));

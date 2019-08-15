@@ -1,16 +1,24 @@
 class ProductsManager {
-  static filterProducts(categoryId, filterConfig, products) {
-    let categoryProducts = this.findCategory(categoryId, products).products;
+  static filterProducts(filterConfig, products) {
+    let result = products.slice();
     const from = filterConfig.from || 0;
     const to = filterConfig.to;
-    this.sortProducts(filterConfig, categoryProducts);
-    categoryProducts = this.filterPrice(filterConfig, categoryProducts);
-    categoryProducts = categoryProducts.slice(from, to);
-    return categoryProducts;
+    const categories = filterConfig.categoryId;
+    result = this.filterCategories(categories, result);
+    this.sortProducts(filterConfig, result);
+    result = this.filterPrice(filterConfig, result);
+    result = result.slice(from, to);
+    return result;
   }
 
-  static findCategory(categoryName, products) {
-    return products.find(c => c.id === categoryName);
+  static filterCategories(categories, products) {
+    if (categories) {
+      if (!Array.isArray(categories)) {
+        categories = [categories];
+      }
+      return products.filter(p => categories.includes(p.categoryId));
+    }
+    return products;
   }
 
   static filterPrice(filterConfig, products) {
@@ -36,8 +44,8 @@ class ProductsManager {
     }
   }
 
-  static findProduct(id, categoryId, products) {
-    return this.findCategory(categoryId, products).products.find(p => p.id === id);
+  static findProduct(id, products) {
+    return products.find(p => p.id === id);
   }
 }
 

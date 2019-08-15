@@ -30,7 +30,7 @@ class Product extends React.Component {
   };
 
   renderAddButton = () => {
-    if(this.state.userWish){
+    if (this.state.userWish) {
       return <FontAwesomeIcon icon="check" color="green"/>
     }
     return <FontAwesomeIcon icon="check" color="grey"/>
@@ -46,7 +46,7 @@ class Product extends React.Component {
 
   render() {
     return (
-      <div className="card">
+      <div className="card mt-2">
         <div className="card-body">
           <img className="card-img-top" alt="product" src={this.props.product.url}/>
           <div className="cards-title detail-title">{this.props.product.name}</div>
@@ -60,8 +60,7 @@ class Product extends React.Component {
                 </span>
               <button type="button" className="btn btn-default bg-light" onClick={this.increaseAmount}>+</button>
             </span>
-            <button type="button" className="btn btn-default bg-light" title="Add to the basket"
-                    onClick={this.addToBasket}>
+            <button type="button" className="btn btn-default bg-light" title="Add to the basket">
               {this.renderAddButton()}
             </button>
           </form>
@@ -73,6 +72,5 @@ class Product extends React.Component {
 
 Product.propTypes = {
   product: PropTypes.object.isRequired,
-  addToBasket: PropTypes.func.isRequired,
 };
 export default Product;

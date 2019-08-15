@@ -1,72 +1,50 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import CategoriesList from './products/CategoriesList'
-import Navbar from './navigation-bar/Navbar'
+import axios from 'axios';
+
+import NavigationBar from './NavigationBar.js';
+import Filter from './Filter/Filter.js';
+import ProductList from './Products/ProductsList'
+
 
 class Shop extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      filterText: '',
-      products: props.products,
-      minPrice: Math.min.apply(null, props.products.map(p => p.price)),
-      maxPrice: Math.max.apply(null, props.products.map(p => p.price)),
+      categories: [],
+      products: [],
     };
+
   }
 
-  handleFilterTextChange = (filterText) =>
-    this.setState({
-      filterText: filterText
+  componentDidMount() {
+    axios.get('/categories').then(res => this.setState({categories: res.data}));
+    axios.get('/products').then(res => this.setState({products: res.data}));
+  }
+
+  filter = (filterConfig) => {
+    let params = '';
+    filterConfig.checkedIds.forEach(id => {
+      params += `categoryId=${id}&`;
     });
-
-  handleMinPriceChange = (minPrice) =>
-    this.setState({
-      minPrice: minPrice,
-    });
-
-  handleMaxPriceChange = (maxPrice) =>
-    this.setState({
-      maxPrice: maxPrice,
-    });
-
-  addToBasket = (userWish, id) => {
-    const products = this.state.products;
-    const product = products.find(p => p.id === id);
-    product.amount -= userWish;
-    product.inBasket += userWish;
-    this.setState({products});
-
-  };
-
-  removeFromBasket = ({id}) => {
-    const products = this.state.products;
-    const product = products.find(p => p.id === id);
-    product.amount += product.inBasket;
-    product.inBasket = 0;
-    this.setState({products});
+    if (filterConfig.minPrice) {
+      params += `&minPrice=${filterConfig.minPrice}`;
+    }
+    if (filterConfig.maxPrice) {
+      params += `&maxPrice=${filterConfig.maxPrice}`;
+    }
+    axios.get('/products?' + params).then(res => this.setState({products: res.data}));
   };
 
 
   render() {
     return (
       <div>
-        <Navbar
-          basket={this.state.products.filter(p => p.inBasket)}
-          filterText={this.state.filterText}
-          minPrice={this.state.minPrice}
-          maxPrice={this.state.maxPrice}
-          onFilterTextChange={this.handleFilterTextChange}
-          onMinPriceChange={this.handleMinPriceChange}
-          onMaxPriceChange={this.handleMaxPriceChange}
-          removeFromBasket={this.removeFromBasket}
-        />
-        <CategoriesList
-          products={this.state.products}
-          filterText={this.state.filterText.toLowerCase()}
-          minPrice={this.state.minPrice}
-          maxPrice={this.state.maxPrice}
-          addToBasket={this.addToBasket}
-        />
+        <NavigationBar/>
+        <div className={"d-inline-flex"}>
+          <Filter categories={this.state.categories} filter={this.filter}/>
+          <ProductList products={this.state.products}/>
+        </div>
       </div>
     );
   }
@@ -74,5 +52,6 @@ class Shop extends React.Component {
 
 Shop.propTypes = {
   products: PropTypes.array.isRequired,
+  categories: PropTypes.array.isRequired,
 };
 export default Shop;
