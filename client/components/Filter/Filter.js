@@ -1,55 +1,50 @@
 import React from 'react';
+import PropTypes from "prop-types";
+import {useState, useEffect} from 'react';
+
 import PriceFilter from "./PriceFilter.js";
 import CategoriesList from "./CategoriesList.js";
-import PropTypes from "prop-types";
+import Sort from "./Sort.js"
 
-class Filter extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      checkedIds: [],
-      minPrice: null,
-      maxPrice: null,
-    };
-  }
 
-  checkCategory = (id) => {
-    const checkedIds = this.state.checkedIds;
+const Filter = (props) => {
+  const [checkedIds, setCheckedIds] = useState([]);
+  const [minPrice, setMinPrice] = useState(null);
+  const [maxPrice, setMaxPrice] = useState(null);
+  const [sortType, setSortType] = useState(null);
+
+  const filter = () => {
+    props.filter({
+      checkedIds: checkedIds,
+      minPrice: minPrice,
+      maxPrice: maxPrice,
+      sortType: sortType,
+    });
+  };
+
+  useEffect(() => {
+    filter();
+  }, [minPrice, maxPrice, sortType]);
+
+  const chooseCategory = (id) => {
     if (checkedIds.includes(id)) {
       checkedIds.splice(checkedIds.indexOf(id), 1);
     } else {
       checkedIds.push(id);
     }
-    this.setState(checkedIds);
-  };
-  changeMinPrice = (minPrice) => {
-    this.setState({minPrice: minPrice});
-  };
-  changeMaxPrice = (maxPrice) => {
-    this.setState({maxPrice: maxPrice});
+    setCheckedIds(setCheckedIds);
+    setTimeout(filter(),0);
   };
 
-  filter = () => {
-    this.props.filter({
-      checkedIds: this.state.checkedIds,
-      minPrice: this.state.minPrice,
-      maxPrice: this.state.maxPrice,
-    });
-  };
-
-  render() {
-    return (
-      <div className={"col-2 mt-4 bg-light"}>
-        <PriceFilter changeMax={this.changeMaxPrice} changeMin={this.changeMinPrice}/>
-        <CategoriesList
-          categories={this.props.categories} checkCategory={this.checkCategory}/>
-        <button type={"button"} className={"btn btn-outline-secondary mt-3"} onClick={this.filter}>
-          Filter
-        </button>
-      </div>
-    );
-  }
-}
+  return (
+    <div className={"col-2 mt-4 bg-light"}>
+      <Sort setType={setSortType} type={sortType}/>
+      <PriceFilter changeMax={setMaxPrice} changeMin={setMinPrice}/>
+      <CategoriesList
+        categories={props.categories} chooseCategory={chooseCategory}/>
+    </div>
+  );
+};
 
 Filter.propTypes = {
   categories: PropTypes.array.isRequired,

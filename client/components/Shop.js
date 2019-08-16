@@ -1,54 +1,58 @@
 import React from 'react';
+import {useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
-
+import axiosCancel from 'axios-cancel';
 import NavigationBar from './NavigationBar.js';
 import Filter from './Filter/Filter.js';
 import ProductList from './Products/ProductsList'
 
+axiosCancel(axios, {
+  debug: false
+});
 
-class Shop extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      categories: [],
-      products: [],
-    };
+const Shop = () => {
+  const [products, setProducts] = useState([]);
+  const [categories, setCategories] = useState([]);
 
-  }
+  useEffect(() => {
+    axios.get('/categories').then(res => setCategories(res.data));
+    axios.get('/products').then(res => setProducts(res.data));
+  }, []);
 
-  componentDidMount() {
-    axios.get('/categories').then(res => this.setState({categories: res.data}));
-    axios.get('/products').then(res => this.setState({products: res.data}));
-  }
-
-  filter = (filterConfig) => {
-    let params = '';
+  const filter = (filterConfig) => {
+    let req = '/products?';
     filterConfig.checkedIds.forEach(id => {
-      params += `categoryId=${id}&`;
+      req += `&categoryId=${id}`;
     });
+    console.log(req);
     if (filterConfig.minPrice) {
-      params += `&minPrice=${filterConfig.minPrice}`;
+      req += `&minPrice=${filterConfig.minPrice}`;
     }
     if (filterConfig.maxPrice) {
-      params += `&maxPrice=${filterConfig.maxPrice}`;
+      req += `&maxPrice=${filterConfig.maxPrice}`;
     }
-    axios.get('/products?' + params).then(res => this.setState({products: res.data}));
+    if (filterConfig.sortType) {
+      req += `&sortType=${filterConfig.sortType}`;
+    }
+    axios.cancelAll();
+    axios.get(req).then(res => setProducts(res.data));
   };
 
 
-  render() {
-    return (
-      <div>
-        <NavigationBar/>
-        <div className={"d-inline-flex"}>
-          <Filter categories={this.state.categories} filter={this.filter}/>
-          <ProductList products={this.state.products}/>
-        </div>
+  return (
+    <div>
+      <NavigationBar/>
+      <div className={"d-inline-flex col-12"}>
+        <Filter categories={categories} filter={filter}/>
+        {(products && Array.isArray(products) &&
+          <ProductList products={products}/>)
+        || <h1 className={"m-auto text-black-50"}>{products}</h1>
+        }
       </div>
-    );
-  }
-}
+    </div>
+  );
+};
 
 Shop.propTypes = {
   products: PropTypes.array.isRequired,

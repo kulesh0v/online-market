@@ -6,7 +6,7 @@ const CategoriesList = (props) => {
       {props.categories.map(category =>
         <div key={category.id} className={"form-check"}>
           <input className="form-check-input" type="checkbox" value="option1"
-                 onClick={() => props.checkCategory(category.id)}/>
+                 onClick={() => props.chooseCategory(category.id)}/>
           <label className="form-check-label" htmlFor="inlineCheckbox1">{category.name}</label>
         </div>
       )}

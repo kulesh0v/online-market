@@ -5,8 +5,8 @@ class ProductsManager {
     const to = filterConfig.to;
     const categories = filterConfig.categoryId;
     result = this.filterCategories(categories, result);
-    this.sortProducts(filterConfig, result);
     result = this.filterPrice(filterConfig, result);
+    this.sortProducts(filterConfig, result);
     result = result.slice(from, to);
     return result;
   }
@@ -23,17 +23,21 @@ class ProductsManager {
 
   static filterPrice(filterConfig, products) {
     if (filterConfig.minPrice) {
-      return products.filter(product => product.price > filterConfig.minPrice);
+      const mp = Number(filterConfig.minPrice);
+      console.log(`minprice ${mp}`);
+      products = products.filter(product => product.price >= mp);
     }
-    if (filterConfig.maxPrice) {
-      return products.filter(product => product.price < filterConfig.maxPrice);
+    if (filterConfig.maxPrice && isFinite(filterConfig.maxPrice)) {
+      const mp = Number(filterConfig.maxPrice);
+      console.log(`maxprice ${mp}`);
+      products = products.filter(product => product.price <= mp);
     }
     return products;
   }
 
   static sortProducts(filterConfig, products) {
-    if (filterConfig.sorttype) {
-      switch (filterConfig.sorttype) {
+    if (filterConfig.sortType) {
+      switch (filterConfig.sortType) {
         case 'dprice':
           products.sort((a, b) => a.price - b.price);
           break;
