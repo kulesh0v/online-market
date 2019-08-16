@@ -357,7 +357,6 @@ app.get('/categories', (req, res) => {
 
 app.get('/products', (req, res) => {
   try {
-    console.log(1);
     const result = ProductsManager.filterProducts(req.query, products);
     if (result.length) {
       res.send(result);

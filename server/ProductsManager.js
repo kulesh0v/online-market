@@ -24,12 +24,10 @@ class ProductsManager {
   static filterPrice(filterConfig, products) {
     if (filterConfig.minPrice) {
       const mp = Number(filterConfig.minPrice);
-      console.log(`minprice ${mp}`);
       products = products.filter(product => product.price >= mp);
     }
     if (filterConfig.maxPrice && isFinite(filterConfig.maxPrice)) {
       const mp = Number(filterConfig.maxPrice);
-      console.log(`maxprice ${mp}`);
       products = products.filter(product => product.price <= mp);
     }
     return products;
