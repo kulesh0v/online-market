@@ -8,14 +8,14 @@ import Sort from "./Sort.js"
 
 
 const Filter = (props) => {
-  const [checkedIds, setCheckedIds] = useState([]);
+  const [choosesCategories, setCheckedIds] = useState([]);
   const [minPrice, setMinPrice] = useState(null);
   const [maxPrice, setMaxPrice] = useState(null);
   const [sortType, setSortType] = useState(null);
 
   const filter = () => {
     props.filter({
-      checkedIds: checkedIds,
+      choosesCategories: choosesCategories,
       minPrice: minPrice,
       maxPrice: maxPrice,
       sortType: sortType,
@@ -27,17 +27,17 @@ const Filter = (props) => {
   }, [minPrice, maxPrice, sortType]);
 
   const chooseCategory = (id) => {
-    if (checkedIds.includes(id)) {
-      checkedIds.splice(checkedIds.indexOf(id), 1);
+    if (choosesCategories.includes(id)) {
+      choosesCategories.splice(choosesCategories.indexOf(id), 1);
     } else {
-      checkedIds.push(id);
+      choosesCategories.push(id);
     }
     setCheckedIds(setCheckedIds);
     setTimeout(filter(),0);
   };
 
   return (
-    <div className={"col-2 mt-4 bg-light"}>
+    <div>
       <Sort setType={setSortType} type={sortType}/>
       <PriceFilter changeMax={setMaxPrice} changeMin={setMinPrice}/>
       <CategoriesList
@@ -48,5 +48,6 @@ const Filter = (props) => {
 
 Filter.propTypes = {
   categories: PropTypes.array.isRequired,
+  filter: PropTypes.func.isRequired,
 };
 export default Filter;

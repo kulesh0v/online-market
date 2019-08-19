@@ -24,12 +24,10 @@ class ProductsManager {
   static filterPrice(filterConfig, products) {
     if (filterConfig.minPrice) {
       const mp = Number(filterConfig.minPrice);
-      console.log(`minprice ${mp}`);
       products = products.filter(product => product.price >= mp);
     }
     if (filterConfig.maxPrice && isFinite(filterConfig.maxPrice)) {
       const mp = Number(filterConfig.maxPrice);
-      console.log(`maxprice ${mp}`);
       products = products.filter(product => product.price <= mp);
     }
     return products;
@@ -50,6 +48,37 @@ class ProductsManager {
 
   static findProduct(id, products) {
     return products.find(p => p.id === id);
+  }
+
+  static validateProduct(product, categories) {
+
+  }
+
+  static addProduct(product, products, categories) {
+    try {
+      product.id = products[products.length - 1].id + 1;
+      product.price = Number(product.price);
+      product.amount = Number(product.amount);
+      if (categories.find(c => c.id === product.categoryId))
+        products.push(product);
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  static replaceProduct(id, product, products, categories) {
+    try {
+      const old = products.find(p => p.id === id);
+      old.price = Number(product.price);
+      old.amount = Number(product.amount);
+      old.categoryId = product.categoryId;
+      old.name = product.name;
+      old.url = product.url;
+      console.log(products.findIndex(p => p.id === id));
+    } catch (e) {
+      console.log(e);
+      throw e;
+    }
   }
 }
 

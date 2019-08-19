@@ -1,5 +1,5 @@
 import express from 'express';
-import webpackConfig from '../configs/webpack.config.js';
+import webpackConfig from '../webpack.config.js';
 import webpack from 'webpack';
 import middleware from 'webpack-dev-middleware';
 
@@ -118,238 +118,241 @@ const products = [
     categoryId: '2',
     name: 'Samsung S10e',
     url: 'https://hips.hearstapps.com/vader-prod.s3.amazonaws.com/1551208882-samsung-galaxy-s10e-smartphone-1550695757.jpg',
-    id: 12,
-    price: 751.99,
-    amount: 80
+    id: '12',
+    price: 1147.99,
+    amount: 68
   },
   {
     categoryId: '2',
     name: 'Asus Rog Phone',
     url: 'https://www.asus.com/media/global/products/YHbcnTAG8qt4B47T/P_setting_fff_1_90_end_600.png',
-    id: 13,
-    price: 918.99,
-    amount: 84
+    id: '13',
+    price: 379.99,
+    amount: 88
   },
   {
     categoryId: '2',
     name: 'Samsung A40',
     url: 'https://www.dateks.lv/images/pic/600/600/783/423.jpg',
-    id: 14,
-    price: 756.99,
-    amount: 90
+    id: '14',
+    price: 1303.99,
+    amount: 42
   },
   {
     categoryId: '2',
     name: 'Samsung S9',
     url: 'https://www.pricerunner.com/product/600x600/1814566310/Samsung-Galaxy-S9-64GB.jpg?c=0.7',
-    id: 15,
-    price: 431.99,
-    amount: 14
+    id: '15',
+    price: 522.99,
+    amount: 78
   },
   {
     categoryId: '2',
     name: 'Xiaomi Redmi Note 7',
     url: 'https://quke.ru/UserFiles/Landing/products/59968_photos_0.jpeg',
-    id: 16,
-    price: 737.99,
-    amount: 85
+    id: '16',
+    price: 1177.99,
+    amount: 28
   },
   {
     categoryId: '2',
     name: 'Huawei P30',
     url: 'https://img.mvideo.ru/Pdb/30043038b.jpg',
-    id: 17,
-    price: 763.99,
-    amount: 5
+    id: '17',
+    price: 834.99,
+    amount: 8
   },
   {
     categoryId: '3',
     name: 'Asus Studiobook',
     url: 'https://www.asus.com/media/global/products/YkMxOYzNhCW0mwpT/P_setting_fff_1_90_end_600.png',
-    id: 18,
-    price: 598.99,
-    amount: 84
+    id: '18',
+    price: 55.99,
+    amount: 19
   },
   {
     categoryId: '3',
     name: 'Asus ZenBook 14',
     url: 'https://www.asus.com/media/global/products/IAUUa98beOzYP4WZ/P_setting_fff_1_90_end_600.png',
-    id: 19,
-    price: 1253.99,
-    amount: 61
+    id: '19',
+    price: 119.99,
+    amount: 63
   },
   {
     categoryId: '3',
     name: 'Apple MacBook Pro 13',
     url: 'https://img.mvideo.ru/Pdb/30039067b.jpg',
-    id: 20,
-    price: 691.99,
-    amount: 56
+    id: '20',
+    price: 1067.99,
+    amount: 12
   },
   {
     categoryId: '3',
     name: 'Huawei MateBook X',
     url: 'https://gloimg.gbtcdn.com/soa/gb/pdm-product-pic/Electronic/2018/07/09/source-img/20180709135730_48015.jpg',
-    id: 21,
-    price: 1270.99,
-    amount: 84
+    id: '21',
+    price: 844.99,
+    amount: 70
   },
   {
     categoryId: '3',
     name: 'Dell XPS 13',
     url: 'https://vipcomp.by/image/cache/data/quad/12/dell-xps-13-9370-1719-12225-1-600x600.jpg',
-    id: 22,
-    price: 756.99,
-    amount: 35
+    id: '22',
+    price: 458.99,
+    amount: 48
   },
   {
     categoryId: '3',
     name: 'HP Pavilion 14',
     url: 'https://img.mvideo.ru/Pdb/30039625b.jpg',
-    id: 23,
-    price: 84.99,
-    amount: 75
+    id: '23',
+    price: 959.99,
+    amount: 40
   },
   {
     categoryId: '4',
     name: 'Lenovo Tab',
     url: 'https://img.mvideo.ru/Pdb/30042186b.jpg',
-    id: 24,
-    price: 963.99,
-    amount: 19
+    id: '24',
+    price: 774.99,
+    amount: 57
   },
   {
     categoryId: '4',
     name: 'Lenovo Youga',
     url: 'https://img.mvideo.ru/Pdb/30028499b.jpg',
-    id: 25,
-    price: 619.99,
-    amount: 58
+    id: '25',
+    price: 490.99,
+    amount: 6
   },
   {
     categoryId: '4',
     name: 'Asus Zenpad',
     url: 'https://img.mvideo.ru/Pdb/30029544b.jpg',
-    id: 26,
-    price: 109.99,
-    amount: 16
+    id: '26',
+    price: 781.99,
+    amount: 53
   },
   {
     categoryId: '4',
     name: 'Apple Ipad',
     url: 'https://img.mvideo.ru/Pdb/30036515b.jpg',
-    id: 27,
-    price: 1095.99,
-    amount: 24
+    id: '27',
+    price: 1021.99,
+    amount: 42
   },
   {
     categoryId: '4',
     name: 'Sumsung Tablet Galaxy',
     url: 'https://www.dateks.lv/images/pic/600/600/416/415.jpg',
-    id: 28,
-    price: 607.99,
-    amount: 52
+    id: '28',
+    price: 68.99,
+    amount: 77
   },
   {
     categoryId: '4',
     name: 'Xiaomi Mi Pad 8',
     url: 'https://img.mvideo.ru/Pdb/30026477b.jpg',
-    id: 29,
-    price: 205.99,
-    amount: 28
+    id: '29',
+    price: 1083.99,
+    amount: 1
   },
   {
     categoryId: '5',
     name: 'Xiaomi Mi BP Mini',
     url: 'http://5element.by/upload/5element/aeb/aebe071221fd7602453df4af4efd977a.jpg',
-    id: 30,
-    price: 794.99,
-    amount: 92
+    id: '30',
+    price: 159.99,
+    amount: 26
   },
   {
     categoryId: '5',
     name: 'JBL Flip 4',
     url: 'https://s4.sywcdn.net/getImage?url=https%3A%2F%2Ftarget.scene7.com%2Fis%2Fimage%2FTarget%2FGUEST_b63e040d-7d68-4963-929a-bbe0ef4c2a7a&t=Product&w=600&h=600&qlt=100&mrg=1&str=1&s=bb170e63d82774ec13cc1832408225cf',
-    id: 31,
-    price: 902.99,
-    amount: 67
+    id: '31',
+    price: 68.99,
+    amount: 53
   },
   {
     categoryId: '5',
     name: 'JBL Go 2',
     url: 'https://govanmani.durban/wp-content/uploads/2018/06/JBL_Go2_Hero_Deep_Sea_Blue-1605x1605px.jpg',
-    id: 32,
-    price: 1202.99,
-    amount: 38
+    id: '32',
+    price: 400.99,
+    amount: 42
   },
   {
     categoryId: '5',
     name: 'Apple HomePod',
     url: 'https://s3-eu-west-1.amazonaws.com/klk-website/upload/product/19875/apple-homepod-wireless-bluetooth-speaker-with-home-assistant-white-1545127631-1.png',
-    id: 33,
-    price: 1096.99,
-    amount: 100
+    id: '33',
+    price: 211.99,
+    amount: 36
   },
   {
     categoryId: '5',
     name: 'Sony BSO10',
     url: 'http://connected-365.com/wp-content/uploads/2018/08/BSP10JP-B-1-600x600.jpg',
-    id: 34,
-    price: 1118.99,
-    amount: 100
+    id: '34',
+    price: 315.99,
+    amount: 81
   },
   {
     categoryId: '5',
     name: 'SVEN PS-465',
     url: 'https://content.it4profit.com/pimg/s/resize/600x600x600x600/181121150013067218.jpg',
-    id: 35,
-    price: 229.99,
-    amount: 92
+    id: '35',
+    price: 411.99,
+    amount: 96
   },
   {
     categoryId: '5',
     name: 'HP S9500',
     url: 'http://www.techno.pk/wp-content/uploads/2018/01/HP_S9500_lowest_price_in_pakistan-1-600x600.jpg',
-    id: 36,
-    price: 1216.99,
-    amount: 70
+    id: '36',
+    price: 1277.99,
+    amount: 53
   },
   {
     categoryId: '6',
     name: 'XBOX 360 512GB',
     url: 'https://img.mvideo.ru/Pdb/11007469b.jpg',
-    id: 37,
-    price: 722.99,
-    amount: 26
+    id: '37',
+    price: 51.99,
+    amount: 47
   },
   {
     categoryId: '6',
     name: 'Sony PlayStation 4 512Gb',
     url: 'https://img.moyo.ua/img/products/1964/95_600.jpg',
-    id: 38,
-    price: 922.99,
-    amount: 78
+    id: '38',
+    price: 1266.99,
+    amount: 27
   },
   {
     categoryId: '6',
     name: 'Nintendo Switch',
     url: 'https://cms.sulpak.kz/photo/img_0_68_117_4.jpg',
-    id: 39,
-    price: 1020.99,
-    amount: 17
+    id: '39',
+    price: 690.99,
+    amount: 47
   },
   {
     categoryId: '6',
     name: 'XBOX One X',
     url: 'https://img.mvideo.ru/Pdb/40066763b.jpg',
-    id: 40,
-    price: 1123.99,
-    amount: 26
+    id: '40',
+    price: 441.99,
+    amount: 34
   },
+
 ];
 
 const compiler = webpack(webpackConfig);
 app.use(middleware(compiler));
+app.use(express.json()); // for parsing application/json
+app.use(express.urlencoded({extended: true}));
 
 app.get('/categories', (req, res) => {
   res.send(categories);
@@ -357,7 +360,6 @@ app.get('/categories', (req, res) => {
 
 app.get('/products', (req, res) => {
   try {
-    console.log(1);
     const result = ProductsManager.filterProducts(req.query, products);
     if (result.length) {
       res.send(result);
@@ -382,6 +384,27 @@ app.get('/products/:productId', (req, res) => {
   } catch (e) {
     console.log(e);
     res.status(500).send('Unexpected error');
+  }
+});
+
+app.post('/products', (req, res) => {
+  console.log(req.body);
+  try {
+    ProductsManager.addProduct(req.body, products, categories);
+    res.send('');
+  } catch (e) {
+    res.status(500).send();
+  }
+});
+
+app.put('/products/:productId', (req, res) => {
+  console.log(req.body);
+  const {productId} = req.params;
+  try {
+    ProductsManager.replaceProduct(productId, req.body, products, categories);
+    res.send('');
+  } catch (e) {
+    res.status(500).send();
   }
 });
 

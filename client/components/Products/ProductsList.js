@@ -10,7 +10,7 @@ const ProductList = (props) => {
           {props.products
             .map(product =>
               (<div key={product.id} className="col-xl-3 col-lg-4 col-md-6 col-sm-12">
-                  <Product product={product}/>
+                  <Product product={product} adminMod={props.adminMod} openWindow={props.openWindow}/>
                 </div>
               ))}
         </div>
@@ -20,6 +20,8 @@ const ProductList = (props) => {
 };
 Product.propTypes = {
   products: PropTypes.array.isRequired,
+  adminMod: PropTypes.bool.isRequired,
+  openWindow: PropTypes.func.isRequired,
 };
 
 export default ProductList;

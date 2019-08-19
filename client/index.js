@@ -113,4 +113,4 @@ const products = [
     inBasket: 0,
   }
 ];
-ReactDOM.render(<Shop products={products} categories={categories}/>, document.getElementById('root'));
+ReactDOM.render(<Shop/>, document.getElementById('root'));

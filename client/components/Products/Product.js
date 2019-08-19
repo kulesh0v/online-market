@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 import {useState} from 'react';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {library} from '@fortawesome/fontawesome-svg-core'
-import {faCheck} from '@fortawesome/free-solid-svg-icons'
+import {faCheck, faEdit, faTrashAlt} from '@fortawesome/free-solid-svg-icons'
 
-library.add(faCheck);
+library.add(faCheck, faEdit, faTrashAlt);
 
 const Product = (props) => {
   const [userWish, setUserWish] = useState(0);
@@ -24,6 +24,16 @@ const Product = (props) => {
 
   return (
     <div className="card mt-2">
+      {props.adminMod &&
+      <div className={"text-right"}>
+        <span className={"mr-2"} onClick={() => props.openWindow(props.product.id)}>
+          <FontAwesomeIcon icon={"edit"} color={"grey"}/>
+        </span>
+        <span className={"mr-2"}>
+          <FontAwesomeIcon icon={"trash-alt"} color={"grey"}/>
+        </span>
+      </div>
+      }
       <div className="card-body">
         <img className="card-img-top" alt="product" src={props.product.url}/>
         <div className="cards-title detail-title">{props.product.name}</div>
@@ -38,7 +48,8 @@ const Product = (props) => {
               <button type="button" className="btn btn-default bg-light" onClick={increaseAmount}>+</button>
             </span>
           <button type="button" className="btn btn-default bg-light" title="Add to the basket">
-            {(userWish && <FontAwesomeIcon icon="check" color="green"/>) || <FontAwesomeIcon icon="check" color="grey"/> }
+            {(userWish && <FontAwesomeIcon icon="check" color="green"/>) ||
+            <FontAwesomeIcon icon="check" color="grey"/>}
           </button>
         </form>
       </div>
@@ -48,5 +59,7 @@ const Product = (props) => {
 
 Product.propTypes = {
   product: PropTypes.object.isRequired,
+  adminMod: PropTypes.bool.isRequired,
+  openWindow: PropTypes.func.isRequired,
 };
 export default Product;
