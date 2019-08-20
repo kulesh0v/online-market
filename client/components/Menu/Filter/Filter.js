@@ -13,6 +13,12 @@ const Filter = (props) => {
   const [maxPrice, setMaxPrice] = useState(null);
   const [sortType, setSortType] = useState(null);
 
+  const uncheckDeleted = (id) => {
+    if(choosesCategories.includes(id)){
+      choosesCategories.splice(choosesCategories.indexOf(id),1);
+    }
+  };
+
   const filter = () => {
     props.filter({
       choosesCategories: choosesCategories,
@@ -33,7 +39,7 @@ const Filter = (props) => {
       choosesCategories.push(id);
     }
     setCheckedIds(setCheckedIds);
-    setTimeout(filter(),0);
+    filter();
   };
 
   return (
@@ -41,7 +47,13 @@ const Filter = (props) => {
       <Sort setType={setSortType} type={sortType}/>
       <PriceFilter changeMax={setMaxPrice} changeMin={setMinPrice}/>
       <CategoriesList
-        categories={props.categories} chooseCategory={chooseCategory}/>
+        categories={props.categories}
+        chooseCategory={chooseCategory}
+        adminMod={props.adminMod}
+        openWindow={props.openWindow}
+        removeCategory={props.removeCategory}
+        uncheckDeleted={uncheckDeleted}
+      />
     </div>
   );
 };
@@ -49,5 +61,8 @@ const Filter = (props) => {
 Filter.propTypes = {
   categories: PropTypes.array.isRequired,
   filter: PropTypes.func.isRequired,
+  adminMod: PropTypes.bool.isRequired,
+  openWindow: PropTypes.func.isRequired,
+  removeCategory: PropTypes.func.isRequired,
 };
 export default Filter;

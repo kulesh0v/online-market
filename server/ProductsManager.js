@@ -56,7 +56,7 @@ class ProductsManager {
 
   static addProduct(product, products, categories) {
     try {
-      product.id = products[products.length - 1].id + 1;
+      product.id = (Number(products[products.length - 1].id) + 1).toString();
       product.price = Number(product.price);
       product.amount = Number(product.amount);
       if (categories.find(c => c.id === product.categoryId))
@@ -68,15 +68,47 @@ class ProductsManager {
 
   static replaceProduct(id, product, products, categories) {
     try {
-      const old = products.find(p => p.id === id);
-      old.price = Number(product.price);
-      old.amount = Number(product.amount);
-      old.categoryId = product.categoryId;
-      old.name = product.name;
-      old.url = product.url;
-      console.log(products.findIndex(p => p.id === id));
+      const index = products.findIndex(p => p.id === id);
+      product.id = products[index].id;
+      products[index] = product;
     } catch (e) {
       console.log(e);
+      throw e;
+    }
+  }
+
+  static removeProduct(id, products) {
+    try {
+      products.splice(products.findIndex(p => p.id === id), 1);
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  static addCategory(category, categories) {
+    try {
+      category.id = (Number(categories[categories.length - 1].id) + 1).toString();
+      categories.push(category);
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  static replaceCategory(id, category, categories, products) {
+    try {
+      const index = categories.findIndex(c => c.id === id);
+      category.id = categories[index].id;
+      categories[index] = category;
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  static removeCategory(id, categories, products) {
+    try {
+      categories.splice(categories.findIndex(c => c.id === id), 1);
+      return products.filter(p => p.categoryId !== id);
+    } catch (e) {
       throw e;
     }
   }

@@ -33,7 +33,7 @@ const categories = [
   }
 ];
 
-const products = [
+let products = [
   /*{
     id: '1',
     categoryId: '1',
@@ -373,8 +373,8 @@ app.get('/products', (req, res) => {
 });
 
 app.get('/products/:productId', (req, res) => {
-  const {productId} = req.params;
   try {
+    const {productId} = req.params;
     const result = ProductsManager.findProduct(productId, products);
     if (result) {
       res.send(result);
@@ -388,7 +388,6 @@ app.get('/products/:productId', (req, res) => {
 });
 
 app.post('/products', (req, res) => {
-  console.log(req.body);
   try {
     ProductsManager.addProduct(req.body, products, categories);
     res.send('');
@@ -398,11 +397,50 @@ app.post('/products', (req, res) => {
 });
 
 app.put('/products/:productId', (req, res) => {
-  console.log(req.body);
-  const {productId} = req.params;
   try {
+    const {productId} = req.params;
     ProductsManager.replaceProduct(productId, req.body, products, categories);
     res.send('');
+  } catch (e) {
+    res.status(500).send();
+  }
+});
+
+app.delete('/products/:productId', (req, res) => {
+  try {
+    const {productId} = req.params;
+    ProductsManager.removeProduct(productId, products);
+    res.send('Product was delete');
+  } catch (e) {
+    res.status(500).send();
+  }
+});
+
+app.post('/categories', (req, res) => {
+  try {
+    ProductsManager.addCategory(req.body, categories);
+    res.send('Product was delete');
+  } catch (e) {
+    res.status(500).send();
+  }
+});
+
+app.put('/categories/:categoryId', (req, res) => {
+  try {
+    console.log(req.body);
+    const {categoryId} = req.params;
+    ProductsManager.replaceCategory(categoryId, req.body, categories, products);
+    res.send('Category was change');
+  } catch (e) {
+    res.status(500).send();
+  }
+});
+
+app.delete('/categories/:categoryId', (req, res) => {
+  try {
+    const {categoryId} = req.params;
+    products = ProductsManager.removeCategory(categoryId, categories, products);
+    res.send('Category was delete');
   } catch (e) {
     res.status(500).send();
   }

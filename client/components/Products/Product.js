@@ -1,6 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types';
 import {useState} from 'react';
+
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {library} from '@fortawesome/fontawesome-svg-core'
 import {faCheck, faEdit, faTrashAlt} from '@fortawesome/free-solid-svg-icons'
@@ -22,14 +23,15 @@ const Product = (props) => {
     }
   };
 
+
   return (
     <div className="card mt-2">
       {props.adminMod &&
       <div className={"text-right"}>
-        <span className={"mr-2"} onClick={() => props.openWindow(props.product.id)}>
+        <span className={"mr-2"} onClick={() => props.openWindow(props.product.id, 'product')}>
           <FontAwesomeIcon icon={"edit"} color={"grey"}/>
         </span>
-        <span className={"mr-2"}>
+        <span className={"mr-2"} onClick={() => props.removeProduct(props.product.id)}>
           <FontAwesomeIcon icon={"trash-alt"} color={"grey"}/>
         </span>
       </div>
@@ -61,5 +63,6 @@ Product.propTypes = {
   product: PropTypes.object.isRequired,
   adminMod: PropTypes.bool.isRequired,
   openWindow: PropTypes.func.isRequired,
+  removeProduct: PropTypes.func.isRequired,
 };
 export default Product;
