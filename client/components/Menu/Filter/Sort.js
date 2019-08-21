@@ -1,5 +1,7 @@
 import React from 'react';
 
+import {FormattedMessage} from 'react-intl';
+
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {library} from '@fortawesome/fontawesome-svg-core'
 import {faLongArrowAltUp, faLongArrowAltDown} from '@fortawesome/free-solid-svg-icons'
@@ -27,9 +29,12 @@ const Sort = (props) => {
 
   return (
     <div className="d-flex justify-content-between">
-      <button onClick={onClickDef} className="btn">Default</button>
+      <button onClick={onClickDef} className="btn">
+        <FormattedMessage id={'default'}/>
+      </button>
       <button onClick={onClickPrice} className="btn">
-        Price{priceButtonArrow()}
+        <FormattedMessage id={'price'}/>
+        {priceButtonArrow()}
       </button>
     </div>
   );

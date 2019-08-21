@@ -389,8 +389,8 @@ app.get('/products/:productId', (req, res) => {
 
 app.post('/products', (req, res) => {
   try {
-    ProductsManager.addProduct(req.body, products, categories);
-    res.send('');
+    const answer = ProductsManager.addProduct(req.body, products, categories);
+    res.send(JSON.stringify(answer));
   } catch (e) {
     res.status(500).send();
   }
@@ -399,8 +399,8 @@ app.post('/products', (req, res) => {
 app.put('/products/:productId', (req, res) => {
   try {
     const {productId} = req.params;
-    ProductsManager.replaceProduct(productId, req.body, products, categories);
-    res.send('');
+    const answer = ProductsManager.replaceProduct(productId, req.body, products, categories);
+    res.send(JSON.stringify(answer));
   } catch (e) {
     res.status(500).send();
   }
@@ -418,8 +418,8 @@ app.delete('/products/:productId', (req, res) => {
 
 app.post('/categories', (req, res) => {
   try {
-    ProductsManager.addCategory(req.body, categories);
-    res.send('Product was delete');
+    const answer = ProductsManager.addCategory(req.body, categories);
+    res.send(answer);
   } catch (e) {
     res.status(500).send();
   }
@@ -429,8 +429,8 @@ app.put('/categories/:categoryId', (req, res) => {
   try {
     console.log(req.body);
     const {categoryId} = req.params;
-    ProductsManager.replaceCategory(categoryId, req.body, categories, products);
-    res.send('Category was change');
+    const answer = ProductsManager.replaceCategory(categoryId, req.body, categories, products);
+    res.send(answer);
   } catch (e) {
     res.status(500).send();
   }

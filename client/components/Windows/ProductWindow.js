@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {useState} from 'react';
+import {FormattedMessage} from 'react-intl';
 
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {library} from '@fortawesome/fontawesome-svg-core'
@@ -48,23 +49,21 @@ const ProductWindow = (props) => {
       <div className="panel panel-default col-xl-4 col-lg-6 col-md-8 col-sm-10 m-auto pt-4 pl-3">
         <div className="panel-body">
           <div className={"m-auto"}>
+
             {getImg()}
 
-            <select className="custom-select mb-3" defaultValue="Product category" onChange={(e) => selectCategory(e)}>
-              {
-                props.categories.map((category) => {
-                  if (categoryId === category.id) {
-                    return <option key={category.id} selected>{category.name}</option>;
-                  } else {
-                    return <option key={category.id}>{category.name}</option>;
-                  }
-                })
-              }
+            <select
+              className="custom-select mb-3"
+              defaultValue={props.categories.find(c => c.id === categoryId)}
+              onChange={(e) => selectCategory(e)}>
+              {props.categories.map((category) => <option key={category.id}>{category.name}</option>)}
             </select>
 
             <div className="input-group mb-3">
               <div className="input-group-prepend">
-                <span className="input-group-text" id="basic-addon1">Product name</span>
+                <span className="input-group-text">
+                  <FormattedMessage id={'productName'}/>
+                </span>
               </div>
               <input type="text"
                      className="form-control"
@@ -75,7 +74,8 @@ const ProductWindow = (props) => {
 
             <div className="input-group mb-3">
               <div className="input-group-prepend">
-                <span className="input-group-text">Price $</span>
+                <span className="input-group-text">
+                  <FormattedMessage id={'price'}/>$</span>
               </div>
               <input type="number"
                      className="form-control"
@@ -86,7 +86,9 @@ const ProductWindow = (props) => {
 
             <div className="input-group mb-3">
               <div className="input-group-prepend">
-                <span className="input-group-text">In stock</span>
+                <span className="input-group-text">
+                  <FormattedMessage id={'inStock'}/>
+                </span>
               </div>
               <input type="number"
                      className="form-control"
@@ -97,7 +99,9 @@ const ProductWindow = (props) => {
 
             <div className="input-group mb-3">
               <div className="input-group-prepend">
-                <span className="input-group-text"><FontAwesomeIcon icon={'image'}/></span>
+                <span className="input-group-text">
+                  <FontAwesomeIcon icon={'image'}/>
+                </span>
               </div>
               <input type="text"
                      className="form-control"
@@ -110,12 +114,12 @@ const ProductWindow = (props) => {
               <button type="button"
                       className="btn-danger border-0 rounded-lg mr-3 p-2"
                       onClick={() => props.closeWindow()}>
-                Cancel
+                <FormattedMessage id={'cancel'}/>
               </button>
               <button type="button"
                       className="btn-success border-0 rounded-lg p-2"
                       onClick={() => accept()}>
-                Accept
+                <FormattedMessage id={'accept'}/>
               </button>
             </div>
           </div>

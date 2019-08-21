@@ -5,7 +5,7 @@ import AdminPanel from './AdminPanel.js';
 
 const Menu = (props) => {
   return (
-    <div className={"col-2 mt-4 bg-light"}>
+    <div className={"col-xl-2 col-lg-3 mt-4 bg-light"}>
       <Filter
         categories={props.categories}
         filter={props.filter}

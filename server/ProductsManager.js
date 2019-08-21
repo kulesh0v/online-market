@@ -59,8 +59,8 @@ class ProductsManager {
       product.id = (Number(products[products.length - 1].id) + 1).toString();
       product.price = Number(product.price);
       product.amount = Number(product.amount);
-      if (categories.find(c => c.id === product.categoryId))
-        products.push(product);
+      products.push(product);
+      return product;
     } catch (e) {
       throw e;
     }
@@ -71,6 +71,7 @@ class ProductsManager {
       const index = products.findIndex(p => p.id === id);
       product.id = products[index].id;
       products[index] = product;
+      return product;
     } catch (e) {
       console.log(e);
       throw e;
@@ -89,6 +90,7 @@ class ProductsManager {
     try {
       category.id = (Number(categories[categories.length - 1].id) + 1).toString();
       categories.push(category);
+      return category;
     } catch (e) {
       throw e;
     }
@@ -99,6 +101,7 @@ class ProductsManager {
       const index = categories.findIndex(c => c.id === id);
       category.id = categories[index].id;
       categories[index] = category;
+      return category;
     } catch (e) {
       throw e;
     }

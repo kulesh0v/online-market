@@ -1,7 +1,12 @@
 import React from 'react';
 import {useState, useEffect} from 'react';
+
 import axios from 'axios';
 import axiosCancel from 'axios-cancel';
+
+import {IntlProvider} from 'react-intl';
+import PropTypes from 'prop-types';
+
 import NavigationBar from './NavigationBar.js';
 import ProductList from './Products/ProductsList'
 import Menu from './Menu/Menu.js';
@@ -12,7 +17,7 @@ axiosCancel(axios, {
   debug: false
 });
 
-const Shop = () => {
+const Shop = (props) => {
     const [products, setProducts] = useState([]);
     const [categories, setCategories] = useState([]);
     const [adminMod, setAdminMod] = useState(false);
@@ -20,8 +25,11 @@ const Shop = () => {
     const [windowObject, setWindowObject] = useState(undefined);
     const [lastFilterConfig, setLastFilterConfig] = useState({});
     const [windowType, setWindowType] = useState('');
+    const [locale, setLocale] = useState('en');
     useEffect(() => {
-      axios.get('/categories').then(res => setCategories(res.data));
+      axios.get('/categories').then(res => {
+        setCategories(res.data)
+      });
       axios.get('/products').then(res => setProducts(res.data));
     }, []);
 
@@ -51,7 +59,6 @@ const Shop = () => {
     };
 
     const openWindow = (id, type) => {
-      console.log(id);
       if (!windowIsOpen) {
         if (id) {
           switch (type) {
@@ -131,18 +138,19 @@ const Shop = () => {
       }
     };
 
+    const updateCategories = () => axios.get('/categories')
+      .then(res => setCategories(res.data));
+
     const addCategory = (category) => {
       axios.post(`/categories`, JSON.stringify(category), {headers: {'Content-Type': 'application/json',}})
-        .then(() => axios.get('/categories')
-          .then(res => setCategories(res.data)))
+        .then(() => updateCategories())
         .then(() => closeWindow())
         .catch(err => alert(err));
     };
 
     const editCategory = (id, category) => {
       axios.put(`/categories/${id}`, JSON.stringify(category), {headers: {'Content-Type': 'application/json',}})
-        .then(() => axios.get('/categories')
-          .then(res => setCategories(res.data)))
+        .then(() => updateCategories())
         .then(() => closeWindow())
         .catch(err => alert(err));
     };
@@ -150,24 +158,30 @@ const Shop = () => {
     const removeCategory = (id) => {
       if (confirm('Are you sure?')) {
         axios.delete(`/categories/${id}`)
-          .then(() => axios.get('/categories')
-            .then(res => setCategories(res.data)))
-          .then(() => filter())
+          .then(() => updateCategories())
+          .then(() => filter(lastFilterConfig))
           .catch(err => alert(err));
       }
     };
 
     return (
-      <div>
-        <NavigationBar/>
-        <div className={"d-inline-flex col-12"}>
-          <Menu categories={categories} filter={filter} setAdminMod={setAdminMod} adminMod={adminMod}
-                openWindow={openWindow} removeCategory={removeCategory}/>
-          {renderWindow()}
-          {renderProducts()}
+      <IntlProvider locale={locale} messages={props.messages[locale]}>
+        <div>
+          <NavigationBar setLocale={setLocale}/>
+          <div className={"d-inline-flex col-12"}>
+            <Menu categories={categories} filter={filter} setAdminMod={setAdminMod} adminMod={adminMod}
+                  openWindow={openWindow} removeCategory={removeCategory}/>
+            {renderWindow()}
+            {renderProducts()}
+          </div>
         </div>
-      </div>
+      </IntlProvider>
     );
   }
 ;
+
+Shop.propTypes = {
+  messages: PropTypes.object.isRequired,
+};
+
 export default Shop;

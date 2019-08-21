@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {useState} from 'react';
+import {FormattedMessage} from 'react-intl';
 
 const CategoryWindow = (props) => {
   const [name, setName] = useState(props.object ? props.object.name : '');
@@ -18,7 +19,9 @@ const CategoryWindow = (props) => {
         <div className={"m-auto"}>
           <div className="input-group mb-3">
             <div className="input-group-prepend">
-              <span className="input-group-text">Category name</span>
+              <span className="input-group-text">
+                <FormattedMessage id={'categoryName'}/>
+              </span>
             </div>
             <input type="text"
                    className="form-control"
@@ -31,12 +34,12 @@ const CategoryWindow = (props) => {
             <button type="button"
                     className="btn-danger border-0 rounded-lg mr-3 p-2"
                     onClick={() => props.closeWindow()}>
-              Cancel
+              <FormattedMessage id={'cancel'}/>
             </button>
             <button type="button"
                     className="btn-success border-0 rounded-lg p-2"
                     onClick={() => accept()}>
-              Accept
+              <FormattedMessage id={'accept'}/>
             </button>
           </div>
         </div>

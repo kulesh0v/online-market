@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 
 const ProductList = (props) => {
   return (
-    <div className="panel panel-default col-xl-10 col-lg-10 col-md-12 col-sm-12 m-auto pt-4 pl-3">
+    <div className="panel panel-default col-xl-10 col-lg-9 col-md-12 col-sm-12 m-auto pt-4 pl-3">
       <div className="panel-body">
         <div className="row">
           {props.products

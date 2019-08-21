@@ -2,6 +2,8 @@ import React from 'react'
 import PropTypes from 'prop-types';
 import {useState} from 'react';
 
+import {FormattedMessage} from 'react-intl';
+
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {library} from '@fortawesome/fontawesome-svg-core'
 import {faCheck, faEdit, faTrashAlt} from '@fortawesome/free-solid-svg-icons'
@@ -40,7 +42,8 @@ const Product = (props) => {
         <img className="card-img-top" alt="product" src={props.product.url}/>
         <div className="cards-title detail-title">{props.product.name}</div>
         <div className="card-text text-danger">${props.product.price}</div>
-        <div className="card-text">In stock: {props.product.amount}</div>
+        <div className="card-text">
+          <FormattedMessage id={'inStock'}/>: {props.product.amount}</div>
         <form className="d-flex justify-content-between">
             <span className="input-group">
               <button type="button" className="btn btn-default bg-light" onClick={reduceAmount}>-</button>
