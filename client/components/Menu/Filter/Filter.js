@@ -21,7 +21,7 @@ const Filter = (props) => {
 
   const filter = () => {
     props.filter({
-      choosesCategories: choosesCategories,
+      categoryId: choosesCategories,
       minPrice: minPrice,
       maxPrice: maxPrice,
       sortType: sortType,

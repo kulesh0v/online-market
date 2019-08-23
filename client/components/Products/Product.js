@@ -30,12 +30,12 @@ const Product = (props) => {
     <div className="card mt-2">
       {props.adminMod &&
       <div className={"text-right"}>
-        <span className={"mr-2"} onClick={() => props.openWindow(props.product.id, 'product')}>
+        <button type={"button"} className={"clear-button mr-2"} onClick={() => props.openWindow(props.product.id, 'product')}>
           <FontAwesomeIcon icon={"edit"} color={"grey"}/>
-        </span>
-        <span className={"mr-2"} onClick={() => props.removeProduct(props.product.id)}>
+        </button>
+        <button type={"button"} className={"clear-button mr-2"} onClick={() => props.removeProduct(props.product.id)}>
           <FontAwesomeIcon icon={"trash-alt"} color={"grey"}/>
-        </span>
+        </button>
       </div>
       }
       <div className="card-body">

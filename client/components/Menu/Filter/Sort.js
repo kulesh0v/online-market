@@ -22,9 +22,9 @@ const Sort = (props) => {
 
   const priceButtonArrow = () => {
     if (!props.type || props.type === 'dprice') {
-      return (<FontAwesomeIcon icon="long-arrow-alt-up"/>);
+      return (<FontAwesomeIcon icon="long-arrow-alt-down"/>);
     }
-    return (<FontAwesomeIcon icon="long-arrow-alt-down"/>);
+    return (<FontAwesomeIcon icon="long-arrow-alt-up"/>);
   };
 
   return (

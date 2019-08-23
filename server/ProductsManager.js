@@ -1,120 +1,186 @@
-class ProductsManager {
-  static filterProducts(filterConfig, products) {
-    let result = products.slice();
-    const from = filterConfig.from || 0;
-    const to = filterConfig.to;
-    const categories = filterConfig.categoryId;
-    result = this.filterCategories(categories, result);
-    result = this.filterPrice(filterConfig, result);
-    this.sortProducts(filterConfig, result);
-    result = result.slice(from, to);
-    return result;
-  }
+function ProductsManager() {
+  return {
+    toSendObject: function (lokiObject) {
+      const result = {...lokiObject};
+      result.id = result.$loki;
+      delete result.$loki;
+      delete result.meta;
+      return result;
+    },
 
-  static filterCategories(categories, products) {
-    if (categories) {
-      if (!Array.isArray(categories)) {
-        categories = [categories];
+    filterProducts: function ({filterConfig, database}) {
+      const products = database.getCollection('products');
+      const sortType = this._getSortType(filterConfig);
+      return products
+        .chain()
+        .where((product) => {
+          return this._checkCategories(product, filterConfig) &&
+            this._checkPrice(product, filterConfig);
+        })
+        .simplesort(sortType.type, sortType.flag)
+        .data()
+        .map((p) => this.toSendObject(p));
+    },
+
+    _checkCategories: function (product, {categoryId}) {
+      if (categoryId) {
+        if (!Array.isArray(categoryId)) {
+          categoryId = [categoryId];
+        }
+        return categoryId.includes(product.categoryId.toString());
       }
-      return products.filter(p => categories.includes(p.categoryId));
-    }
-    return products;
-  }
+      return true;
+    },
 
-  static filterPrice(filterConfig, products) {
-    if (filterConfig.minPrice) {
-      const mp = Number(filterConfig.minPrice);
-      products = products.filter(product => product.price >= mp);
-    }
-    if (filterConfig.maxPrice && isFinite(filterConfig.maxPrice)) {
-      const mp = Number(filterConfig.maxPrice);
-      products = products.filter(product => product.price <= mp);
-    }
-    return products;
-  }
-
-  static sortProducts(filterConfig, products) {
-    if (filterConfig.sortType) {
-      switch (filterConfig.sortType) {
-        case 'dprice':
-          products.sort((a, b) => a.price - b.price);
-          break;
-        case 'uprice':
-          products.sort((a, b) => b.price - a.price);
-          break;
+    _checkPrice: function (product, {minPrice, maxPrice}) {
+      if (minPrice) {
+        const mp = Number(minPrice);
+        if (product.price <= mp) {
+          return false;
+        }
       }
-    }
-  }
+      if (maxPrice && isFinite(maxPrice)) {
+        const mp = Number(maxPrice);
+        return product.price <= mp;
+      }
+      return true;
+    },
 
-  static findProduct(id, products) {
-    return products.find(p => p.id === id);
-  }
+    _getSortType: function ({sortType}) {
+      if (sortType === 'uprice') {
+        return {type: 'price', flag: false};
+      }
+      if (sortType === 'dprice') {
+        return {type: 'price', flag: true};
+      }
+      return {type: 'loki', flag: true};
+    },
 
-  static validateProduct(product, categories) {
+    getProduct: function ({id, database}) {
+      return this.toSendObject(database.getCollection('products').get(id));
+    },
 
-  }
+    validateProduct: function ({product, categories}) {
 
-  static addProduct(product, products, categories) {
-    try {
-      product.id = (Number(products[products.length - 1].id) + 1).toString();
-      product.price = Number(product.price);
-      product.amount = Number(product.amount);
-      products.push(product);
-      return product;
-    } catch (e) {
-      throw e;
-    }
-  }
+    },
 
-  static replaceProduct(id, product, products, categories) {
-    try {
-      const index = products.findIndex(p => p.id === id);
-      product.id = products[index].id;
-      products[index] = product;
-      return product;
-    } catch (e) {
-      console.log(e);
-      throw e;
-    }
-  }
+    validateProductId: function ({id, products}) {
 
-  static removeProduct(id, products) {
-    try {
-      products.splice(products.findIndex(p => p.id === id), 1);
-    } catch (e) {
-      throw e;
-    }
-  }
+    },
 
-  static addCategory(category, categories) {
-    try {
-      category.id = (Number(categories[categories.length - 1].id) + 1).toString();
-      categories.push(category);
-      return category;
-    } catch (e) {
-      throw e;
-    }
-  }
+    addProduct: function ({product, database}) {
+      try {
+        this.validateProduct({
+          product: product,
+          categories: database.getCollection('categories'),
+        });
+        database.getCollection('products').insert(product);
+      } catch (e) {
+        throw e;
+      }
+    },
 
-  static replaceCategory(id, category, categories, products) {
-    try {
-      const index = categories.findIndex(c => c.id === id);
-      category.id = categories[index].id;
-      categories[index] = category;
-      return category;
-    } catch (e) {
-      throw e;
-    }
-  }
+    replaceProduct: function ({id, product, database}) {
+      try {
+        const products = database.getCollection('products');
+        this.validateProductId({
+          id: id,
+          products: products,
+        });
+        this.validateProduct({
+          product: product,
+          categories: database.getCollection('categories'),
+        });
+        let tmp = products.get(id);
+        tmp = {...product, $loki: tmp.$loki, meta: tmp.meta};
+        products.update(tmp);
+      } catch (e) {
+        throw e;
+      }
+    },
 
-  static removeCategory(id, categories, products) {
-    try {
-      categories.splice(categories.findIndex(c => c.id === id), 1);
-      return products.filter(p => p.categoryId !== id);
-    } catch (e) {
-      throw e;
+    removeProduct: function ({id, database}) {
+      try {
+        const products = database.getCollection('products');
+        this.validateProductId({
+          id: id,
+          products: products,
+        });
+        products.remove(products.get(id));
+      } catch (e) {
+        throw e;
+      }
+    },
+
+
+    getCategories: function ({database}) {
+      return database.getCollection('categories')
+        .data.map(c => this.toSendObject(c));
+    },
+
+    getCategory: function ({id, database}) {
+      return this.toSendObject(database.getCollection('categories').get(id));
+    },
+
+    validateCategory: function ({category, categories}) {
+
+    },
+
+    validateCategoryId: function ({id, categories}) {
+
+    },
+
+    addCategory: function ({category, database}) {
+      try {
+        const categories = database.getCollection('categories');
+        this.validateCategory({
+          category: category,
+          categories: categories,
+        });
+        categories.insert(category);
+        return category;
+      } catch (e) {
+        throw e;
+      }
+    },
+
+    replaceCategory: function ({id, category, database}) {
+      try {
+        const categories = database.getCollection('categories');
+        this.validateCategoryId({
+          id: id,
+          categories: categories,
+        });
+        this.validateCategory({
+          category: category,
+          database: database,
+        });
+        let tmp = categories.get(id);
+        tmp = {...category, $loki: tmp.$loki, meta: tmp.meta};
+        categories.update(tmp);
+      } catch (e) {
+        throw e;
+      }
+    },
+
+    removeCategory: function ({id, database}) {
+      const categories = database.getCollection('categories');
+      const products = database.getCollection('products');
+      try {
+        this.validateCategoryId({
+          id: id,
+          categories: categories,
+        });
+        products.remove(products.find({categoryId: Number(id)}));
+        categories.remove(categories.get(id));
+      } catch (e) {
+        throw e;
+      }
     }
   }
 }
 
 export default ProductsManager;
+
+
+

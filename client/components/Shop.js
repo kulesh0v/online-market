@@ -3,9 +3,9 @@ import {useState, useEffect} from 'react';
 
 import axios from 'axios';
 import axiosCancel from 'axios-cancel';
-
 import {IntlProvider} from 'react-intl';
 import PropTypes from 'prop-types';
+import queryString from 'query-string';
 
 import NavigationBar from './NavigationBar.js';
 import ProductList from './Products/ProductsList'
@@ -33,24 +33,9 @@ const Shop = (props) => {
       axios.get('/products').then(res => setProducts(res.data));
     }, []);
 
-    const filter = (filterConfig) => {
+    const filterProducts = (filterConfig) => {
       let req = '/products?';
-      if (filterConfig) {
-        if (filterConfig.choosesCategories) {
-          filterConfig.choosesCategories.forEach(id => {
-            req += `&categoryId=${id}`;
-          });
-        }
-        if (filterConfig.minPrice) {
-          req += `&minPrice=${filterConfig.minPrice}`;
-        }
-        if (filterConfig.maxPrice) {
-          req += `&maxPrice=${filterConfig.maxPrice}`;
-        }
-        if (filterConfig.sortType) {
-          req += `&sortType=${filterConfig.sortType}`;
-        }
-      }
+      req += queryString.stringify(filterConfig, {sort: false});
       axios.cancelAll();
       axios.get(req).then(res => {
         setProducts(res.data);
@@ -59,19 +44,17 @@ const Shop = (props) => {
     };
 
     const openWindow = (id, type) => {
-      if (!windowIsOpen) {
-        if (id) {
-          switch (type) {
-            case 'product':
-              setWindowObject(products.find(p => p.id === id));
-              break;
-            case 'category':
-              setWindowObject(categories.find(c => c.id === id));
-          }
+      if (id) {
+        switch (type) {
+          case 'product':
+            setWindowObject(products.find(p => p.id === id));
+            break;
+          case 'category':
+            setWindowObject(categories.find(c => c.id === id));
         }
-        setWindowType(type);
-        setWindowIsOpen(true);
       }
+      setWindowType(type);
+      setWindowIsOpen(true);
     };
 
     const renderWindow = () => {
@@ -101,65 +84,84 @@ const Shop = (props) => {
       setWindowType('');
       setWindowObject(undefined);
       setWindowIsOpen(false);
-      filter(lastFilterConfig)
     };
 
     const renderProducts = () => {
-      if (!windowIsOpen) {
-        if (products && Array.isArray(products)) {
-          return <ProductList
-            products={products}
-            adminMod={adminMod}
-            openWindow={openWindow}
-            removeProduct={removeProduct}/>;
-        } else {
-          return <h1 className={"m-auto text-black-50"}>{products}</h1>;
-        }
+      if (products && Array.isArray(products)) {
+        return <ProductList
+          products={products}
+          adminMod={adminMod}
+          openWindow={openWindow}
+          removeProduct={removeProduct}/>;
+      } else {
+        return <h1 className={"m-auto text-black-50"}>{products}</h1>;
       }
     };
 
     const addProduct = (product) => {
       axios.post('/products', JSON.stringify(product), {headers: {'Content-Type': 'application/json',}})
-        .then(() => closeWindow())
+        .then((res) => {
+          alert(res.data);
+          closeWindow();
+          filterProducts(lastFilterConfig);
+        })
         .catch(err => alert(err));
     };
 
     const editProduct = (id, product) => {
       axios.put(`/products/${id}`, JSON.stringify(product), {headers: {'Content-Type': 'application/json',}})
-        .then(() => closeWindow())
+        .then((res) => {
+          alert(res.data);
+          closeWindow();
+          filterProducts(lastFilterConfig);
+        })
         .catch(err => alert(err));
     };
 
     const removeProduct = (id) => {
       if (confirm('Are you sure?')) {
         axios.delete(`/products/${id}`)
-          .then(() => filter(lastFilterConfig))
+          .then((res) => {
+            alert(res.data);
+            filterProducts(lastFilterConfig);
+          })
           .catch(err => alert(err));
       }
     };
 
-    const updateCategories = () => axios.get('/categories')
-      .then(res => setCategories(res.data));
+    const updateCategories = () => {
+      axios.get('/categories')
+        .then(res => setCategories(res.data));
+    };
 
     const addCategory = (category) => {
       axios.post(`/categories`, JSON.stringify(category), {headers: {'Content-Type': 'application/json',}})
-        .then(() => updateCategories())
+        .then((res) =>{
+          alert(res.data);
+          updateCategories();
+        })
         .then(() => closeWindow())
         .catch(err => alert(err));
     };
 
     const editCategory = (id, category) => {
       axios.put(`/categories/${id}`, JSON.stringify(category), {headers: {'Content-Type': 'application/json',}})
-        .then(() => updateCategories())
+        .then((res) => {
+          alert(res.data);
+          updateCategories();
+        })
         .then(() => closeWindow())
         .catch(err => alert(err));
     };
 
     const removeCategory = (id) => {
-      if (confirm('Are you sure?')) {
+      if (confirm('If you delete a category, you will remove all products that it included\nAre you sure?')) {
         axios.delete(`/categories/${id}`)
-          .then(() => updateCategories())
-          .then(() => filter(lastFilterConfig))
+          .then((res) => {
+            alert(res.data);
+            updateCategories();
+          })
+          .then(() => filterProducts(lastFilterConfig))
           .catch(err => alert(err));
       }
     };
@@ -169,10 +171,12 @@ const Shop = (props) => {
         <div>
           <NavigationBar setLocale={setLocale}/>
           <div className={"d-inline-flex col-12"}>
-            <Menu categories={categories} filter={filter} setAdminMod={setAdminMod} adminMod={adminMod}
+            <Menu categories={categories} filter={filterProducts} setAdminMod={setAdminMod} adminMod={adminMod}
                   openWindow={openWindow} removeCategory={removeCategory}/>
-            {renderWindow()}
-            {renderProducts()}
+            {
+              windowIsOpen && renderWindow() ||
+              renderProducts()
+            }
           </div>
         </div>
       </IntlProvider>
