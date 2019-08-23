@@ -42,7 +42,6 @@ const ProductWindow = (props) => {
       } else {
         props.addProduct(product);
       }
-      props.closeWindow();
     };
 
     return (

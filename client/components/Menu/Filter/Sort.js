@@ -30,7 +30,7 @@ const Sort = (props) => {
   return (
     <div className="d-flex justify-content-between">
       <button onClick={onClickDef} className="btn">
-        <FormattedMessage id={'default'}/>
+        <FormattedMessage id={'new'}/>
       </button>
       <button onClick={onClickPrice} className="btn">
         <FormattedMessage id={'price'}/>

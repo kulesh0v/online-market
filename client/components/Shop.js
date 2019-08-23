@@ -102,10 +102,13 @@ const Shop = (props) => {
       axios.post('/products', JSON.stringify(product), {headers: {'Content-Type': 'application/json',}})
         .then((res) => {
           alert(res.data);
-          closeWindow();
           filterProducts(lastFilterConfig);
+          closeWindow();
         })
-        .catch(err => alert(err));
+        .catch(err => {
+          alert('Error, check console');
+          console.log(err.response.data);
+        });
     };
 
     const editProduct = (id, product) => {
@@ -115,7 +118,10 @@ const Shop = (props) => {
           closeWindow();
           filterProducts(lastFilterConfig);
         })
-        .catch(err => alert(err));
+        .catch(err => {
+          alert('Error, check console');
+          console.log(err.response.data);
+        });
     };
 
     const removeProduct = (id) => {
@@ -125,7 +131,10 @@ const Shop = (props) => {
             alert(res.data);
             filterProducts(lastFilterConfig);
           })
-          .catch(err => alert(err));
+          .catch(err => {
+            alert('Error, check console');
+            console.log(err.response.data);
+          });
       }
     };
 
@@ -136,12 +145,15 @@ const Shop = (props) => {
 
     const addCategory = (category) => {
       axios.post(`/categories`, JSON.stringify(category), {headers: {'Content-Type': 'application/json',}})
-        .then((res) =>{
+        .then((res) => {
           alert(res.data);
           updateCategories();
         })
         .then(() => closeWindow())
-        .catch(err => alert(err));
+        .catch(err => {
+          alert('Error, check console');
+          console.log(err.response.data);
+        });
     };
 
     const editCategory = (id, category) => {
@@ -151,7 +163,10 @@ const Shop = (props) => {
           updateCategories();
         })
         .then(() => closeWindow())
-        .catch(err => alert(err));
+        .catch(err => {
+          alert('Error, check console');
+          console.log(err.response.data);
+        });
     };
 
     const removeCategory = (id) => {
@@ -162,7 +177,10 @@ const Shop = (props) => {
             updateCategories();
           })
           .then(() => filterProducts(lastFilterConfig))
-          .catch(err => alert(err));
+          .catch(err => {
+            alert('Error, check console');
+            console.log(err.response.data);
+          });
       }
     };
 

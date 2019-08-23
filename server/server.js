@@ -5,13 +5,14 @@ import middleware from 'webpack-dev-middleware';
 
 import ProductManager from './ProductsManager.js';
 import db from './database.js';
+import {ProductNotFoundError, CategoryNotFoundError, FieldError} from './Errors.js';
 
 const app = express();
 const productManager = ProductManager();
 const compiler = webpack(webpackConfig);
 
 app.use(middleware(compiler));
-app.use(express.json()); // for parsing application/json
+app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 
 app.get('/products', (req, res) => {
@@ -38,14 +39,14 @@ app.get('/products/:productId', (req, res) => {
       id: productId,
       database: db,
     });
-    if (result) {
-      res.send(result);
-    } else {
-      res.status(404).send('Product not found');
-    }
+    res.send(result);
   } catch (e) {
-    console.log(e);
-    res.status(500).send('Unexpected error');
+    if (e instanceof ProductNotFoundError) {
+      res.status(e.status).send(e.message);
+    } else {
+      console.log(e);
+      res.status(500).send('Unexpected error');
+    }
   }
 });
 
@@ -57,8 +58,12 @@ app.post('/products', (req, res) => {
     });
     res.send('Product has been added');
   } catch (e) {
-    console.log(e);
-    res.status(500).send(e);
+    if (e instanceof FieldError) {
+      res.status(e.status).send(e.message);
+    } else {
+      console.log(e);
+      res.status(500).send('Unexpected error');
+    }
   }
 });
 
@@ -72,8 +77,12 @@ app.put('/products/:productId', (req, res) => {
     });
     res.send('Product has been changed');
   } catch (e) {
-    console.log(e);
-    res.status(500).send();
+    if (e instanceof FieldError || ProductNotFoundError) {
+      res.status(e.status).send(e.message);
+    } else {
+      console.log(e);
+      res.status(500).send('Unexpected error');
+    }
   }
 });
 
@@ -86,8 +95,12 @@ app.delete('/products/:productId', (req, res) => {
     });
     res.send('Product has been removed');
   } catch (e) {
-    console.log(e);
-    res.status(500).send();
+    if (e instanceof ProductNotFoundError) {
+      res.status(e.status).send(e.message);
+    } else {
+      console.log(e);
+      res.status(500).send('Unexpected error');
+    }
   }
 });
 
@@ -99,7 +112,6 @@ app.get('/categories', (req, res) => {
 
 app.get('/categories/:categoryId', (req, res) => {
   try {
-    console.log(req.body);
     const {categoryId} = req.params;
     const answer = productManager.getCategory({
       id: categoryId,
@@ -107,7 +119,12 @@ app.get('/categories/:categoryId', (req, res) => {
     });
     res.send(answer);
   } catch (e) {
-    res.status(500).send();
+    if (e instanceof CategoryNotFoundError) {
+      res.status(404).send(e.message);
+    } else {
+      console.log(e);
+      res.status(500).send('Unexpected error');
+    }
   }
 });
 
@@ -119,8 +136,12 @@ app.post('/categories', (req, res) => {
     });
     res.send('Category has been added');
   } catch (e) {
-    console.log(e);
-    res.status(500).send();
+    if (e instanceof FieldError) {
+      res.status(404).send(e.message);
+    } else {
+      console.log(e);
+      res.status(500).send('Unexpected error');
+    }
   }
 });
 
@@ -135,8 +156,12 @@ app.put('/categories/:categoryId', (req, res) => {
     });
     res.send('Category has been changed');
   } catch (e) {
-    console.log(e);
-    res.status(500).send();
+    if (e instanceof FieldError || CategoryNotFoundError) {
+      res.status(e.status).send(e.message);
+    } else {
+      console.log(e);
+      res.status(500).send('Unexpected error');
+    }
   }
 });
 
@@ -149,8 +174,12 @@ app.delete('/categories/:categoryId', (req, res) => {
     });
     res.send('Category has been removed');
   } catch (e) {
-    console.log(e);
-    res.status(500).send();
+    if (e instanceof CategoryNotFoundError) {
+      res.status(500).send(e.message);
+    } else {
+      console.log(e);
+      res.status(500).send('Unexpected error');
+    }
   }
 });
 
