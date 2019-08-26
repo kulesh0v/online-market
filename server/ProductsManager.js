@@ -1,6 +1,8 @@
 import {ProductNotFoundError, CategoryNotFoundError, FieldError, eCodes, ErrorsList} from './Errors.js';
 
 function ProductsManager() {
+  const PAGE_SIZE = 8;
+
   function _checkCategories(product, {categoryId}) {
     if (categoryId) {
       if (!Array.isArray(categoryId)) {
@@ -174,15 +176,18 @@ function ProductsManager() {
     filterProducts: function ({filterConfig, database}) {
       const products = database.getCollection('products');
       const sortType = _getSortType(filterConfig);
-      return products
+      const page = filterConfig.page || 1;
+      const result = products
         .chain()
         .where((product) => {
           return _checkCategories(product, filterConfig) &&
             _checkPrice(product, filterConfig);
         })
-        .simplesort(sortType.type, sortType.flag)
-        .data()
-        .map((p) => this.toSendObject(p));
+        .simplesort(sortType.type, sortType.flag);
+      return {
+        pageAmount: Math.ceil(result.data().length / PAGE_SIZE),
+        products: result.offset(PAGE_SIZE * (page)).limit(PAGE_SIZE).data().map((p) => this.toSendObject(p))
+      };
     },
 
 

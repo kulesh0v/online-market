@@ -21,7 +21,7 @@ app.get('/products', (req, res) => {
       filterConfig: req.query,
       database: db,
     });
-    if (result.length) {
+    if (result.products.length) {
       res.send(result);
     } else {
       res.send('Products not found');

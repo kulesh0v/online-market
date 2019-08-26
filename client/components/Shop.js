@@ -6,6 +6,7 @@ import axiosCancel from 'axios-cancel';
 import {IntlProvider} from 'react-intl';
 import PropTypes from 'prop-types';
 import queryString from 'query-string';
+import ReactPaginate from 'react-paginate';
 
 import NavigationBar from './NavigationBar.js';
 import ProductList from './Products/ProductsList'
@@ -26,19 +27,25 @@ const Shop = (props) => {
     const [lastFilterConfig, setLastFilterConfig] = useState({});
     const [windowType, setWindowType] = useState('');
     const [locale, setLocale] = useState('en');
+    const [pageCount, setPageCount] = useState(0);
+    const [pageNum, setPageNum] = useState(0);
+
     useEffect(() => {
-      axios.get('/categories').then(res => {
-        setCategories(res.data)
-      });
-      axios.get('/products').then(res => setProducts(res.data));
+      updateCategories();
+      filterProducts(lastFilterConfig, pageNum);
     }, []);
 
-    const filterProducts = (filterConfig) => {
+    const filterProducts = (filterConfig, page) => {
+      console.log('filter');
+      page = page || 0;
       let req = '/products?';
       req += queryString.stringify(filterConfig, {sort: false});
+      req += `&page=${page}`;
       axios.cancelAll();
       axios.get(req).then(res => {
-        setProducts(res.data);
+        setProducts(res.data.products);
+        setPageCount(res.data.pageAmount);
+        setPageNum(page);
         setLastFilterConfig(filterConfig);
       });
     };
@@ -88,11 +95,33 @@ const Shop = (props) => {
 
     const renderProducts = () => {
       if (products && Array.isArray(products)) {
-        return <ProductList
-          products={products}
-          adminMod={adminMod}
-          openWindow={openWindow}
-          removeProduct={removeProduct}/>;
+        return (
+          <div>
+            <ProductList
+              products={products}
+              adminMod={adminMod}
+              openWindow={openWindow}
+              removeProduct={removeProduct}/>
+            <div className="d-flex mt-3 mb-3">
+              <ReactPaginate
+                previousLabel={'previous'}
+                forcePage={pageNum}
+                nextLabel={'next'}
+                breakLabel={'...'}
+                breakClassName={'page-item text-secondary'}
+                pageCount={pageCount}
+                onPageChange={(page) => filterProducts(lastFilterConfig, page.selected)}
+                containerClassName={'pagination m-auto'}
+                pageClassName={'page-item text-dark'}
+                nextClassName={'page-item text-dark'}
+                previousClassName={'page-item text-dark'}
+                pageLinkClassName={'page-link text-dark'}
+                nextLinkClassName={'page-link'}
+                previousLinkClassName={'page-link'}
+              />
+            </div>
+          </div>
+        )
       } else {
         return <h1 className={"m-auto text-black-50"}>{products}</h1>;
       }
