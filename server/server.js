@@ -5,7 +5,7 @@ import middleware from 'webpack-dev-middleware';
 
 import ProductManager from './ProductsManager.js';
 import db from './database.js';
-import {ProductNotFoundError, CategoryNotFoundError, FieldError} from './Errors.js';
+import {ProductNotFoundError, CategoryNotFoundError, ErrorsList} from './Errors.js';
 
 const app = express();
 const productManager = ProductManager();
@@ -58,7 +58,7 @@ app.post('/products', (req, res) => {
     });
     res.send('Product has been added');
   } catch (e) {
-    if (e instanceof FieldError) {
+    if (e instanceof ErrorsList) {
       res.status(e.status).send(e.message);
     } else {
       console.log(e);
@@ -77,7 +77,7 @@ app.put('/products/:productId', (req, res) => {
     });
     res.send('Product has been changed');
   } catch (e) {
-    if (e instanceof FieldError || ProductNotFoundError) {
+    if (e instanceof ErrorsList || ProductNotFoundError) {
       res.status(e.status).send(e.message);
     } else {
       console.log(e);
@@ -136,7 +136,7 @@ app.post('/categories', (req, res) => {
     });
     res.send('Category has been added');
   } catch (e) {
-    if (e instanceof FieldError) {
+    if (e instanceof ErrorsList) {
       res.status(404).send(e.message);
     } else {
       console.log(e);
@@ -156,7 +156,7 @@ app.put('/categories/:categoryId', (req, res) => {
     });
     res.send('Category has been changed');
   } catch (e) {
-    if (e instanceof FieldError || CategoryNotFoundError) {
+    if (e instanceof ErrorsList || CategoryNotFoundError) {
       res.status(e.status).send(e.message);
     } else {
       console.log(e);

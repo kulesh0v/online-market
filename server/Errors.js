@@ -15,25 +15,41 @@ class CategoryNotFoundError extends Error {
 class FieldError extends Error {
   constructor(field, code) {
     super();
-    this.status = 400;
     this.code = code;
     this.field = field;
-    this.message = JSON.stringify({
-      field: this.field,
-      error_code: this.code,
-    });
   }
 }
 
-const eCodes = Object.freeze({
-  IS_REQUIRED: 'IS_REQUIRED',
-  TOO_LONG: 'TOO_LONG',
-  UNIQUE: 'UNIQUE',
-  IS_NOT_STRING: 'IS_NOT_STRING',
-  IS_NOT_NUMBER: 'IS_NOT_NUMBER',
-  IS_NOT_EXIST: 'IS_NOT_EXIST',
-  IS_NOT_INTEGER: 'IS_NOT_INTEGER',
-  NOT_POSITIVE: 'NOT_POSITIVE',
-});
+class ErrorsList extends Error {
+  constructor() {
+    super();
+    this.status = 400;
+    this.errorsList = [];
+  }
 
-export {ProductNotFoundError, CategoryNotFoundError, FieldError, eCodes};
+  get message() {
+    return JSON.stringify(this.errorsList)
+  }
+
+  get size() {
+    return this.errorsList.length;
+  }
+
+  add(error) {
+    this.errorsList.push(error);
+  }
+}
+
+const
+  eCodes = Object.freeze({
+    IS_REQUIRED: 'IS_REQUIRED',
+    TOO_LONG: 'TOO_LONG',
+    UNIQUE: 'UNIQUE',
+    IS_NOT_STRING: 'IS_NOT_STRING',
+    IS_NOT_NUMBER: 'IS_NOT_NUMBER',
+    IS_NOT_EXIST: 'IS_NOT_EXIST',
+    IS_NOT_INTEGER: 'IS_NOT_INTEGER',
+    NOT_POSITIVE: 'NOT_POSITIVE',
+  });
+
+export {ProductNotFoundError, CategoryNotFoundError, FieldError, eCodes, ErrorsList};

@@ -1,4 +1,4 @@
-import {ProductNotFoundError, CategoryNotFoundError, FieldError, eCodes} from './Errors.js';
+import {ProductNotFoundError, CategoryNotFoundError, FieldError, eCodes, ErrorsList} from './Errors.js';
 
 function ProductsManager() {
   function _checkCategories(product, {categoryId}) {
@@ -36,80 +36,83 @@ function ProductsManager() {
   }
 
 
-
-  function _validateProductName(product) {
+  function _validateProductName(product, errors) {
     if (!product.name) {
-      throw new FieldError('name', eCodes.IS_REQUIRED);
+      errors.add(new FieldError('name', eCodes.IS_REQUIRED));
     } else {
       if (typeof product.name !== "string") {
-        throw new FieldError('name', eCodes.IS_NOT_STRING);
+        errors.add(new FieldError('name', eCodes.IS_NOT_STRING));
       } else {
         if (product.name.length > 35) {
-          throw new FieldError('name', eCodes.TOO_LONG);
+          errors.add(new FieldError('name', eCodes.TOO_LONG));
         }
       }
     }
   }
 
-  function _validateProductPrice(product) {
+  function _validateProductPrice(product, errors) {
     if (!product.price) {
-      throw new FieldError('price', eCodes.IS_REQUIRED);
+      errors.add(new FieldError('price', eCodes.IS_REQUIRED));
     } else {
       if (!Number.isFinite(+product.amount)) {
-        throw new FieldError('price', eCodes.IS_NOT_NUMBER);
+        errors.add(new FieldError('price', eCodes.IS_NOT_NUMBER));
       } else {
         if (+product.price <= 0) {
-          throw new FieldError('price', eCodes.NOT_POSITIVE);
+          errors.add(new FieldError('price', eCodes.NOT_POSITIVE));
         }
       }
     }
   }
 
-  function _validateProductAmount(product) {
+  function _validateProductAmount(product, errors) {
     if (!product.amount) {
-      throw new FieldError('amount', eCodes.IS_REQUIRED);
+      errors.add(new FieldError('amount', eCodes.IS_REQUIRED));
     } else {
       if (!Number.isFinite(+product.amount)) {
-        throw new FieldError('amount', eCodes.IS_NOT_NUMBER);
+        errors.add(new FieldError('amount', eCodes.IS_NOT_NUMBER));
       } else {
         if (!Number.isInteger(+product.amount)) {
-          throw new FieldError('amount', eCodes.IS_NOT_INTEGER);
+          errors.add(new FieldError('amount', eCodes.IS_NOT_INTEGER));
         } else {
           if (+product.amount <= 0) {
-            throw new FieldError('amount', eCodes.NOT_POSITIVE);
+            errors.add(new FieldError('amount', eCodes.NOT_POSITIVE));
           }
         }
       }
     }
   }
 
-  function _validateProductCategoryId(product, categories) {
+  function _validateProductCategoryId(product, categories, errors) {
     if (typeof product.categoryId !== 'number') {
-      throw new FieldError('categoryId', eCodes.IS_NOT_NUMBER);
+      errors.add(new FieldError('categoryId', eCodes.IS_NOT_NUMBER));
     } else {
       if (!categories.get(product.categoryId)) {
-        throw new FieldError('categoryId', eCodes.IS_NOT_EXIST);
+        errors.add(new FieldError('categoryId', eCodes.IS_NOT_EXIST))
       }
     }
   }
 
-  function _validateProductUrl(product) {
+  function _validateProductUrl(product, errors) {
     if (!product.url) {
-      throw new FieldError('url', eCodes.IS_REQUIRED);
+      errors.add(new FieldError('url', eCodes.IS_REQUIRED));
     } else {
       if (typeof product.url !== "string") {
-        throw new FieldError('url', eCodes.IS_NOT_STRING);
+        errors.add(new FieldError('url', eCodes.IS_NOT_STRING));
       }
     }
   }
 
   function _validateProduct(product, categories) {
+    const errors = new ErrorsList();
     try {
-      _validateProductName(product);
-      _validateProductPrice(product);
-      _validateProductAmount(product);
-      _validateProductCategoryId(product, categories);
-      _validateProductUrl(product);
+      _validateProductName(product, errors);
+      _validateProductPrice(product, errors);
+      _validateProductAmount(product, errors);
+      _validateProductCategoryId(product, categories, errors);
+      _validateProductUrl(product, errors);
+      if (errors.size) {
+        throw  errors;
+      }
     } catch (e) {
       throw e;
     }
@@ -122,26 +125,30 @@ function ProductsManager() {
   }
 
   function _validateCategory(category, categories) {
+    const errors = new ErrorsList();
     try {
-      _validateCategoryName(category, categories)
+      _validateCategoryName(category, categories, errors);
+      if (errors.size) {
+        throw  errors;
+      }
     } catch (e) {
       throw e;
     }
 
   }
 
-  function _validateCategoryName(category, categories) {
+  function _validateCategoryName(category, categories, errors) {
     if (!category.name) {
-      throw new FieldError('name', eCodes.IS_REQUIRED);
+      errors.add(new FieldError('name', eCodes.IS_REQUIRED));
     } else {
       if (typeof category.name !== "string") {
-        throw new FieldError('name', eCodes.IS_NOT_STRING);
+        errors.add(new FieldError('name', eCodes.IS_NOT_STRING));
       } else {
         if (category.name.length > 35) {
-          throw new FieldError('name', eCodes.TOO_LONG);
+          errors.add(new FieldError('name', eCodes.TOO_LONG));
         } else {
-          if(categories.findOne({name: category.name})){
-            throw new FieldError('name', eCodes.UNIQUE);
+          if (categories.findOne({name: category.name})) {
+            errors.add(new FieldError('name', eCodes.UNIQUE));
           }
         }
       }
@@ -181,8 +188,9 @@ function ProductsManager() {
 
     getProduct: function ({id, database}) {
       try {
-        _validateProductId({id: id, products: database.getCollection('products')});
-        return this.toSendObject(database.getCollection('products').get(id));
+        const products = database.getCollection('products');
+        _validateProductId(id, products);
+        return this.toSendObject(products.get(id));
       }
       catch (e) {
         throw e;
@@ -229,8 +237,9 @@ function ProductsManager() {
 
     getCategory: function ({id, database}) {
       try {
-        _validateCategoryId({id: id, categories: database.getCollection('categories')});
-        return this.toSendObject(database.getCollection('categories').get(id));
+        const categories = database.getCollection('categories');
+        _validateCategoryId(id, categories);
+        return this.toSendObject(categories.get(id));
       } catch (e) {
         throw e;
       }
