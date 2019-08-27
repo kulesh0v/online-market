@@ -8,14 +8,20 @@ import Sort from "./Sort.js"
 
 
 const Filter = (props) => {
-  const [checkedIds, setCheckedIds] = useState([]);
+  const [choosesCategories, setCheckedIds] = useState([]);
   const [minPrice, setMinPrice] = useState(null);
   const [maxPrice, setMaxPrice] = useState(null);
   const [sortType, setSortType] = useState(null);
 
+  const uncheckDeleted = (id) => {
+    if(choosesCategories.includes(id)){
+      choosesCategories.splice(choosesCategories.indexOf(id),1);
+    }
+  };
+
   const filter = () => {
     props.filter({
-      checkedIds: checkedIds,
+      categoryId: choosesCategories,
       minPrice: minPrice,
       maxPrice: maxPrice,
       sortType: sortType,
@@ -27,26 +33,36 @@ const Filter = (props) => {
   }, [minPrice, maxPrice, sortType]);
 
   const chooseCategory = (id) => {
-    if (checkedIds.includes(id)) {
-      checkedIds.splice(checkedIds.indexOf(id), 1);
+    if (choosesCategories.includes(id)) {
+      choosesCategories.splice(choosesCategories.indexOf(id), 1);
     } else {
-      checkedIds.push(id);
+      choosesCategories.push(id);
     }
     setCheckedIds(setCheckedIds);
-    setTimeout(filter(),0);
+    filter();
   };
 
   return (
-    <div className={"col-2 mt-4 bg-light"}>
+    <div>
       <Sort setType={setSortType} type={sortType}/>
       <PriceFilter changeMax={setMaxPrice} changeMin={setMinPrice}/>
       <CategoriesList
-        categories={props.categories} chooseCategory={chooseCategory}/>
+        categories={props.categories}
+        chooseCategory={chooseCategory}
+        adminMod={props.adminMod}
+        openWindow={props.openWindow}
+        removeCategory={props.removeCategory}
+        uncheckDeleted={uncheckDeleted}
+      />
     </div>
   );
 };
 
 Filter.propTypes = {
   categories: PropTypes.array.isRequired,
+  filter: PropTypes.func.isRequired,
+  adminMod: PropTypes.bool.isRequired,
+  openWindow: PropTypes.func.isRequired,
+  removeCategory: PropTypes.func.isRequired,
 };
 export default Filter;

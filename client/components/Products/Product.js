@@ -1,11 +1,14 @@
 import React from 'react'
 import PropTypes from 'prop-types';
 import {useState} from 'react';
+
+import {FormattedMessage} from 'react-intl';
+
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {library} from '@fortawesome/fontawesome-svg-core'
-import {faCheck} from '@fortawesome/free-solid-svg-icons'
+import {faCheck, faEdit, faTrashAlt} from '@fortawesome/free-solid-svg-icons'
 
-library.add(faCheck);
+library.add(faCheck, faEdit, faTrashAlt);
 
 const Product = (props) => {
   const [userWish, setUserWish] = useState(0);
@@ -22,13 +25,25 @@ const Product = (props) => {
     }
   };
 
+
   return (
     <div className="card mt-2">
+      {props.adminMod &&
+      <div className={"text-right"}>
+        <button type={"button"} className={"clear-button mr-2"} onClick={() => props.openWindow(props.product.id, 'product')}>
+          <FontAwesomeIcon icon={"edit"} color={"grey"}/>
+        </button>
+        <button type={"button"} className={"clear-button mr-2"} onClick={() => props.removeProduct(props.product.id)}>
+          <FontAwesomeIcon icon={"trash-alt"} color={"grey"}/>
+        </button>
+      </div>
+      }
       <div className="card-body">
         <img className="card-img-top" alt="product" src={props.product.url}/>
         <div className="cards-title detail-title">{props.product.name}</div>
         <div className="card-text text-danger">${props.product.price}</div>
-        <div className="card-text">In stock: {props.product.amount}</div>
+        <div className="card-text">
+          <FormattedMessage id={'inStock'}/>: {props.product.amount}</div>
         <form className="d-flex justify-content-between">
             <span className="input-group">
               <button type="button" className="btn btn-default bg-light" onClick={reduceAmount}>-</button>
@@ -38,7 +53,8 @@ const Product = (props) => {
               <button type="button" className="btn btn-default bg-light" onClick={increaseAmount}>+</button>
             </span>
           <button type="button" className="btn btn-default bg-light" title="Add to the basket">
-            {(userWish && <FontAwesomeIcon icon="check" color="green"/>) || <FontAwesomeIcon icon="check" color="grey"/> }
+            {(userWish && <FontAwesomeIcon icon="check" color="green"/>) ||
+            <FontAwesomeIcon icon="check" color="grey"/>}
           </button>
         </form>
       </div>
@@ -48,5 +64,8 @@ const Product = (props) => {
 
 Product.propTypes = {
   product: PropTypes.object.isRequired,
+  adminMod: PropTypes.bool.isRequired,
+  openWindow: PropTypes.func.isRequired,
+  removeProduct: PropTypes.func.isRequired,
 };
 export default Product;
