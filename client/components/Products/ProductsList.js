@@ -8,11 +8,15 @@ const ProductList = (props) => {
       <div className="panel-body">
         <div className="row">
           {props.products
-            .map(product =>
-              (<div key={product.id} className="col-xl-3 col-lg-4 col-md-6 col-sm-12">
-                  <Product product={product} adminMod={props.adminMod} openWindow={props.openWindow} removeProduct={props.removeProduct}/>
-                </div>
-              ))}
+            .map(product => (
+              <div key={product.id} className="col-xl-3 col-lg-4 col-md-6 col-sm-12">
+                <Product
+                  product={product}
+                  adminMod={props.adminMod}
+                  removeProduct={props.removeProduct}
+                />
+              </div>
+            ))}
         </div>
       </div>
     </div>
@@ -21,7 +25,6 @@ const ProductList = (props) => {
 Product.propTypes = {
   products: PropTypes.array.isRequired,
   adminMod: PropTypes.bool.isRequired,
-  openWindow: PropTypes.func.isRequired,
   removeProduct: PropTypes.func.isRequired,
 };
 

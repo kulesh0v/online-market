@@ -10,13 +10,11 @@ const Menu = (props) => {
         categories={props.categories}
         filter={props.filter}
         adminMod={props.adminMod}
-        openWindow={props.openWindow}
         removeCategory={props.removeCategory}
       />
       <AdminPanel
         setAdminMod={props.setAdminMod}
         adminMod={props.adminMod}
-        openWindow={props.openWindow}
         categories={props.categories}
       />
     </div>
@@ -28,7 +26,6 @@ Menu.propTypes = {
   filter: PropTypes.func.isRequired,
   setAdminMod: PropTypes.func.isRequired,
   adminMod: PropTypes.bool.isRequired,
-  openWindow: PropTypes.func.isRequired,
   removeCategory: PropTypes.func.isRequired,
 };
 

@@ -2,6 +2,7 @@ import React from 'react';
 import {useState} from 'react';
 import PropTypes from "prop-types";
 import {FormattedMessage} from 'react-intl';
+import {Link} from 'react-router-dom';
 
 const AdminPanel = (props) => {
   const [isHidden, setIsHidden] = useState(true);
@@ -25,19 +26,21 @@ const AdminPanel = (props) => {
           <button type="button" className={"btn-secondary border-0"} onClick={() => props.setAdminMod(!props.adminMod)}>
             {
               props.adminMod ?
-                <FormattedMessage id={'off'}/> :
-                <FormattedMessage id='on'/>
+                <FormattedMessage id={'on'}/> :
+                <FormattedMessage id='off'/>
             }
           </button>
         </div>
-        <button type="button" className={"btn btn-secondary container-fluid"}
-                onClick={() => props.openWindow(null, 'product')}>
-          <FormattedMessage id={'addProduct'}/>
-        </button>
-        <button type="button" className={"btn btn-secondary container-fluid mt-2"}
-                onClick={() => props.openWindow(null, 'category')}>
-          <FormattedMessage id={'addCategory'}/>
-        </button>
+        <Link to={'/addProduct'}>
+          <button type="button" className={"btn btn-secondary container-fluid"}>
+            <FormattedMessage id={'addProduct'}/>
+          </button>
+        </Link>
+        <Link to={'/addCategory'}>
+          <button type="button" className={"btn btn-secondary container-fluid mt-2"}>
+            <FormattedMessage id={'addCategory'}/>
+          </button>
+        </Link>
       </div>
       }
     </div>
@@ -47,7 +50,6 @@ const AdminPanel = (props) => {
 AdminPanel.propTypes = {
   setAdminMod: PropTypes.func.isRequired,
   adminMod: PropTypes.bool.isRequired,
-  openWindow: PropTypes.func.isRequired,
   categories: PropTypes.array.isRequired,
 };
 

@@ -50,7 +50,6 @@ const Filter = (props) => {
         categories={props.categories}
         chooseCategory={chooseCategory}
         adminMod={props.adminMod}
-        openWindow={props.openWindow}
         removeCategory={props.removeCategory}
         uncheckDeleted={uncheckDeleted}
       />
@@ -62,7 +61,6 @@ Filter.propTypes = {
   categories: PropTypes.array.isRequired,
   filter: PropTypes.func.isRequired,
   adminMod: PropTypes.bool.isRequired,
-  openWindow: PropTypes.func.isRequired,
   removeCategory: PropTypes.func.isRequired,
 };
 export default Filter;
