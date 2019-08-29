@@ -265,7 +265,7 @@ function ProductsManager() {
       try {
         const categories = database.getCollection('categories');
         _validateCategoryId(id, categories);
-        _validateCategory(category, database);
+        _validateCategory(category, categories);
         let tmp = categories.get(id);
         tmp = {...category, $loki: tmp.$loki, meta: tmp.meta};
         categories.update(tmp);

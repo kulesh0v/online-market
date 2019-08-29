@@ -2,185 +2,45 @@ import express from 'express';
 import webpackConfig from '../webpack.config.js';
 import webpack from 'webpack';
 import middleware from 'webpack-dev-middleware';
+import path from 'path';
+import productsApiRouter from './routes/productApi.js';
+import categoriesApiRouter from './routes/categoryApi.js';
 
-import ProductManager from './ProductsManager.js';
-import db from './database.js';
-import {ProductNotFoundError, CategoryNotFoundError, ErrorsList} from './Errors.js';
 
 const app = express();
-const productManager = ProductManager();
 const compiler = webpack(webpackConfig);
 
-app.use(middleware(compiler));
+app.use(middleware(compiler, {
+  noInfo: true,
+  publicPath: webpackConfig.output.publicPath
+}));
 app.use(express.json());
-app.use(express.urlencoded({extended: true}));
 
-app.get('/products', (req, res) => {
-  try {
-    const result = productManager.filterProducts({
-      filterConfig: req.query,
-      database: db,
-    });
-    if (result.products.length) {
-      res.send(result);
-    } else {
-      res.send('Products not found');
+app.use('/products', productsApiRouter);
+app.use('/categories', categoriesApiRouter);
+
+app.get('*/bundle.js', (req, res) => {
+  const filename = path.join(compiler.outputPath, 'bundle.js');
+  compiler.outputFileSystem.readFile(filename, (err, result) => {
+    if (err) {
+      console.log(err);
+      res.status(500).send(err);
     }
-  } catch (e) {
-    console.log(e);
-    res.status(500).send('Unexpected error');
-  }
-});
-
-app.get('/products/:productId', (req, res) => {
-  try {
-    const {productId} = req.params;
-    const result = productManager.getProduct({
-      id: productId,
-      database: db,
-    });
+    res.type('application/javascript');
     res.send(result);
-  } catch (e) {
-    if (e instanceof ProductNotFoundError) {
-      res.status(e.status).send(e.message);
-    } else {
-      console.log(e);
-      res.status(500).send('Unexpected error');
-    }
-  }
+  });
 });
 
-app.post('/products', (req, res) => {
-  try {
-    productManager.addProduct({
-      product: req.body,
-      database: db,
-    });
-    res.send('Product has been added');
-  } catch (e) {
-    if (e instanceof ErrorsList) {
-      res.status(e.status).send(e.message);
-    } else {
-      console.log(e);
-      res.status(500).send('Unexpected error');
+app.get('*', (req, res) => {
+  const filename = path.join(compiler.outputPath, 'index.html');
+  compiler.outputFileSystem.readFile(filename, (err, result) => {
+    if (err) {
+      console.log(err);
+      res.status(500).send(err);
     }
-  }
-});
-
-app.put('/products/:productId', (req, res) => {
-  try {
-    const {productId} = req.params;
-    productManager.replaceProduct({
-      id: productId,
-      product: req.body,
-      database: db,
-    });
-    res.send('Product has been changed');
-  } catch (e) {
-    if (e instanceof ErrorsList || ProductNotFoundError) {
-      res.status(e.status).send(e.message);
-    } else {
-      console.log(e);
-      res.status(500).send('Unexpected error');
-    }
-  }
-});
-
-app.delete('/products/:productId', (req, res) => {
-  try {
-    const {productId} = req.params;
-    productManager.removeProduct({
-      id: productId,
-      database: db,
-    });
-    res.send('Product has been removed');
-  } catch (e) {
-    if (e instanceof ProductNotFoundError) {
-      res.status(e.status).send(e.message);
-    } else {
-      console.log(e);
-      res.status(500).send('Unexpected error');
-    }
-  }
-});
-
-app.get('/categories', (req, res) => {
-  res.send(productManager.getCategories({
-    database: db,
-  }));
-});
-
-app.get('/categories/:categoryId', (req, res) => {
-  try {
-    const {categoryId} = req.params;
-    const answer = productManager.getCategory({
-      id: categoryId,
-      database: db,
-    });
-    res.send(answer);
-  } catch (e) {
-    if (e instanceof CategoryNotFoundError) {
-      res.status(404).send(e.message);
-    } else {
-      console.log(e);
-      res.status(500).send('Unexpected error');
-    }
-  }
-});
-
-app.post('/categories', (req, res) => {
-  try {
-    productManager.addCategory({
-      category: req.body,
-      database: db,
-    });
-    res.send('Category has been added');
-  } catch (e) {
-    if (e instanceof ErrorsList) {
-      res.status(404).send(e.message);
-    } else {
-      console.log(e);
-      res.status(500).send('Unexpected error');
-    }
-  }
-});
-
-
-app.put('/categories/:categoryId', (req, res) => {
-  try {
-    const {categoryId} = req.params;
-    productManager.replaceCategory({
-      id: categoryId,
-      category: req.body,
-      database: db,
-    });
-    res.send('Category has been changed');
-  } catch (e) {
-    if (e instanceof ErrorsList || CategoryNotFoundError) {
-      res.status(e.status).send(e.message);
-    } else {
-      console.log(e);
-      res.status(500).send('Unexpected error');
-    }
-  }
-});
-
-app.delete('/categories/:categoryId', (req, res) => {
-  try {
-    const {categoryId} = req.params;
-    productManager.removeCategory({
-      id: categoryId,
-      database: db,
-    });
-    res.send('Category has been removed');
-  } catch (e) {
-    if (e instanceof CategoryNotFoundError) {
-      res.status(500).send(e.message);
-    } else {
-      console.log(e);
-      res.status(500).send('Unexpected error');
-    }
-  }
+    res.type('html');
+    res.send(result);
+  });
 });
 
 const port = process.env.PORT || 3000;

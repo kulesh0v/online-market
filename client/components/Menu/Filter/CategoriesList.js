@@ -15,7 +15,8 @@ const CategoriesList = (props) => {
         .map(category =>
           <div key={category.id} className="form-check">
             <input className="form-check-input" type="checkbox" value="option1"
-                   onClick={() => props.chooseCategory(category.id)}/>
+                   defaultChecked={(props.choosesCategories.includes((category.id)))}
+                   onClick={() => props.chooseCategory((category.id))}/>
             <label className="form-check-label" htmlFor="inlineCheckbox1">
               {category.name}
               {
@@ -47,5 +48,6 @@ CategoriesList.propTypes = {
   removeCategory: PropTypes.func.isRequired,
   adminMod: PropTypes.bool.isRequired,
   uncheckDeleted: PropTypes.func.isRequired,
+  choosesCategories: PropTypes.arrayOf(PropTypes.number).isRequired,
 };
 export default CategoriesList;

@@ -11,6 +11,7 @@ const Menu = (props) => {
         filter={props.filter}
         adminMod={props.adminMod}
         removeCategory={props.removeCategory}
+        history={props.history}
       />
       <AdminPanel
         setAdminMod={props.setAdminMod}
@@ -23,7 +24,6 @@ const Menu = (props) => {
 
 Menu.propTypes = {
   categories: PropTypes.array.isRequired,
-  filter: PropTypes.func.isRequired,
   setAdminMod: PropTypes.func.isRequired,
   adminMod: PropTypes.bool.isRequired,
   removeCategory: PropTypes.func.isRequired,

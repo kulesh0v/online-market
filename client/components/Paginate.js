@@ -1,10 +1,21 @@
 import React from 'react';
+import {useState} from 'react'
+import {Redirect} from 'react-router-dom';
 import ReactPaginate from 'react-paginate';
+import queryString from 'query-string';
 import PropTypes from "prop-types";
 
 const Paginate = (props) => {
+  const [redirect, setRedirect] = useState(false);
+
+  const onPageChange = ({selected}) => {
+    props.lastFilterConfig.page = ++selected;
+    setRedirect(true);
+  };
+
   return (
     <div className="d-flex mt-3 mb-3">
+      {redirect && <Redirect to={`/?${queryString.stringify(props.lastFilterConfig)}`}/>}
       <ReactPaginate
         previousLabel={'previous'}
         forcePage={props.pageNum}
@@ -12,7 +23,7 @@ const Paginate = (props) => {
         breakLabel={'...'}
         breakClassName={'page-item text-secondary'}
         pageCount={props.pageCount}
-        onPageChange={(page) => props.filterProducts(props.lastFilterConfig, page.selected)}
+        onPageChange={onPageChange}
         containerClassName={'pagination m-auto'}
         pageClassName={'page-item text-dark'}
         nextClassName={'page-item text-dark'}

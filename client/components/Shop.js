@@ -1,8 +1,8 @@
 import React from 'react';
 import {useState, useEffect} from 'react';
 
-import {BrowserRouter, Route, Link} from 'react-router-dom';
-import createBrowserHistory from 'history/createBrowserHistory';
+import {Router, Route, Redirect} from 'react-router-dom';
+import {createBrowserHistory} from "history";
 
 import axios from 'axios';
 import axiosCancel from 'axios-cancel';
@@ -27,38 +27,44 @@ const Shop = (props) => {
     const [products, setProducts] = useState([]);
     const [categories, setCategories] = useState([]);
     const [adminMod, setAdminMod] = useState(false);
-    const [lastFilterConfig, setLastFilterConfig] = useState({});
+    const [lastFilterConfig, setLastFilterConfig] = useState(undefined);
     const [locale, setLocale] = useState('en');
     const [pageCount, setPageCount] = useState(0);
     const [pageNum, setPageNum] = useState(0);
+    const [pageIsActual, setPageIsActual] = useState(true);
 
     useEffect(() => {
       updateCategories();
-      filterProducts(lastFilterConfig, pageNum);
     }, []);
 
-    const filterProducts = (filterConfig, page) => {
-      console.log('filter');
-      page = page || 0;
-      let req = '/products?';
-      req += queryString.stringify(filterConfig, {sort: false});
-      req += `&page=${page}`;
-      axios.cancelAll();
-      axios.get(req).then(res => {
-        setProducts(res.data.products);
-        setPageCount(res.data.pageAmount);
-        setPageNum(page);
+    useEffect(() => {
+      setPageIsActual(true);
+    },);
+
+    const getProducts = (filterConfig, page) => {
+      if (!lastFilterConfig || queryString.stringify(filterConfig) !== queryString.stringify(lastFilterConfig)) {
         setLastFilterConfig(filterConfig);
-      });
+        page = page || 0;
+        let req = '/products?';
+        req += queryString.stringify(filterConfig, {sort: false});
+        req += `&page=${page}`;
+        axios.cancelAll();
+        axios.get(req).then(res => {
+          setPageNum(page);
+          setPageCount(res.data.pageAmount);
+          setProducts(res.data.products);
+        });
+      }
     };
 
 
     const closeWindow = () => {
+      setPageIsActual(false);
       history.goBack();
     };
 
     const renderProducts = () => {
-      if (products && Array.isArray(products)) {
+      if (Array.isArray(products) && products.length) {
         return (
           <div className="container-fluid">
 
@@ -68,7 +74,7 @@ const Shop = (props) => {
               removeProduct={removeProduct}/>
 
             <Paginate
-              filterProducts={filterProducts}
+              filterProducts={getProducts}
               pageNum={pageNum}
               pageCount={pageCount}
               lastFilterConfig={lastFilterConfig}
@@ -77,7 +83,7 @@ const Shop = (props) => {
           </div>
         )
       } else {
-        return <h1 className={"m-auto text-black-50"}>{products}</h1>;
+        return <h1 className={"m-auto text-black-50"}>Products not found</h1>;
       }
     };
 
@@ -85,7 +91,6 @@ const Shop = (props) => {
       axios.post('/products', JSON.stringify(product), {headers: {'Content-Type': 'application/json',}})
         .then((res) => {
           alert(res.data);
-          filterProducts(lastFilterConfig);
           closeWindow();
         })
         .catch(err => {
@@ -99,7 +104,7 @@ const Shop = (props) => {
         .then((res) => {
           alert(res.data);
           closeWindow();
-          filterProducts(lastFilterConfig);
+          getProducts(lastFilterConfig);
         })
         .catch(err => {
           alert('Error, check console');
@@ -112,7 +117,7 @@ const Shop = (props) => {
         axios.delete(`/products/${id}`)
           .then((res) => {
             alert(res.data);
-            filterProducts(lastFilterConfig);
+            setPageIsActual(false);
           })
           .catch(err => {
             alert('Error, check console');
@@ -159,7 +164,7 @@ const Shop = (props) => {
             alert(res.data);
             updateCategories();
           })
-          .then(() => filterProducts(lastFilterConfig))
+          .then(() => setPageIsActual(false))
           .catch(err => {
             alert('Error, check console');
             console.log(err.response.data);
@@ -168,67 +173,82 @@ const Shop = (props) => {
     };
 
     return (
-      <BrowserRouter history={history}>
+      <Router history={history}>
         <IntlProvider locale={locale} messages={props.messages[locale]}>
           <NavigationBar setLocale={setLocale}/>
           <div className={"d-inline-flex col-12"}>
 
-            <Menu categories={categories}
-                  filter={filterProducts}
-                  setAdminMod={setAdminMod}
-                  adminMod={adminMod}
-                  removeCategory={removeCategory}
+            {!pageIsActual && <Redirect to={`/${location.search}`}/>}
+
+            <Menu
+              categories={categories}
+              setAdminMod={setAdminMod}
+              adminMod={adminMod}
+              removeCategory={removeCategory}
             />
 
-            <Route exact path={'/'} component={renderProducts}/>
+            < Route
+              exact path={'/'}
+              component={({location}) => {
+                const params = queryString.parse(location.search);
+                const page = --params.page;
+                delete params.page;
+                getProducts(params, page);
+                return renderProducts();
+              }}/>
 
-            <Route exact path={'/addProduct'} component={() =>
-              <ProductWindow
-                addProduct={addProduct}
-                categories={categories}
-                closeWindow={closeWindow}
-                editProduct={editProduct}
-              />
-            }/>
+            <Route
+              exact path={'/addProduct'}
+              component={() =>
+                <ProductWindow
+                  addProduct={addProduct}
+                  categories={categories}
+                  closeWindow={closeWindow}
+                  editProduct={editProduct}
+                />
+              }/>
 
-            <Route exact path={'/addCategory'} component={() =>
-              <CategoryWindow
-                closeWindow={closeWindow}
-                addCategory={addCategory}
-                editCategory={editCategory}
-              />
-            }/>
+            <Route
+              exact path={'/addCategory'}
+              component={() =>
+                <CategoryWindow
+                  closeWindow={closeWindow}
+                  addCategory={addCategory}
+                  editCategory={editCategory}
+                />
+              }/>
 
-            <Route exact path={'/editProduct/:productId'}
-                   component={({match}) => {
-                     const {productId} = match.params;
-                     const windowObject = products.find(p => p.id === Number(productId));
-                     return <ProductWindow
-                       addProduct={addProduct}
-                       categories={categories}
-                       closeWindow={closeWindow}
-                       editProduct={editProduct}
-                       object={windowObject}
-                     />
-                   }
-                   }/>
+            <Route
+              exact path={'/editProduct/:productId'}
+              component={({match}) => {
+                const {productId} = match.params;
+                return <ProductWindow
+                  addProduct={addProduct}
+                  categories={categories}
+                  closeWindow={closeWindow}
+                  editProduct={editProduct}
+                  productId={productId}
+                />
+              }
+              }/>
 
-            <Route exact path={'/editCategory/:categoryId'}
-                   component={({match}) => {
-                     const {categoryId} = match.params;
-                     const windowObject = categories.find(c => c.id === Number(categoryId));
-                     return <CategoryWindow
-                       closeWindow={closeWindow}
-                       addCategory={addCategory}
-                       editCategory={editCategory}
-                       object={windowObject}
-                     />
-                   }
-                   }/>
+            <Route
+              exact path={'/editCategory/:categoryId'}
+              component={({match}) => {
+                const {categoryId} = match.params;
+                const windowObject = categories.find(c => c.id === Number(categoryId));
+                return <CategoryWindow
+                  closeWindow={closeWindow}
+                  addCategory={addCategory}
+                  editCategory={editCategory}
+                  object={windowObject}
+                />
+              }
+              }/>
 
           </div>
         </IntlProvider>
-      </BrowserRouter>
+      </Router>
     );
   }
 ;

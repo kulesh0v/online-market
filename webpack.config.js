@@ -1,13 +1,25 @@
-const HtmlWebPackPlugin = require("html-webpack-plugin");
-const htmlPlugin = new HtmlWebPackPlugin({
-  template: "./client/index.html",
-  filename: "./index.html"
-});
+const path = require('path');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
+
+
+const plugins = [
+  new CopyWebpackPlugin([
+    path.resolve(__dirname, './client/index.html')
+  ]),
+];
 
 module.exports = {
   mode: "development",
   entry: "./client/index.js",
-  plugins: [htmlPlugin],
+  plugins: plugins,
+  output: {
+    filename: 'bundle.js',
+    path: path.resolve(__dirname, './build'),
+    publicPath: '/'
+  },
+  devServer: {
+    contentBase: path.resolve(__dirname, './build')
+  },
   module: {
     rules: [
       {
@@ -19,7 +31,7 @@ module.exports = {
       },
       {
         test: /\.css$/i,
-        loader: ["style-loader","css-loader"]
+        loader: ["style-loader", "css-loader"]
       },
     ]
   }
