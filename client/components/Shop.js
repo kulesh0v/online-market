@@ -12,10 +12,15 @@ import queryString from 'query-string';
 
 import NavigationBar from './NavigationBar.js';
 import ProductList from './Products/ProductsList'
-import Menu from './Menu/Menu.js';
+import Sidebar from './Menu/Sidebar.js';
 import ProductWindow from './Windows/ProductWindow.js';
 import CategoryWindow from './Windows/CategoryWindow.js';
 import Paginate from './Paginate.js';
+
+import {Layout} from 'antd'
+
+const {Content, Footer} = Layout;
+
 
 const history = createBrowserHistory();
 
@@ -29,7 +34,7 @@ const Shop = (props) => {
     const [adminMod, setAdminMod] = useState(false);
     const [lastFilterConfig, setLastFilterConfig] = useState(undefined);
     const [locale, setLocale] = useState('en');
-    const [pageCount, setPageCount] = useState(0);
+    const [productsAmount, setProductsAmount] = useState(0);
     const [pageNum, setPageNum] = useState(0);
     const [pageIsActual, setPageIsActual] = useState(true);
 
@@ -52,7 +57,7 @@ const Shop = (props) => {
         axios.get(req)
           .then(res => {
             setPageNum(page);
-            setPageCount(res.data.pageAmount);
+            setProductsAmount(res.data.productsAmount);
             setProducts(res.data.products);
           })
           .catch(err => {
@@ -71,21 +76,10 @@ const Shop = (props) => {
     const renderProducts = () => {
       if (Array.isArray(products) && products.length) {
         return (
-          <div className="container-fluid">
-
-            <ProductList
-              products={products}
-              adminMod={adminMod}
-              removeProduct={removeProduct}/>
-
-            <Paginate
-              filterProducts={getProducts}
-              pageNum={pageNum}
-              pageCount={pageCount}
-              lastFilterConfig={lastFilterConfig}
-            />
-
-          </div>
+          <ProductList
+            products={products}
+            adminMod={adminMod}
+            removeProduct={removeProduct}/>
         )
       } else {
         return <h1 className={"m-auto text-black-50"}>Products not found</h1>;
@@ -180,76 +174,99 @@ const Shop = (props) => {
     return (
       <Router history={history}>
         <IntlProvider locale={locale} messages={props.messages[locale]}>
-          <NavigationBar setLocale={setLocale}/>
-          <div className={"d-inline-flex col-12"}>
+          {!pageIsActual && <Redirect to={`/${location.search}`}/>}
 
-            {!pageIsActual && <Redirect to={`/${location.search}`}/>}
+          <Layout>
 
-            <Menu
-              categories={categories}
-              setAdminMod={setAdminMod}
-              adminMod={adminMod}
-              removeCategory={removeCategory}
-            />
+            <Layout>
+              <NavigationBar setLocale={setLocale}/>
+            </Layout>
 
-            < Route
+            <Layout>
+
+              <Sidebar
+                categories={categories}
+                setAdminMod={setAdminMod}
+                adminMod={adminMod}
+                removeCategory={removeCategory}
+              />
+
+              <Content>
+                < Route
+                  exact path={'/'}
+                  component={({location}) => {
+                    const params = queryString.parse(location.search);
+                    const page = --params.page;
+                    delete params.page;
+                    getProducts(params, page);
+                    return renderProducts();
+                  }}/>
+
+                <Route
+                  exact path={'/addProduct'}
+                  component={() =>
+                    <ProductWindow
+                      addProduct={addProduct}
+                      closeWindow={closeWindow}
+                      editProduct={editProduct}
+                    />
+                  }/>
+
+                <Route
+                  exact path={'/addCategory'}
+                  component={() =>
+                    <CategoryWindow
+                      closeWindow={closeWindow}
+                      addCategory={addCategory}
+                      editCategory={editCategory}
+                    />
+                  }/>
+
+                <Route
+                  exact path={'/editProduct/:productId'}
+                  component={({match}) => {
+                    const {productId} = match.params;
+                    return <ProductWindow
+                      addProduct={addProduct}
+                      closeWindow={closeWindow}
+                      editProduct={editProduct}
+                      productId={productId}
+                    />
+                  }
+                  }/>
+
+                <Route
+                  exact path={'/editCategory/:categoryId'}
+                  component={({match}) => {
+                    const {categoryId} = match.params;
+                    const windowObject = categories.find(c => c.id === Number(categoryId));
+                    return <CategoryWindow
+                      closeWindow={closeWindow}
+                      addCategory={addCategory}
+                      editCategory={editCategory}
+                      object={windowObject}
+                    />
+                  }
+                  }/>
+
+              </Content>
+            </Layout>
+
+            <Route
               exact path={'/'}
-              component={({location}) => {
-                const params = queryString.parse(location.search);
-                const page = --params.page;
-                delete params.page;
-                getProducts(params, page);
-                return renderProducts();
-              }}/>
-
-            <Route
-              exact path={'/addProduct'}
               component={() =>
-                <ProductWindow
-                  addProduct={addProduct}
-                  closeWindow={closeWindow}
-                  editProduct={editProduct}
-                />
-              }/>
-
-            <Route
-              exact path={'/addCategory'}
-              component={() =>
-                <CategoryWindow
-                  closeWindow={closeWindow}
-                  addCategory={addCategory}
-                  editCategory={editCategory}
-                />
-              }/>
-
-            <Route
-              exact path={'/editProduct/:productId'}
-              component={({match}) => {
-                const {productId} = match.params;
-                return <ProductWindow
-                  addProduct={addProduct}
-                  closeWindow={closeWindow}
-                  editProduct={editProduct}
-                  productId={productId}
-                />
+                <Layout>
+                  <Footer>
+                    <Paginate
+                      pageNum={pageNum}
+                      productsAmount={productsAmount}
+                      lastFilterConfig={lastFilterConfig}
+                    />
+                  </Footer>
+                </Layout>
               }
-              }/>
-
-            <Route
-              exact path={'/editCategory/:categoryId'}
-              component={({match}) => {
-                const {categoryId} = match.params;
-                const windowObject = categories.find(c => c.id === Number(categoryId));
-                return <CategoryWindow
-                  closeWindow={closeWindow}
-                  addCategory={addCategory}
-                  editCategory={editCategory}
-                  object={windowObject}
-                />
-              }
-              }/>
-
-          </div>
+            />
+          </Layout>
         </IntlProvider>
       </Router>
     );

@@ -1,13 +1,25 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+import {InputNumber} from 'antd';
+
 
 const PriceFilter = (props) => {
   return (
-    <form className="d-flex justify-content-between pt-2">
-      <input type={"number"} placeholder={"Min $"} className={"col-5"} value={props.minPrice}
-             onChange={(e) => props.changeMin(e.target.value)}/>
-      <input type={"number"} placeholder={"Max $"} className={"col-5"} value={props.maxPrice}
-             onChange={(e) => props.changeMax(e.target.value)}/>
-    </form>
+    <div style={{display: 'flex', marginTop: 12}}>
+      <div style={{margin: 'auto'}}>
+        <InputNumber style={{marginRight: 2}} onChange={props.changeMin}
+                     value={props.minPrice || props.minPrice}/>
+        <InputNumber style={{marginLeft: 2}} onChange={props.changeMax} value={props.maxPrice || props.maxPrice}/>
+      </div>
+    </div>
   )
 };
+
+PriceFilter.propTypes = {
+  changeMax: PropTypes.func.isRequired,
+  changeMin: PropTypes.func.isRequired,
+  maxPrice: PropTypes.any,
+  minPrice: PropTypes.any,
+};
+
 export default PriceFilter;

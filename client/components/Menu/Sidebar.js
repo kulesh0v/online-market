@@ -1,11 +1,20 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import {useState} from 'react';
 import Filter from './Filter/Filter.js';
 import AdminPanel from './AdminPanel.js';
+import {Layout} from 'antd'
 
-const Menu = (props) => {
+const {Sider} = Layout;
+const Sidebar = (props) => {
+  const [collapsed, setCollapsed] = useState(false);
+
+  const onCollapse = (collapsed) => {
+    setCollapsed(collapsed);
+  };
+
   return (
-    <div className={"col-xl-2 col-lg-3 mt-4 bg-light"}>
+    <Sider collapsible collapsed={collapsed} width={240} collapsedWidth="0" onCollapse={onCollapse} theme={'light'}>
       <Filter
         categories={props.categories}
         filter={props.filter}
@@ -18,15 +27,15 @@ const Menu = (props) => {
         adminMod={props.adminMod}
         categories={props.categories}
       />
-    </div>
+    </Sider>
   )
 };
 
-Menu.propTypes = {
+Sidebar.propTypes = {
   categories: PropTypes.array.isRequired,
   setAdminMod: PropTypes.func.isRequired,
   adminMod: PropTypes.bool.isRequired,
   removeCategory: PropTypes.func.isRequired,
 };
 
-export default Menu;
+export default Sidebar;

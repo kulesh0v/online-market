@@ -4,7 +4,7 @@ export default {
     addCategory: 'Add category',
     hideAdminPanel: 'Hide admin panel',
     showAdminPanel: 'Show admin panel',
-    adminMod: 'Admin mod',
+    adminMod: 'Admin mode',
     on: 'On',
     off: 'Off',
     price: 'Price',

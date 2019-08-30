@@ -1,44 +1,37 @@
 import React from 'react';
-import {useState} from 'react'
+import {useState, useEffect} from 'react'
 import {Redirect} from 'react-router-dom';
-import ReactPaginate from 'react-paginate';
 import queryString from 'query-string';
 import PropTypes from "prop-types";
+import {Pagination} from 'antd';
 
 const Paginate = (props) => {
   const [redirect, setRedirect] = useState(false);
 
-  const onPageChange = ({selected}) => {
-    props.lastFilterConfig.page = ++selected;
+  useEffect(() => {
+    setRedirect(false);
+  });
+
+  const onPageChange = (selected) => {
+    props.lastFilterConfig.page = selected;
     setRedirect(true);
   };
 
   return (
-    <div className="d-flex mt-3 mb-3">
+    <div>
       {redirect && <Redirect to={`/?${queryString.stringify(props.lastFilterConfig)}`}/>}
-      <ReactPaginate
-        previousLabel={'previous'}
-        forcePage={props.pageNum}
-        nextLabel={'next'}
-        breakLabel={'...'}
-        breakClassName={'page-item text-secondary'}
-        pageCount={props.pageCount}
-        onPageChange={onPageChange}
-        containerClassName={'pagination m-auto'}
-        pageClassName={'page-item text-dark'}
-        nextClassName={'page-item text-dark'}
-        previousClassName={'page-item text-dark'}
-        pageLinkClassName={'page-link text-dark'}
-        nextLinkClassName={'page-link'}
-        previousLinkClassName={'page-link'}
+      <Pagination
+        onChange={onPageChange}
+        total={props.productsAmount}
+        defaultCurrent={props.pageNum + 1}
+        pageSize={8}
       />
     </div>);
 };
 
 Paginate.propTypes = {
-  filterProducts: PropTypes.func.isRequired,
   pageNum: PropTypes.number.isRequired,
-  pageCount: PropTypes.number.isRequired,
+  productsAmount: PropTypes.number.isRequired,
   lastFilterConfig: PropTypes.object.isRequired,
 };
 

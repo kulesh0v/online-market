@@ -1,18 +1,36 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {Link} from 'react-router-dom';
+import {Button, Menu, Layout} from 'antd'
+import {Typography} from 'antd';
+
+const {Text} = Typography;
+const {Header} = Layout;
 
 const NavigationBar = (props) => {
   return (
-    <nav className="navbar navbar-light bg-light d-flex-content-between">
-      <Link to={'/'}>
-        <span className="navbar-brand">Online Market</span>
-      </Link>
-      <span>
-       <button type="button" className="btn" onClick={() => props.setLocale('ru')}>RU</button>|
-       <button type="button" className="btn" onClick={() => props.setLocale('en')}>ENG</button>
-      </span>
-    </nav>
+    <Header style={{background: '#fff', padding: 0}}>
+      <div className={'logo'}/>
+      <Menu mode={'horizontal'}>
+
+        <Menu.Item key={"1"}>
+          <Link to={'/'}>
+            <Button className={'clear-button'}>
+              <Text>Online market</Text>
+            </Button>
+          </Link>
+        </Menu.Item>
+
+        <Menu.Item key='2'>
+          <Button className="clear-button" onClick={() => props.setLocale('ru')}>RU</Button>
+        </Menu.Item>
+
+        <Menu.Item key='3'>
+          <Button className="clear-button" onClick={() => props.setLocale('en')}>EN</Button>
+        </Menu.Item>
+
+      </Menu>
+    </Header>
   );
 };
 

@@ -185,7 +185,7 @@ function ProductsManager() {
         })
         .simplesort(sortType.type, sortType.flag);
       return {
-        pageAmount: Math.ceil(result.data().length / PAGE_SIZE),
+        productsAmount: Math.ceil(result.data().length),
         products: result.offset(PAGE_SIZE * (page)).limit(PAGE_SIZE).data().map((p) => this.toSendObject(p))
       };
     },

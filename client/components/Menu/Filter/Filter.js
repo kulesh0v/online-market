@@ -11,11 +11,13 @@ import Sort from "./Sort.js"
 
 const Filter = (props) => {
   const query = queryString.parse(location.search);
+
   if (query.categoryId) {
     if (!Array.isArray(query.categoryId)) {
       query.categoryId = [query.categoryId];
     }
   }
+
   const [choosesCategories, setCheckedIds] = useState(query.categoryId ? query.categoryId.map(Number) : []);
   const [minPrice, setMinPrice] = useState(query.minPrice || '');
   const [maxPrice, setMaxPrice] = useState(query.maxPrice || '');
@@ -78,7 +80,12 @@ const Filter = (props) => {
     <div>
       {redirect && <Redirect to={`/?${queryString.stringify(getFilterConfig())}`}/>}
       <Sort setType={changeSortType} type={sortType}/>
-      <PriceFilter changeMax={changeMaxPrice} changeMin={changeMinPrice} minPrice={minPrice} maxPrice={maxPrice}/>
+      <PriceFilter
+        changeMax={changeMaxPrice}
+        changeMin={changeMinPrice}
+        minPrice={minPrice}
+        maxPrice={maxPrice}
+      />
       <CategoriesList
         categories={props.categories}
         chooseCategory={chooseCategory}

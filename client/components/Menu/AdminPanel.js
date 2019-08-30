@@ -3,18 +3,19 @@ import {useState} from 'react';
 import PropTypes from "prop-types";
 import {FormattedMessage} from 'react-intl';
 import {Link} from 'react-router-dom';
+import {Button, Checkbox} from 'antd'
 
 const AdminPanel = (props) => {
   const [isHidden, setIsHidden] = useState(true);
   return (
-    <div>
-      <button className="mt-4 rounded-lg btn container-fluid border-secondary" onClick={() => setIsHidden(!isHidden)}>
+    <div style={{display: 'flex'}}>
+      <Button size={'large'} style={{margin:'auto'}} onClick={() => setIsHidden(!isHidden)}>
         {
           isHidden &&
           <FormattedMessage id={'showAdminPanel'}/> ||
           <FormattedMessage id={'hideAdminPanel'}/>
         }
-      </button>
+      </Button>
       {!isHidden &&
       <div className="mt-3">
         <div className="input-group mb-3">

@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from "prop-types";
 import {Link} from 'react-router-dom';
+import {Checkbox, Icon, Button} from 'antd';
 
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {library} from '@fortawesome/fontawesome-svg-core'
@@ -10,32 +11,35 @@ library.add(faEdit, faTrashAlt);
 
 const CategoriesList = (props) => {
   return (
-    <div className={"mt-2"}>
+    <div style={{marginLeft: 12, marginTop: 6}}>
       {props.categories
         .map(category =>
-          <div key={category.id} className="form-check">
-            <input className="form-check-input" type="checkbox" value="option1"
-                   defaultChecked={(props.choosesCategories.includes((category.id)))}
-                   onClick={() => props.chooseCategory((category.id))}/>
-            <label className="form-check-label" htmlFor="inlineCheckbox1">
+
+          <div key={category.id}>
+
+            <Checkbox
+              defaultChecked={(props.choosesCategories.includes((category.id)))}
+              onChange={() => props.chooseCategory((category.id))}>
               {category.name}
-              {
-                props.adminMod &&
-                <span className="ml-2">
+            </Checkbox>
+
+            {
+              props.adminMod &&
+              <span>
                 <Link to={`/editCategory/${category.id}`}>
-                  <button type="button" className="clear-button mr-2">
+                  <Button className="clear-button" style={{marginRight: 6}}>
                     <FontAwesomeIcon icon={"edit"} color={"grey"} size={'sm'}/>
-                  </button>
+                  </Button>
                 </Link>
-                  <button type="button" className="clear-button mr-2"
+                  <Button className="clear-button"
                           onClick={() => {
                             props.removeCategory(category.id);
                             props.uncheckDeleted(category.id);
                           }}>
                     <FontAwesomeIcon icon={"trash-alt"} color={"grey"} size={'sm'}/>
-                  </button>
-                </span>}
-            </label>
+                  </Button>
+                </span>
+            }
           </div>
         )}
     </div>
