@@ -49,11 +49,16 @@ const Shop = (props) => {
         req += queryString.stringify(filterConfig, {sort: false});
         req += `&page=${page}`;
         axios.cancelAll();
-        axios.get(req).then(res => {
-          setPageNum(page);
-          setPageCount(res.data.pageAmount);
-          setProducts(res.data.products);
-        });
+        axios.get(req)
+          .then(res => {
+            setPageNum(page);
+            setPageCount(res.data.pageAmount);
+            setProducts(res.data.products);
+          })
+          .catch(err => {
+            alert('Error, check console');
+            console.log(err.response.data);
+          });
       }
     };
 
@@ -202,7 +207,6 @@ const Shop = (props) => {
               component={() =>
                 <ProductWindow
                   addProduct={addProduct}
-                  categories={categories}
                   closeWindow={closeWindow}
                   editProduct={editProduct}
                 />
@@ -224,7 +228,6 @@ const Shop = (props) => {
                 const {productId} = match.params;
                 return <ProductWindow
                   addProduct={addProduct}
-                  categories={categories}
                   closeWindow={closeWindow}
                   editProduct={editProduct}
                   productId={productId}

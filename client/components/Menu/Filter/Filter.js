@@ -32,12 +32,12 @@ const Filter = (props) => {
     setRedirect(false);
   });
 
-  const chaneMaxPrice = (value) => {
+  const changeMaxPrice = (value) => {
     setMaxPrice(value);
     setRedirect(true);
   };
 
-  const chaneMinPrice = (value) => {
+  const changeMinPrice = (value) => {
     setMinPrice(value);
     setRedirect(true);
   };
@@ -58,12 +58,19 @@ const Filter = (props) => {
   };
 
   const getFilterConfig = () => {
-    return {
-      categoryId: choosesCategories,
-      minPrice: minPrice,
-      maxPrice: maxPrice,
-      sortType: sortType,
+    const result = {categoryId: choosesCategories};
+    if (minPrice !== '') {
+      result.minPrice = minPrice;
     }
+
+    if (maxPrice !== '') {
+      result.maxPrice = maxPrice;
+    }
+
+    if (sortType !== '') {
+      result.sortType = sortType;
+    }
+    return result;
   };
 
 
@@ -71,7 +78,7 @@ const Filter = (props) => {
     <div>
       {redirect && <Redirect to={`/?${queryString.stringify(getFilterConfig())}`}/>}
       <Sort setType={changeSortType} type={sortType}/>
-      <PriceFilter changeMax={chaneMaxPrice} changeMin={chaneMinPrice} minPrice={minPrice} maxPrice={maxPrice}/>
+      <PriceFilter changeMax={changeMaxPrice} changeMin={changeMinPrice} minPrice={minPrice} maxPrice={maxPrice}/>
       <CategoriesList
         categories={props.categories}
         chooseCategory={chooseCategory}

@@ -11,36 +11,51 @@ import {faImage} from '@fortawesome/free-solid-svg-icons'
 library.add(faImage);
 
 const ProductWindow = (props) => {
-  if (props.categories.length) {
-    const [name, setName] = useState('');
-    const [price, setPrice] = useState('');
-    const [amount, setAmount] = useState('');
-    const [url, setUrl] = useState('');
-    const [categoryId, setCategoryId] = useState(props.categories[0].id);
+  const [categories, setCategories] = useState(undefined);
+  const [name, setName] = useState('');
+  const [price, setPrice] = useState('');
+  const [amount, setAmount] = useState('');
+  const [url, setUrl] = useState('');
+  const [categoryId, setCategoryId] = useState(undefined);
 
+  useEffect(() => {
+    if (!categories) {
+      axios.get('/categories')
+        .then(res => {
+          setCategories(res.data);
+          setCategoryId(res.data[0].id);
+        })
+        .catch(err => {
+          alert('Error, check console');
+          console.log(err);
+        });
+    }
+  }, []);
+
+  useEffect(() => {
+    if (props.productId) {
+      axios.get(`/products/${props.productId}`)
+        .then(res => {
+          setCategoryId(res.data.categoryId);
+          setPrice(res.data.price);
+          setAmount(res.data.amount);
+          setUrl(res.data.url);
+          setName(res.data.name);
+        })
+        .catch(err => {
+          alert('Error, check console');
+          console.log(err);
+        });
+    }
+  }, []);
+
+  if (categories) {
     const getImg = () => {
       return props.product || url ? (<img src={url} width={"200px"} className={"mb-2"}/>) : null;
     };
 
-    useEffect(() => {
-      if (props.productId) {
-        axios.get(`/products/${props.productId}`)
-          .then(res => {
-            setCategoryId(res.data.categoryId);
-            setPrice(res.data.price);
-            setAmount(res.data.amount);
-            setUrl(res.data.url);
-            setName(res.data.name);
-          })
-          .catch(err => {
-            alert('Error, check console');
-            console.log(err);
-          });
-      }
-    }, []);
-
     const selectCategory = (e) => {
-      props.categories.forEach(category => {
+      categories.forEach(category => {
         if (category.name === e.target.value) {
           setCategoryId(category.id);
         }
@@ -72,9 +87,9 @@ const ProductWindow = (props) => {
 
               <select
                 className="custom-select mb-3"
-                defaultValue={categoryId && props.categories.find(c => c.id === categoryId).name}
+                defaultValue={categoryId && categories.find(c => +c.id === categoryId).name}
                 onChange={(e) => selectCategory(e)}>
-                {props.categories.map((category) => <option key={category.id}>{category.name}</option>)}
+                {categories.map((category) => <option key={category.id}>{category.name}</option>)}
               </select>
 
               <div className="input-group mb-3">
@@ -153,7 +168,7 @@ const ProductWindow = (props) => {
 };
 
 ProductWindow.propTypes = {
-  productId: PropTypes.number,
+  productId: PropTypes.string,
   closeWindow: PropTypes.func.isRequired,
   addProduct: PropTypes.func.isRequired,
   editProduct: PropTypes.func.isRequired,
