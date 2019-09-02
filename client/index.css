@@ -8,3 +8,11 @@
     background-color: transparent;
     cursor: pointer;
 }
+
+.ant-card-meta-title{
+    color: firebrick;
+}
+
+.ant-card-head-title{
+    color:#3C5A99;
+}

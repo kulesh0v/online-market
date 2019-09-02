@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from "prop-types";
 import {Link} from 'react-router-dom';
-import {Checkbox, Icon, Button} from 'antd';
+import {Checkbox, Button} from 'antd';
 
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {library} from '@fortawesome/fontawesome-svg-core'

@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {useState} from 'react';
 import {FormattedMessage} from 'react-intl';
+import {Form, Input, Button} from 'antd';
 
 const CategoryWindow = (props) => {
   const [name, setName] = useState(props.object ? props.object.name : '');
@@ -14,37 +15,32 @@ const CategoryWindow = (props) => {
     }
   };
 
-  return (<div className="panel panel-default col-xl-4 col-lg-6 col-md-8 col-sm-10 m-auto pt-4 pl-3">
-      <div className="panel-body">
-        <div className={"m-auto"}>
-          <div className="input-group mb-3">
-            <div className="input-group-prepend">
-              <span className="input-group-text">
-                <FormattedMessage id={'categoryName'}/>
-              </span>
-            </div>
-            <input type="text"
-                   className="form-control"
-                   value={name}
-                   onChange={(e) => setName(e.target.value)}
-                   aria-describedby="basic-addon1"/>
-          </div>
+  return (
+    <div style={{display: 'flex'}}>
+      <Form style={{margin: 'auto', marginTop: 24}}>
+        <Form.Item>
+          <Input
+            addonBefore={"Category name: "}
+            value={name}
+            onChange={(e) => setName(e.target.value)}/>
+        </Form.Item>
 
-          <div className="text-right">
-            <button type="button"
-                    className="btn-danger border-0 rounded-lg mr-3 p-2"
-                    onClick={() => props.closeWindow()}>
+        <Form.Item>
+          <div style={{display: 'flex'}}>
+
+            <Button type={"danger"} onClick={props.closeWindow} style={{margin: 'auto'}}>
               <FormattedMessage id={'cancel'}/>
-            </button>
-            <button type="button"
-                    className="btn-success border-0 rounded-lg p-2"
-                    onClick={() => accept()}>
+            </Button>
+
+            <Button type={"primary"} onClick={accept} style={{margin: 'auto'}}>
               <FormattedMessage id={'accept'}/>
-            </button>
+            </Button>
+
           </div>
-        </div>
-      </div>
+        </Form.Item>
+      </Form>
     </div>
+
   )
 };
 

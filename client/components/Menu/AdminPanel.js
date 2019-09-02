@@ -3,45 +3,54 @@ import {useState} from 'react';
 import PropTypes from "prop-types";
 import {FormattedMessage} from 'react-intl';
 import {Link} from 'react-router-dom';
-import {Button, Checkbox} from 'antd'
-
+import {Button, Switch} from 'antd'
 const AdminPanel = (props) => {
   const [isHidden, setIsHidden] = useState(true);
   return (
-    <div style={{display: 'flex'}}>
-      <Button size={'large'} style={{margin:'auto'}} onClick={() => setIsHidden(!isHidden)}>
-        {
-          isHidden &&
-          <FormattedMessage id={'showAdminPanel'}/> ||
-          <FormattedMessage id={'hideAdminPanel'}/>
-        }
-      </Button>
+    <div>
+
+      <div style={{display: 'flex'}}>
+        <Button size={'large'} style={{margin: 'auto', marginTop: 12}} onClick={() => setIsHidden(!isHidden)}>
+          {
+            isHidden &&
+            <FormattedMessage id={'showAdminPanel'}/> ||
+            <FormattedMessage id={'hideAdminPanel'}/>
+          }
+        </Button>
+      </div>
+
       {!isHidden &&
-      <div className="mt-3">
-        <div className="input-group mb-3">
-          <div className="input-group-prepend">
-            <span className="input-group-text">
-              <FormattedMessage id={'adminMod'}/>
-            </span>
-          </div>
-          <button type="button" className={"btn-secondary border-0"} onClick={() => props.setAdminMod(!props.adminMod)}>
-            {
-              props.adminMod ?
-                <FormattedMessage id={'on'}/> :
-                <FormattedMessage id='off'/>
-            }
-          </button>
+      <div style={{display: 'flex'}}>
+            <span style={{margin: 'auto', marginTop: 12}}>
+
+              <span style={{marginRight: 12}}>Admin mode</span>
+              <Switch checkedChildren={'On'}
+                      unCheckedChildren={'Off'}
+                      defaultChecked={props.adminMod}
+                      onChange={() => props.setAdminMod(!props.adminMod)}
+              />
+              </span>
+      </div>
+      }
+
+      {!isHidden &&
+      <div style={{display: 'flex'}}>
+        <div style={{margin: 'auto', marginTop: 12}}>
+
+          <Link to={'/addProduct'}>
+            <Button size={'small'} style={{marginRight: 12}}>
+              <FormattedMessage id={'addProduct'}/>
+            </Button>
+          </Link>
+
+
+          <Link to={'/addCategory'}>
+            <Button size={'small'}>
+              <FormattedMessage id={'addCategory'}/>
+            </Button>
+          </Link>
+
         </div>
-        <Link to={'/addProduct'}>
-          <button type="button" className={"btn btn-secondary container-fluid"}>
-            <FormattedMessage id={'addProduct'}/>
-          </button>
-        </Link>
-        <Link to={'/addCategory'}>
-          <button type="button" className={"btn btn-secondary container-fluid mt-2"}>
-            <FormattedMessage id={'addCategory'}/>
-          </button>
-        </Link>
       </div>
       }
     </div>
