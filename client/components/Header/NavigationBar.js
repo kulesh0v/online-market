@@ -31,7 +31,7 @@ const NavigationBar = (props) => {
         </Menu.Item>
 
         <Menu.Item key='4'>
-          <Basket basket={props.basket} removeFromBasket={props.removeFromBasket}/>
+          <Basket basket={props.basket} removeFromBasket={props.removeFromBasket} buy={props.buy}/>
         </Menu.Item>
 
       </Menu>
@@ -43,6 +43,7 @@ NavigationBar.propTypes = {
   setLocale: PropTypes.func.isRequired,
   basket: PropTypes.array.isRequired,
   removeFromBasket: PropTypes.func.isRequired,
+  buy: PropTypes.func.isRequired,
 };
 
 export default NavigationBar;

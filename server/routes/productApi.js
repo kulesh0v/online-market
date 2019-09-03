@@ -6,6 +6,27 @@ import {ProductNotFoundError, ErrorsList} from './../Errors.js';
 const productManager = ProductManager();
 const router = express.Router();
 
+router.put('/buy', (req, res) => {
+  try {
+    let flag = req.body.every(p => p.amount <= productManager.getProduct({id: p.id, database: db}).amount);
+    if (flag) {
+      productManager.replaceAllProducts({
+        products: req.body,
+        database: db,
+      });
+      res.status(200).send('Ok');
+    } else {
+      res.status(400).send('There are not so many products on the warehouse.')
+    }
+
+  }
+  catch (e) {
+    console.log(e);
+    res.status(500).send('Unexpected error');
+  }
+
+});
+
 router.get('/', (req, res) => {
   try {
     const result = productManager.filterProducts({

@@ -33,7 +33,7 @@ const Basket = (props) => {
       {
         totalPrice &&
         <Menu.Item key={'buyButton'}>
-          <Button type={'primary'}>
+          <Button type={'primary'} onClick={props.buy}>
             Buy
           </Button>
         </Menu.Item>
@@ -64,6 +64,7 @@ const Basket = (props) => {
 Basket.propTypes = {
   basket: PropTypes.array.isRequired,
   removeFromBasket: PropTypes.func.isRequired,
+  buy: PropTypes.func.isRequired,
 };
 
 export default Basket;

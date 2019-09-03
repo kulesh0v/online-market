@@ -224,6 +224,21 @@ function ProductsManager() {
       }
     },
 
+    replaceAllProducts: function ({products, database}) {
+      const productsCollection = database.getCollection('products');
+      try {
+        products.forEach(p => _validateProductId(p.id, productsCollection));
+        products.forEach(p => _validateProduct(p, productsCollection));
+        products.forEach(p => {
+          let tmp = productsCollection.get(p.id);
+          tmp = {...tmp, amount: tmp.amount - p.amount};
+          productsCollection.update(tmp);
+        });
+      } catch (e) {
+        throw (e);
+      }
+    },
+
     removeProduct: function ({id, database}) {
       try {
         const products = database.getCollection('products');

@@ -36,7 +36,6 @@ const Shop = (props) => {
     const [locale, setLocale] = useState('en');
     const [productsAmount, setProductsAmount] = useState(0);
     const [pageNum, setPageNum] = useState(0);
-    const [pageIsActual, setPageIsActual] = useState(true);
     const [basket, setBasket] = useState([]);
 
     useEffect(() => {
@@ -46,10 +45,6 @@ const Shop = (props) => {
         setBasket(lsBasket);
       }
     }, []);
-
-    useEffect(() => {
-      setPageIsActual(true);
-    },);
 
     const addToBasket = (id, amount) => {
       const basketProduct = basket.find(p => p.id === id);
@@ -72,30 +67,46 @@ const Shop = (props) => {
       localStorage.setItem('omBasket', JSON.stringify(basket));
     };
 
+    const buy = () => {
+      axios.put('/products/buy', JSON.stringify(basket), {headers: {'Content-Type': 'application/json',}})
+        .then(() => {
+          alert('Payment completed successfully');
+          updateProducts(lastFilterConfig, pageNum);
+          setBasket([]);
+          localStorage.setItem('omBasket', JSON.stringify([]));
+        })
+        .catch((err) => alert(err));
+    };
+
+    function updateProducts(filterConfig, page) {
+      page = page || 0;
+      let req = '/products?';
+      req += queryString.stringify(filterConfig, {sort: false});
+      req += `&page=${page}`;
+      axios.cancelAll();
+      axios.get(req)
+        .then(res => {
+          console.table(res.data);
+          setPageNum(page);
+          setProductsAmount(res.data.productsAmount);
+          setProducts(res.data.products);
+        })
+        .catch(err => {
+          alert('Error, check console');
+          console.log(err.response.data);
+        });
+    }
+
     const getProducts = (filterConfig, page) => {
       if (!lastFilterConfig || queryString.stringify(filterConfig) !== queryString.stringify(lastFilterConfig)) {
         setLastFilterConfig(filterConfig);
-        page = page || 0;
-        let req = '/products?';
-        req += queryString.stringify(filterConfig, {sort: false});
-        req += `&page=${page}`;
-        axios.cancelAll();
-        axios.get(req)
-          .then(res => {
-            setPageNum(page);
-            setProductsAmount(res.data.productsAmount);
-            setProducts(res.data.products);
-          })
-          .catch(err => {
-            alert('Error, check console');
-            console.log(err.response.data);
-          });
+        updateProducts(filterConfig, page);
       }
     };
 
 
     const closeWindow = () => {
-      setPageIsActual(false);
+      updateProducts(lastFilterConfig, pageNum);
       history.goBack();
     };
 
@@ -129,7 +140,7 @@ const Shop = (props) => {
         axios.delete(`/products/${id}`)
           .then((res) => {
             alert(res.data);
-            setPageIsActual(false);
+            updateProducts(lastFilterConfig, pageNum);
           })
           .catch(err => {
             alert('Error, check console');
@@ -176,7 +187,7 @@ const Shop = (props) => {
             alert(res.data);
             updateCategories();
           })
-          .then(() => setPageIsActual(false))
+          .then(() => updateProducts(lastFilterConfig, pageNum))
           .catch(err => {
             alert('Error, check console');
             console.log(err.response.data);
@@ -203,12 +214,11 @@ const Shop = (props) => {
     return (
       <Router history={history}>
         <IntlProvider locale={locale} messages={props.messages[locale]}>
-          {!pageIsActual && <Redirect to={`/${location.search}`}/>}
 
           <Layout>
 
             <Layout>
-              <NavigationBar setLocale={setLocale} basket={basket} removeFromBasket={removeFromBasket}/>
+              <NavigationBar setLocale={setLocale} basket={basket} removeFromBasket={removeFromBasket} buy={buy}/>
             </Layout>
 
             <Layout>
