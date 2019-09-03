@@ -1,9 +1,8 @@
 import React from 'react'
 import PropTypes from 'prop-types';
 import {useState} from 'react';
-
 import {Link} from 'react-router-dom';
-
+import {FormattedMessage} from 'react-intl';
 import {Card, Icon, Typography} from 'antd';
 
 
@@ -12,19 +11,19 @@ const {Text} = Typography;
 
 
 const Product = (props) => {
-  const [userWish, setUserWish] = useState(0);
+  const [productCounter, setUserWish] = useState(0);
 
   const increaseAmount = () => {
     const basketProduct = props.basket.find(p => p.id === props.product.id);
     const basketAmount = basketProduct ? basketProduct.amount : 0;
-    if (userWish + basketAmount < props.product.amount) {
-      setUserWish(userWish + 1);
+    if (productCounter + basketAmount < props.product.amount) {
+      setUserWish(productCounter + 1);
     }
   };
 
   const reduceAmount = () => {
-    if (userWish > 0) {
-      setUserWish(userWish - 1);
+    if (productCounter > 0) {
+      setUserWish(productCounter - 1);
     }
   };
 
@@ -40,14 +39,21 @@ const Product = (props) => {
           <Icon type="delete" key="edit" onClick={() => props.removeProduct(props.product.id)}/>,
         ]
         || [
-          <Icon type="minus" onClick={reduceAmount}/>,
+
+          <div onClick={reduceAmount} onMouseDown={(e) => e.preventDefault()}>
+            <Icon type="minus"/>
+          </div>,
+
           <Text onClick={() => {
-            userWish && props.addToBasket(props.product.id, userWish);
+            productCounter && props.addToBasket(props.product.id, productCounter);
             setUserWish(0);
           }}>
-            Add {userWish} in basket
+            <FormattedMessage id={'add'}/>{` ${productCounter} `} <FormattedMessage id={'toBasket'}/>
           </Text>,
-          <Icon type="plus" onClick={increaseAmount}/>
+
+          <div onClick={increaseAmount} onMouseDown={(e) => e.preventDefault()}>
+            <Icon type="plus"/>
+          </div>
         ]
       }
     >

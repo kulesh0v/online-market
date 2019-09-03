@@ -16,6 +16,8 @@ export default {
     accept: 'Accept',
     productName: 'Product name',
     categoryName: 'Category name',
+    toBasket: 'to basket',
+    add: 'Add'
   },
   ru: {
     addProduct: 'Доб. продукт',
@@ -34,6 +36,8 @@ export default {
     accept: 'Принять',
     productName: 'Название продукта',
     categoryName: 'Название категории',
+    toBasket: 'в корзину',
+    add: 'Доб.'
 
 
   },

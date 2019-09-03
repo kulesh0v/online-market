@@ -86,7 +86,6 @@ const Shop = (props) => {
       axios.cancelAll();
       axios.get(req)
         .then(res => {
-          console.table(res.data);
           setPageNum(page);
           setProductsAmount(res.data.productsAmount);
           setProducts(res.data.products);
