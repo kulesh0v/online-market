@@ -8,11 +8,13 @@ const ProductList = (props) => {
     <Row>
       {props.products
         .map(product => (
-          <Col xs={24} sm={12} md={8} lg={8} xl={6} xxl={6}  key={product.id}>
+          <Col xs={24} sm={12} md={8} lg={8} xl={6} xxl={6} key={product.id}>
             <Product
               product={product}
               adminMod={props.adminMod}
               removeProduct={props.removeProduct}
+              addToBasket={props.addToBasket}
+              basket={props.basket}
             />
           </Col>
         ))}
@@ -23,6 +25,8 @@ Product.propTypes = {
   products: PropTypes.array.isRequired,
   adminMod: PropTypes.bool.isRequired,
   removeProduct: PropTypes.func.isRequired,
+  addToBasket: PropTypes.func.isRequired,
+  basket: PropTypes.array.isRequired,
 };
 
 export default ProductList;

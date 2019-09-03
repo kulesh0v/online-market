@@ -18,8 +18,8 @@ export default {
     categoryName: 'Category name',
   },
   ru: {
-    addProduct: 'Добавить продукт',
-    addCategory: 'Добавить категорию',
+    addProduct: 'Доб. продукт',
+    addCategory: 'Доб. категорию',
     hideAdminPanel: 'Спрятать админ-панель',
     showAdminPanel: 'Показать админ-панель',
     adminMode: 'Админ-мод',

@@ -32,7 +32,7 @@ const Paginate = (props) => {
 Paginate.propTypes = {
   pageNum: PropTypes.number.isRequired,
   productsAmount: PropTypes.number.isRequired,
-  lastFilterConfig: PropTypes.object.isRequired,
+  lastFilterConfig: PropTypes.any,
 };
 
 export default Paginate;

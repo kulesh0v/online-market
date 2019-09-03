@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import {Link} from 'react-router-dom';
 import {Button, Menu, Layout} from 'antd'
 import {Typography} from 'antd';
+import Basket from "./Basket";
 
 const {Text} = Typography;
 const {Header} = Layout;
@@ -29,6 +30,10 @@ const NavigationBar = (props) => {
           <Button className="clear-button" onClick={() => props.setLocale('en')}>EN</Button>
         </Menu.Item>
 
+        <Menu.Item key='4'>
+          <Basket basket={props.basket} removeFromBasket={props.removeFromBasket}/>
+        </Menu.Item>
+
       </Menu>
     </Header>
   );
@@ -36,6 +41,8 @@ const NavigationBar = (props) => {
 
 NavigationBar.propTypes = {
   setLocale: PropTypes.func.isRequired,
+  basket: PropTypes.array.isRequired,
+  removeFromBasket: PropTypes.func.isRequired,
 };
 
 export default NavigationBar;

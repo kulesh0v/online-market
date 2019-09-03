@@ -4,7 +4,7 @@ import {useState, useEffect} from 'react';
 import {FormattedMessage} from 'react-intl';
 import axios from 'axios';
 
-import {Form, Input, Button, Select, Icon} from 'antd';
+import {Form, Input, Button, Select, Icon, Spin} from 'antd';
 
 const {Option} = Select;
 
@@ -124,9 +124,11 @@ const ProductWindow = (props) => {
     }
   }
 
-  return <div className="spinner-border text-secondary m-auto" role="status">
-    <span className="sr-only">Loading...</span>
-  </div>
+  return <div style={{display: 'flex'}}>
+    <div style={{margin:'auto'}}>
+      <Spin size="large"/>
+    </div>
+  </div>;
 };
 
 ProductWindow.propTypes = {

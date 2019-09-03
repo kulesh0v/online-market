@@ -15,7 +15,9 @@ const Product = (props) => {
   const [userWish, setUserWish] = useState(0);
 
   const increaseAmount = () => {
-    if (userWish < props.product.amount) {
+    const basketProduct = props.basket.find(p => p.id === props.product.id);
+    const basketAmount = basketProduct ? basketProduct.amount : 0;
+    if (userWish + basketAmount < props.product.amount) {
       setUserWish(userWish + 1);
     }
   };
@@ -39,7 +41,12 @@ const Product = (props) => {
         ]
         || [
           <Icon type="minus" onClick={reduceAmount}/>,
-          <Text>Add {userWish} in basket</Text>,
+          <Text onClick={() => {
+            userWish && props.addToBasket(props.product.id, userWish);
+            setUserWish(0);
+          }}>
+            Add {userWish} in basket
+          </Text>,
           <Icon type="plus" onClick={increaseAmount}/>
         ]
       }
@@ -56,5 +63,7 @@ Product.propTypes = {
   product: PropTypes.object.isRequired,
   adminMod: PropTypes.bool.isRequired,
   removeProduct: PropTypes.func.isRequired,
+  addToBasket: PropTypes.func.isRequired,
+  basket: PropTypes.array.isRequired,
 };
 export default Product;

@@ -10,7 +10,7 @@ import {IntlProvider} from 'react-intl';
 import PropTypes from 'prop-types';
 import queryString from 'query-string';
 
-import NavigationBar from './NavigationBar.js';
+import NavigationBar from './Header/NavigationBar.js';
 import ProductList from './Products/ProductsList'
 import Sidebar from './Menu/Sidebar.js';
 import ProductWindow from './Windows/ProductWindow.js';
@@ -37,14 +37,40 @@ const Shop = (props) => {
     const [productsAmount, setProductsAmount] = useState(0);
     const [pageNum, setPageNum] = useState(0);
     const [pageIsActual, setPageIsActual] = useState(true);
+    const [basket, setBasket] = useState([]);
 
     useEffect(() => {
       updateCategories();
+      const lsBasket = JSON.parse(localStorage.getItem('omBasket'));
+      if (lsBasket && Array.isArray(lsBasket)) {
+        setBasket(lsBasket);
+      }
     }, []);
 
     useEffect(() => {
       setPageIsActual(true);
     },);
+
+    const addToBasket = (id, amount) => {
+      const basketProduct = basket.find(p => p.id === id);
+      const product = products.find(p => p.id === id);
+      if (basketProduct) {
+        basketProduct.amount = Number(basketProduct.amount) + amount;
+        basketProduct.price = Number(basketProduct.price) + amount * product.price;
+
+      } else {
+        basket.push({...product, amount: amount, price: (amount * product.price).toFixed(2)});
+
+      }
+      setBasket(basket);
+      localStorage.setItem('omBasket', JSON.stringify(basket));
+    };
+
+    const removeFromBasket = (id) => {
+      basket.splice(basket.findIndex(p => p.id === id), 1);
+      setBasket(basket);
+      localStorage.setItem('omBasket', JSON.stringify(basket));
+    };
 
     const getProducts = (filterConfig, page) => {
       if (!lastFilterConfig || queryString.stringify(filterConfig) !== queryString.stringify(lastFilterConfig)) {
@@ -71,19 +97,6 @@ const Shop = (props) => {
     const closeWindow = () => {
       setPageIsActual(false);
       history.goBack();
-    };
-
-    const renderProducts = () => {
-      if (Array.isArray(products) && products.length) {
-        return (
-          <ProductList
-            products={products}
-            adminMod={adminMod}
-            removeProduct={removeProduct}/>
-        )
-      } else {
-        return <h1 className={"m-auto text-black-50"}>Products not found</h1>;
-      }
     };
 
     const addProduct = (product) => {
@@ -171,6 +184,22 @@ const Shop = (props) => {
       }
     };
 
+    const renderProducts = () => {
+      if (Array.isArray(products) && products.length) {
+        return (
+          <ProductList
+            products={products}
+            adminMod={adminMod}
+            removeProduct={removeProduct}
+            addToBasket={addToBasket}
+            basket={basket}
+          />
+        )
+      } else {
+        return <h1 className={"m-auto text-black-50"}>Products not found</h1>;
+      }
+    };
+
     return (
       <Router history={history}>
         <IntlProvider locale={locale} messages={props.messages[locale]}>
@@ -179,7 +208,7 @@ const Shop = (props) => {
           <Layout>
 
             <Layout>
-              <NavigationBar setLocale={setLocale}/>
+              <NavigationBar setLocale={setLocale} basket={basket} removeFromBasket={removeFromBasket}/>
             </Layout>
 
             <Layout>
