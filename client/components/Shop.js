@@ -37,6 +37,7 @@ const Shop = (props) => {
     const [productsAmount, setProductsAmount] = useState(0);
     const [pageNum, setPageNum] = useState(0);
     const [basket, setBasket] = useState([]);
+    const [collapsed, setCollapsed] = useState(false);
 
     useEffect(() => {
       updateCategories();
@@ -216,17 +217,23 @@ const Shop = (props) => {
 
           <Layout>
 
-            <Layout>
-              <NavigationBar setLocale={setLocale} basket={basket} removeFromBasket={removeFromBasket} buy={buy}/>
-            </Layout>
+            <Sidebar
+              categories={categories}
+              setAdminMod={setAdminMod}
+              adminMod={adminMod}
+              removeCategory={removeCategory}
+              collapsed={collapsed}
+              setCollapsed={setCollapsed}/>
 
             <Layout>
 
-              <Sidebar
-                categories={categories}
-                setAdminMod={setAdminMod}
-                adminMod={adminMod}
-                removeCategory={removeCategory}
+              <NavigationBar
+                setLocale={setLocale}
+                basket={basket}
+                removeFromBasket={removeFromBasket}
+                buy={buy}
+                collapsed={collapsed}
+                setCollapsed={setCollapsed}
               />
 
               <Content>
@@ -288,22 +295,22 @@ const Shop = (props) => {
                   }/>
 
               </Content>
-            </Layout>
 
-            <Route
-              exact path={'/'}
-              component={() =>
-                <Layout>
-                  <Footer>
-                    <Paginate
-                      pageNum={pageNum}
-                      productsAmount={productsAmount}
-                      lastFilterConfig={lastFilterConfig}
-                    />
-                  </Footer>
-                </Layout>
-              }
-            />
+              <Route
+                exact path={'/'}
+                component={() =>
+                  <Layout>
+                    <Footer>
+                      <Paginate
+                        pageNum={pageNum}
+                        productsAmount={productsAmount}
+                        lastFilterConfig={lastFilterConfig}
+                      />
+                    </Footer>
+                  </Layout>
+                }
+              />
+            </Layout>
           </Layout>
         </IntlProvider>
       </Router>

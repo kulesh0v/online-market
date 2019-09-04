@@ -54,8 +54,7 @@ const Basket = (props) => {
   return (
     <Dropdown overlay={menu} placement="bottomLeft" trigger={['click']}>
       <Button className={'clear-button'}>
-        Basket
-        <Icon size={'large'} type="shopping-cart"/>
+        <Icon style={{fontSize: 18}} type="shopping-cart"/>
       </Button>
     </Dropdown>
   )

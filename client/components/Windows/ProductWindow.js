@@ -4,7 +4,7 @@ import {useState, useEffect} from 'react';
 import {FormattedMessage} from 'react-intl';
 import axios from 'axios';
 
-import {Form, Input, Button, Select, Icon, Spin} from 'antd';
+import {Form, Input, Button, Select, Icon, Spin, Col, Row} from 'antd';
 
 const {Option} = Select;
 
@@ -69,72 +69,75 @@ const ProductWindow = (props) => {
 
     if (!props.productId || name !== '') {
       return (
-        <div style={{display: 'flex'}}>
-          <Form style={{margin: 'auto'}}>
+        <Row>
+          <Col span={12} offset={6}>
+            <Form style={{margin: 'auto'}}>
 
-            <Form.Item>
-              {getImg()}
-            </Form.Item>
+              <Form.Item>
+                {getImg()}
+              </Form.Item>
 
-            <Form.Item>
-              <Select
-                defaultValue={categoryId || null}
-                onChange={setCategoryId}>
+              <Form.Item>
+                <Select
+                  defaultValue={categoryId || null}
+                  onChange={setCategoryId}>
 
-                {categories.map((category) => <Option key={category.id} value={category.id}>{category.name}</Option>)}
+                  {categories.map((category) => <Option key={category.id} value={category.id}>{category.name}</Option>)}
 
-              </Select>
-            </Form.Item>
+                </Select>
+              </Form.Item>
 
-            <Form.Item>
-              <Input value={name} onChange={(e) => setName(e.target.value)} addonBefore={'Name'}/>
-            </Form.Item>
+              <Form.Item>
+                <Input value={name} onChange={(e) => setName(e.target.value)} addonBefore={'Name'}/>
+              </Form.Item>
 
-            <Form.Item>
-              <Input value={price} onChange={(e) => setPrice(e.target.value)} addonBefore={'Price $'}/>
-            </Form.Item>
+              <Form.Item>
+                <Input value={price} onChange={(e) => setPrice(e.target.value)} addonBefore={'Price $'}/>
+              </Form.Item>
 
-            <Form.Item>
-              <Input value={amount} onChange={(e) => setAmount(e.target.value)} addonBefore={'amount'}/>
-            </Form.Item>
+              <Form.Item>
+                <Input value={amount} onChange={(e) => setAmount(e.target.value)} addonBefore={'Amount'}/>
+              </Form.Item>
 
-            <Form.Item>
-              <Input value={url}
-                     onChange={(e) => setName(e.target.value)}
-                     addonBefore={<Icon type={'picture'}/>}/>
-            </Form.Item>
+              <Form.Item>
+                <Input value={url}
+                       onChange={(e) => setName(e.target.value)}
+                       addonBefore={<Icon type={'picture'}/>}/>
+              </Form.Item>
 
-            <Form.Item>
-              <div style={{display: 'flex'}}>
+              <Form.Item>
+                <div>
 
-                <Button type={"danger"} onClick={props.closeWindow} style={{margin: 'auto'}}>
-                  <FormattedMessage id={'cancel'}/>
-                </Button>
+                  <Button type={"danger"} onClick={props.closeWindow} style={{marginRight: 24}}>
+                    <FormattedMessage id={'cancel'}/>
+                  </Button>
 
-                <Button type={"primary"} onClick={accept} style={{margin: 'auto'}}>
-                  <FormattedMessage id={'accept'}/>
-                </Button>
+                  <Button type={"primary"} onClick={accept}>
+                    <FormattedMessage id={'accept'}/>
+                  </Button>
 
-              </div>
-            </Form.Item>
-          </Form>
+                </div>
+              </Form.Item>
+            </Form>
 
-        </div>
-      )
-    }
-  }
+          </Col>
+          <
+          /Row>
+          )
+          }
+          }
 
-  return <div style={{display: 'flex'}}>
-    <div style={{margin:'auto'}}>
-      <Spin size="large"/>
-    </div>
-  </div>;
-};
+          return <div style={{display: 'flex'}}>
+          <div style={{margin: 'auto'}}>
+            <Spin size="large"/>
+          </div>
+        </div>;
+          };
 
-ProductWindow.propTypes = {
-  productId: PropTypes.string,
-  closeWindow: PropTypes.func.isRequired,
-  addProduct: PropTypes.func.isRequired,
-  editProduct: PropTypes.func.isRequired,
-};
-export default ProductWindow;
+          ProductWindow.propTypes = {
+          productId: PropTypes.string,
+          closeWindow: PropTypes.func.isRequired,
+          addProduct: PropTypes.func.isRequired,
+          editProduct: PropTypes.func.isRequired,
+        };
+          export default ProductWindow;

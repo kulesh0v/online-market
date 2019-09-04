@@ -77,7 +77,7 @@ const Filter = (props) => {
 
 
   return (
-    <div>
+    <div style={{marginTop: 24}}>
       {redirect && <Redirect to={`/?${queryString.stringify(getFilterConfig())}`}/>}
       <Sort setType={changeSortType} type={sortType}/>
       <PriceFilter

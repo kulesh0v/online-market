@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {useState} from 'react';
 import {FormattedMessage} from 'react-intl';
-import {Form, Input, Button} from 'antd';
+import {Form, Input, Button, Col, Row} from 'antd';
 
 const CategoryWindow = (props) => {
   const [name, setName] = useState(props.object ? props.object.name : '');
@@ -16,30 +16,32 @@ const CategoryWindow = (props) => {
   };
 
   return (
-    <div style={{display: 'flex'}}>
-      <Form style={{margin: 'auto', marginTop: 24}}>
-        <Form.Item>
-          <Input
-            addonBefore={"Category name: "}
-            value={name}
-            onChange={(e) => setName(e.target.value)}/>
-        </Form.Item>
+    <Row>
+      <Col span={12} offset={6}>
+        <Form style={{marginTop: 36}}>
+          <Form.Item>
+            <Input
+              addonBefore={"Category name: "}
+              value={name}
+              onChange={(e) => setName(e.target.value)}/>
+          </Form.Item>
 
-        <Form.Item>
-          <div style={{display: 'flex'}}>
+          <Form.Item>
+            <div>
 
-            <Button type={"danger"} onClick={props.closeWindow} style={{margin: 'auto'}}>
-              <FormattedMessage id={'cancel'}/>
-            </Button>
+              <Button type={"danger"} onClick={props.closeWindow} style={{marginRight: 24}}>
+                <FormattedMessage id={'cancel'}/>
+              </Button>
 
-            <Button type={"primary"} onClick={accept} style={{margin: 'auto'}}>
-              <FormattedMessage id={'accept'}/>
-            </Button>
+              <Button type={"primary"} onClick={accept}>
+                <FormattedMessage id={'accept'}/>
+              </Button>
 
-          </div>
-        </Form.Item>
-      </Form>
-    </div>
+            </div>
+          </Form.Item>
+        </Form>
+      </Col>
+    </Row>
 
   )
 };

@@ -17,10 +17,10 @@
     color:#3C5A99;
 }
 
-.ant-layout-sider-zero-width-trigger {
-    top: -6px;
+.ant-layout {
+    background-color: white;
 }
 
-.ant-layout-sider-light .ant-layout-sider-zero-width-trigger{
-    background-color: transparent;
+.ant-layout-footer {
+    background-color: white;
 }
