@@ -121,23 +121,22 @@ const ProductWindow = (props) => {
             </Form>
 
           </Col>
-          <
-          /Row>
-          )
-          }
-          }
+        </Row>
+      )
+    }
+  }
 
-          return <div style={{display: 'flex'}}>
-          <div style={{margin: 'auto'}}>
-            <Spin size="large"/>
-          </div>
-        </div>;
-          };
+  return <div style={{display: 'flex'}}>
+    <div style={{margin: 'auto'}}>
+      <Spin size="large"/>
+    </div>
+  </div>;
+};
 
-          ProductWindow.propTypes = {
-          productId: PropTypes.string,
-          closeWindow: PropTypes.func.isRequired,
-          addProduct: PropTypes.func.isRequired,
-          editProduct: PropTypes.func.isRequired,
-        };
-          export default ProductWindow;
+ProductWindow.propTypes = {
+  productId: PropTypes.string,
+  closeWindow: PropTypes.func.isRequired,
+  addProduct: PropTypes.func.isRequired,
+  editProduct: PropTypes.func.isRequired,
+};
+export default ProductWindow;
