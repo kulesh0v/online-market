@@ -20,6 +20,9 @@ module.exports = {
   devServer: {
     contentBase: path.resolve(__dirname, './build')
   },
+  externals: {
+    'react': 'React',
+  },
   module: {
     rules: [
       {
