@@ -10,11 +10,11 @@ import {IntlProvider} from 'react-intl';
 import PropTypes from 'prop-types';
 import queryString from 'query-string';
 
-import NavigationBar from './Header/NavigationBar.js';
-import ProductList from './Products/ProductsList'
-import Sidebar from './Menu/Sidebar.js';
-import ProductWindow from './Windows/ProductWindow.js';
-import CategoryWindow from './Windows/CategoryWindow.js';
+import NavigationBar from './header/NavigationBar.js';
+import ProductList from './products/ProductsList'
+import Sidebar from './menu/Sidebar.js';
+import ProductWindow from './windows/ProductWindow.js';
+import CategoryWindow from './windows/CategoryWindow.js';
 import Paginate from './Paginate.js';
 
 import {Layout} from 'antd'

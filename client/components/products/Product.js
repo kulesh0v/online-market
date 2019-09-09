@@ -30,7 +30,7 @@ const Product = (props) => {
   return (
     <Card
       title={props.product.name}
-      cover={<img src={props.product.url}/>}
+      cover={<img data-testid="img" src={props.product.url}/>}
       actions={
         props.adminMod && [
           <Link to={`/editProduct/${props.product.id}`} key="setting">
@@ -40,18 +40,18 @@ const Product = (props) => {
         ]
         || [
 
-          <div onClick={reduceAmount} onMouseDown={(e) => e.preventDefault()}>
+          <div onClick={reduceAmount} data-testid="reduce-button" onMouseDown={(e) => e.preventDefault()}>
             <Icon type="minus"/>
           </div>,
 
-          <Text onClick={() => {
+          <div onClick={() => {
             productCounter && props.addToBasket(props.product.id, productCounter);
             setUserWish(0);
           }}>
             <FormattedMessage id={'add'}/>{` ${productCounter} `} <FormattedMessage id={'toBasket'}/>
-          </Text>,
+          </div>,
 
-          <div onClick={increaseAmount} onMouseDown={(e) => e.preventDefault()}>
+          <div onClick={increaseAmount} data-testid="increase-button" onMouseDown={(e) => e.preventDefault()}>
             <Icon type="plus"/>
           </div>
         ]
