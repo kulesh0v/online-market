@@ -30,7 +30,7 @@ const Product = (props) => {
   return (
     <Card
       title={props.product.name}
-      cover={<img data-testid="img" src={props.product.url}/>}
+      cover={<img alt="product photo" src={props.product.url}/>}
       actions={
         props.adminMod && [
           <Link to={`/editProduct/${props.product.id}`} key="setting">

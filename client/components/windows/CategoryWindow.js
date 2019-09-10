@@ -1,11 +1,25 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {useState} from 'react';
+import {useState, useEffect} from 'react';
+import axios from 'axios';
 import {FormattedMessage} from 'react-intl';
-import {Form, Input, Button, Col, Row} from 'antd';
+import {Form, Input, Button, Col, Row, Spin} from 'antd';
 
 const CategoryWindow = (props) => {
-  const [name, setName] = useState(props.object ? props.object.name : '');
+  const [name, setName] = useState('');
+
+  useEffect(() => {
+    if (props.categoryURL) {
+      axios.get(props.categoryURL)
+        .then(res => {
+          setName(res.data.name);
+        })
+        .catch(err => {
+          alert('Error, check console');
+          console.log(err);
+        })
+    }
+  }, []);
 
   const accept = () => {
     if (!props.object) {
@@ -14,6 +28,14 @@ const CategoryWindow = (props) => {
       props.editCategory(props.object.id, {name: name});
     }
   };
+
+  if (!(!props.categoryURL || name !== '')) {
+    return <div style={{display: 'flex'}}>
+      <div style={{margin: 'auto'}}>
+        <Spin size="large"/>
+      </div>
+    </div>;
+  }
 
   return (
     <Row>
@@ -42,15 +64,14 @@ const CategoryWindow = (props) => {
         </Form>
       </Col>
     </Row>
-
   )
 };
 
 CategoryWindow.propTypes = {
-  object: PropTypes.object,
   closeWindow: PropTypes.func.isRequired,
   addCategory: PropTypes.func.isRequired,
   editCategory: PropTypes.func.isRequired,
+  categoryURL: PropTypes.string,
 };
 
 export default CategoryWindow;

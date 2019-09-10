@@ -122,8 +122,8 @@ const Shop = (props) => {
         });
     };
 
-    const editProduct = (id, product) => {
-      axios.put(`/products/${id}`, JSON.stringify(product), {headers: {'Content-Type': 'application/json',}})
+    const editProduct = (product) => {
+      axios.put(`/products/${product.id}`, JSON.stringify(product), {headers: {'Content-Type': 'application/json',}})
         .then((res) => {
           alert(res.data);
           closeWindow();
@@ -254,6 +254,7 @@ const Shop = (props) => {
                       addProduct={addProduct}
                       closeWindow={closeWindow}
                       editProduct={editProduct}
+                      categoriesURL={'/categories'}
                     />
                   }/>
 
@@ -275,7 +276,8 @@ const Shop = (props) => {
                       addProduct={addProduct}
                       closeWindow={closeWindow}
                       editProduct={editProduct}
-                      productId={productId}
+                      productURL={`/products/${productId}`}
+                      categoriesURL={'/categories'}
                     />
                   }
                   }/>
@@ -284,12 +286,11 @@ const Shop = (props) => {
                   exact path={'/editCategory/:categoryId'}
                   component={({match}) => {
                     const {categoryId} = match.params;
-                    const windowObject = categories.find(c => c.id === Number(categoryId));
                     return <CategoryWindow
                       closeWindow={closeWindow}
                       addCategory={addCategory}
                       editCategory={editCategory}
-                      object={windowObject}
+                      categoryURL={`/categories${categoryId}`}
                     />
                   }
                   }/>
