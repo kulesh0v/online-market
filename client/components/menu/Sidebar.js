@@ -34,7 +34,6 @@ const Sidebar = (props) => {
       <AdminPanel
         setAdminMod={props.setAdminMod}
         adminMod={props.adminMod}
-        categories={props.categories}
       />
 
       <Row>

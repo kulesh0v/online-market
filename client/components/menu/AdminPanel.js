@@ -10,7 +10,7 @@ const AdminPanel = (props) => {
     <div>
 
       <div style={{display: 'flex'}}>
-        <Button size={'large'} style={{margin: 'auto', marginTop: 12}} onClick={() => setIsHidden(!isHidden)}>
+        <Button data-testid="panel-toggle" size={'large'} style={{margin: 'auto', marginTop: 12}} onClick={() => setIsHidden(!isHidden)}>
           {
             isHidden &&
             <FormattedMessage id={'showAdminPanel'}/> ||
@@ -38,14 +38,14 @@ const AdminPanel = (props) => {
         <div style={{margin: 'auto', marginTop: 12}}>
 
           <Link to={'/addProduct'}>
-            <Button size={'small'} style={{marginRight: 12}}>
+            <Button data-testid="add-product-button" size={'small'} style={{marginRight: 12}}>
               <FormattedMessage id={'addProduct'}/>
             </Button>
           </Link>
 
 
           <Link to={'/addCategory'}>
-            <Button size={'small'}>
+            <Button data-testid="add-category-button" size={'small'}>
               <FormattedMessage id={'addCategory'}/>
             </Button>
           </Link>
@@ -60,7 +60,6 @@ const AdminPanel = (props) => {
 AdminPanel.propTypes = {
   setAdminMod: PropTypes.func.isRequired,
   adminMod: PropTypes.bool.isRequired,
-  categories: PropTypes.array.isRequired,
 };
 
 export default AdminPanel;
