@@ -31,10 +31,10 @@ const Sort = (props) => {
   return (
     <div style={{display: 'flex'}}>
       <div style={{margin: 'auto'}}>
-        <Button onClick={onClickDef} style={{marginRight: 18}}>
+        <Button data-testid="sort-type-new" onClick={onClickDef} style={{marginRight: 18}}>
           <FormattedMessage id={'new'}/>
         </Button>
-        <Button onClick={onClickPrice}>
+        <Button data-testid="sort-type-price" onClick={onClickPrice}>
           <FormattedMessage id={'price'}/>
           <span style={{marginLeft: 6}}>{priceButtonArrow()}</span>
         </Button>

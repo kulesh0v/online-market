@@ -4,7 +4,7 @@
   "description": "",
   "main": "server/index.js",
   "scripts": {
-    "start": "nodemon --watch client --watch server server/main.js --watch webpack.config.js",
+    "start": "nodemon --watch client  --watch server server/main.js --watch webpack.config.js --watch package.json",
     "test": "jest",
     "build": "webpack"
   },
@@ -65,6 +65,9 @@
     "webpack": "^4.39.1",
     "webpack-cli": "^3.3.6",
     "webpack-dev-middleware": "^3.7.0"
+  },
+  "nodemonConfig": {
+    "ignore": ["*.test.js"]
   },
   "type": "module"
 }
