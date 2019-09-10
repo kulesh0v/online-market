@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Filter from './Filter/Filter.js';
+import Filter from './filter/Filter.js';
 import AdminPanel from './AdminPanel.js';
 import {Link} from 'react-router-dom';
 import {Layout, Row, Col, Button, Icon, Typography} from 'antd'
