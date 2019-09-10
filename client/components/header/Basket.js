@@ -10,9 +10,9 @@ const Basket = (props) => {
     <Menu>
       {props.basket && props.basket.map(product =>
         <Menu.Item key={product.id}>
-          <Card title={`${product.name} x ${product.amount}`} size={"small"}>
+          <Card title={<span data-testid={`name-amount-${product.id}`}>{`${product.name} x ${product.amount}`}</span>} size={"small"}>
             <img style={{display: 'inline-block', marginRight: 12}} width={70} src={product.url}/>
-            <span style={{marginRight: 12, color: 'firebrick'}}>{product.price}$</span>
+            <span data-testid={`price-${product.price}`} style={{marginRight: 12, color: 'firebrick'}}>${product.price}</span>
             <Button className={"clear-button"} onClick={() => props.removeFromBasket(product.id)}>
               <Icon type={'delete'}/>
             </Button>
@@ -24,7 +24,7 @@ const Basket = (props) => {
         totalPrice &&
         <Menu.Item key={'totalPrice'}>
           Total price:
-          <span style={{color: 'firebrick', marginLeft: 6}}>
+          <span data-testid="total-price" style={{color: 'firebrick', marginLeft: 6}}>
            ${totalPrice.toFixed(2)}
         </span>
         </Menu.Item>
@@ -53,7 +53,7 @@ const Basket = (props) => {
 
   return (
     <Dropdown overlay={menu} placement="bottomLeft" trigger={['click']}>
-      <Button className={'clear-button'}>
+      <Button className={'clear-button'} data-testid="open-basket">
         <Icon style={{fontSize: 18}} type="shopping-cart"/>
       </Button>
     </Dropdown>
