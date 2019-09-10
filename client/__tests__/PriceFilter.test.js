@@ -9,7 +9,7 @@ describe('PriceFilter', () => {
   const minPrice = '220';
   const maxPrice = '400';
 
-  test('should check that all categories are displayed', () => {
+  test('should check that filter prices are displayed correctly', () => {
     const {getByTestId} = render(
       <PriceFilter
         changeMax={() => {
