@@ -18,15 +18,15 @@ const Filter = (props) => {
     }
   }
 
-  const [choosesCategories, setCheckedIds] = useState(query.categoryId ? query.categoryId.map(Number) : []);
+  const [selectedCategories, setCheckedIds] = useState(query.categoryId ? query.categoryId.map(Number) : []);
   const [minPrice, setMinPrice] = useState(query.minPrice || '');
   const [maxPrice, setMaxPrice] = useState(query.maxPrice || '');
   const [sortType, setSortType] = useState(query.sortType || '');
   const [redirect, setRedirect] = useState(false);
 
   const uncheckDeleted = (id) => {
-    if (choosesCategories.includes(id)) {
-      choosesCategories.splice(choosesCategories.indexOf(id), 1);
+    if (selectedCategories.includes(id)) {
+      selectedCategories.splice(selectedCategories.indexOf(id), 1);
     }
   };
 
@@ -49,18 +49,18 @@ const Filter = (props) => {
     setRedirect(true);
   };
 
-  const chooseCategory = (id) => {
-    if (choosesCategories.includes(id)) {
-      choosesCategories.splice(choosesCategories.indexOf(id), 1);
+  const selectCategory = (id) => {
+    if (selectedCategories.includes(id)) {
+      selectedCategories.splice(selectedCategories.indexOf(id), 1);
     } else {
-      choosesCategories.push(id);
+      selectedCategories.push(id);
     }
     setCheckedIds(setCheckedIds);
     setRedirect(true);
   };
 
   const getFilterConfig = () => {
-    const result = {categoryId: choosesCategories};
+    const result = {categoryId: selectedCategories};
     if (minPrice !== '') {
       result.minPrice = minPrice;
     }
@@ -88,11 +88,11 @@ const Filter = (props) => {
       />
       <CategoriesList
         categories={props.categories}
-        chooseCategory={chooseCategory}
+        selectCategory={selectCategory}
         adminMod={props.adminMod}
         removeCategory={props.removeCategory}
         uncheckDeleted={uncheckDeleted}
-        choosesCategories={choosesCategories}/>
+        selectedCategories={selectedCategories}/>
     </div>
   );
 };

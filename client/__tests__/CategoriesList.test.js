@@ -21,14 +21,14 @@ describe('CategoriesList', () => {
   test('should check that all categories are displayed', () => {
     const {getByText} = render(<CategoriesList
       categories={categories}
-      chooseCategory={() => {
+      selectCategory={() => {
       }}
       removeCategory={() => {
       }}
       adminMod={false}
       uncheckDeleted={() => {
       }}
-      choosesCategories={[]}/>);
+      selectedCategories={[]}/>);
     categories.forEach(category => {
       expect(getByText(category.name) !== null);
     });

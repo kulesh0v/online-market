@@ -18,8 +18,9 @@ const CategoriesList = (props) => {
           <div key={category.id}>
 
             <Checkbox
-              defaultChecked={(props.choosesCategories.includes((category.id)))}
-              onChange={() => props.chooseCategory((category.id))}>
+              data-testid={`checkbox-${category.id}`}
+              defaultChecked={(props.selectedCategories.includes((category.id)))}
+              onChange={() => props.selectCategory((category.id))}>
               {category.name}
             </Checkbox>
 
@@ -48,10 +49,10 @@ const CategoriesList = (props) => {
 
 CategoriesList.propTypes = {
   categories: PropTypes.array.isRequired,
-  chooseCategory: PropTypes.func.isRequired,
+  selectCategory: PropTypes.func.isRequired,
   removeCategory: PropTypes.func.isRequired,
   adminMod: PropTypes.bool.isRequired,
   uncheckDeleted: PropTypes.func.isRequired,
-  choosesCategories: PropTypes.arrayOf(PropTypes.number).isRequired,
+  selectedCategories: PropTypes.arrayOf(PropTypes.number).isRequired,
 };
 export default CategoriesList;
