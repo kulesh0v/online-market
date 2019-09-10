@@ -7,9 +7,10 @@ const PriceFilter = (props) => {
   return (
     <div style={{display: 'flex', marginTop: 12}}>
       <div style={{margin: 'auto'}}>
-        <InputNumber style={{marginRight: 2}} onChange={props.changeMin}
+        <InputNumber data-testid='minPrice' style={{marginRight: 2}} onChange={props.changeMin}
                      value={props.minPrice || props.minPrice}/>
-        <InputNumber style={{marginLeft: 2}} onChange={props.changeMax} value={props.maxPrice || props.maxPrice}/>
+        <InputNumber data-testid='maxPrice' style={{marginLeft: 2}} onChange={props.changeMax}
+                     value={props.maxPrice || props.maxPrice}/>
       </div>
     </div>
   )
