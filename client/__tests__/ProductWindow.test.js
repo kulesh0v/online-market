@@ -7,12 +7,18 @@ import axios from 'axios';
 import ProductWindow from '../components/windows/ProductWindow.js';
 import {IntlProvider} from 'react-intl';
 import messages from '../messages.js';
+import routes from '../routes.js';
 
 describe('ProductWindow', () => {
+  for (let propertyName in routes) {
+    if(typeof(routes[propertyName])!== 'function')
+      routes[propertyName] = 'http://localhost:3000' + routes[propertyName];
+  }
+
   test('should check that productWindow has name', async () => {
     let product = {};
 
-    await axios.get('http://localhost:3000/products')
+    await axios.get(routes.products)
       .then(res => {
         product = res.data.products[0];
       })
@@ -26,8 +32,8 @@ describe('ProductWindow', () => {
         }}
         editProduct={() => {
         }}
-        categoriesURL={'http://localhost:3000/categories'}
-        productURL={`http://localhost:3000/products/${product.id}`}
+        categoriesURL={routes.categories}
+        productURL={routes.productById(product.id)}
       />
     </IntlProvider>);
 
@@ -41,7 +47,7 @@ describe('ProductWindow', () => {
   test('should check that productWindow has price', async () => {
     let product = {};
 
-    await axios.get('http://localhost:3000/products')
+    await axios.get(routes.products)
       .then(res => {
         product = res.data.products[0];
       })
@@ -55,8 +61,8 @@ describe('ProductWindow', () => {
         }}
         editProduct={() => {
         }}
-        categoriesURL={'http://localhost:3000/categories'}
-        productURL={`http://localhost:3000/products/${product.id}`}
+        categoriesURL={routes.categories}
+        productURL={routes.productById(product.id)}
       />
     </IntlProvider>);
 
@@ -70,7 +76,7 @@ describe('ProductWindow', () => {
   test('should check that productWindow has amount', async () => {
     let product = {};
 
-    await axios.get('http://localhost:3000/products')
+    await axios.get(routes.products)
       .then(res => {
         product = res.data.products[0];
       })
@@ -84,8 +90,8 @@ describe('ProductWindow', () => {
         }}
         editProduct={() => {
         }}
-        categoriesURL={'http://localhost:3000/categories'}
-        productURL={`http://localhost:3000/products/${product.id}`}
+        categoriesURL={routes.categories}
+        productURL={routes.productById(product.id)}
       />
     </IntlProvider>);
 
@@ -99,7 +105,7 @@ describe('ProductWindow', () => {
   test('should check that productWindow has picture', async () => {
     let product = {};
 
-    await axios.get('http://localhost:3000/products')
+    await axios.get(routes.products)
       .then(res => {
         product = res.data.products[0];
       })
@@ -113,8 +119,8 @@ describe('ProductWindow', () => {
         }}
         editProduct={() => {
         }}
-        categoriesURL={'http://localhost:3000/categories'}
-        productURL={`http://localhost:3000/products/${product.id}`}
+        categoriesURL={routes.categories}
+        productURL={routes.productById(product.id)}
       />
     </IntlProvider>);
 

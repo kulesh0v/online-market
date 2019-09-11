@@ -18,6 +18,7 @@ import CategoryWindow from './windows/CategoryWindow.js';
 import Paginate from './Paginate.js';
 
 import {Layout} from 'antd'
+import routes from "../routes";
 
 const {Content, Footer} = Layout;
 
@@ -69,7 +70,7 @@ const Shop = (props) => {
     };
 
     const buy = () => {
-      axios.put('/products/buy', JSON.stringify(basket), {headers: {'Content-Type': 'application/json',}})
+      axios.put(props.routes.buy, JSON.stringify(basket), {headers: {'Content-Type': 'application/json',}})
         .then(() => {
           alert('Payment completed successfully');
           updateProducts(lastFilterConfig, pageNum);
@@ -81,7 +82,7 @@ const Shop = (props) => {
 
     function updateProducts(filterConfig, page) {
       page = page || 0;
-      let req = '/products?';
+      let req = props.routes.products + '?';
       req += queryString.stringify(filterConfig, {sort: false});
       req += `&page=${page}`;
       axios.cancelAll();
@@ -111,7 +112,7 @@ const Shop = (props) => {
     };
 
     const addProduct = (product) => {
-      axios.post('/products', JSON.stringify(product), {headers: {'Content-Type': 'application/json',}})
+      axios.post(props.routes.products, JSON.stringify(product), {headers: {'Content-Type': 'application/json',}})
         .then((res) => {
           alert(res.data);
           closeWindow();
@@ -123,7 +124,7 @@ const Shop = (props) => {
     };
 
     const editProduct = (product) => {
-      axios.put(`/products/${product.id}`, JSON.stringify(product), {headers: {'Content-Type': 'application/json',}})
+      axios.put(props.routes.productById(product.id), JSON.stringify(product), {headers: {'Content-Type': 'application/json',}})
         .then((res) => {
           alert(res.data);
           closeWindow();
@@ -137,7 +138,7 @@ const Shop = (props) => {
 
     const removeProduct = (id) => {
       if (confirm('Are you sure?')) {
-        axios.delete(`/products/${id}`)
+        axios.delete(props.routes.productById(id))
           .then((res) => {
             alert(res.data);
             updateProducts(lastFilterConfig, pageNum);
@@ -150,12 +151,12 @@ const Shop = (props) => {
     };
 
     const updateCategories = () => {
-      axios.get('/categories')
+      axios.get(props.routes.categories)
         .then(res => setCategories(res.data));
     };
 
     const addCategory = (category) => {
-      axios.post(`/categories`, JSON.stringify(category), {headers: {'Content-Type': 'application/json',}})
+      axios.post(props.routes.categories, JSON.stringify(category), {headers: {'Content-Type': 'application/json',}})
         .then((res) => {
           alert(res.data);
           updateCategories();
@@ -168,7 +169,7 @@ const Shop = (props) => {
     };
 
     const editCategory = (id, category) => {
-      axios.put(`/categories/${id}`, JSON.stringify(category), {headers: {'Content-Type': 'application/json',}})
+      axios.put(routes.categoryById(id), JSON.stringify(category), {headers: {'Content-Type': 'application/json',}})
         .then((res) => {
           alert(res.data);
           updateCategories();
@@ -182,7 +183,7 @@ const Shop = (props) => {
 
     const removeCategory = (id) => {
       if (confirm('If you delete a category, you will remove all products that it included\nAre you sure?')) {
-        axios.delete(`/categories/${id}`)
+        axios.delete(props.categoryById(id))
           .then((res) => {
             alert(res.data);
             updateCategories();
@@ -254,7 +255,7 @@ const Shop = (props) => {
                       addProduct={addProduct}
                       closeWindow={closeWindow}
                       editProduct={editProduct}
-                      categoriesURL={'/categories'}
+                      categoriesURL={props.routes.categories}
                     />
                   }/>
 
@@ -276,8 +277,8 @@ const Shop = (props) => {
                       addProduct={addProduct}
                       closeWindow={closeWindow}
                       editProduct={editProduct}
-                      productURL={`/products/${productId}`}
-                      categoriesURL={'/categories'}
+                      productURL={props.routes.productById(productId)}
+                      categoriesURL={props.routes.categories}
                     />
                   }
                   }/>
@@ -290,7 +291,7 @@ const Shop = (props) => {
                       closeWindow={closeWindow}
                       addCategory={addCategory}
                       editCategory={editCategory}
-                      categoryURL={`/categories/${categoryId}`}
+                      categoryURL={props.routes.categoryById(categoryId)}
                     />
                   }
                   }/>
@@ -321,6 +322,7 @@ const Shop = (props) => {
 
 Shop.propTypes = {
   messages: PropTypes.object.isRequired,
+  routes: PropTypes.object.isRequired,
 };
 
 export default Shop;

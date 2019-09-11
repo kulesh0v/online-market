@@ -7,11 +7,17 @@ import axios from 'axios';
 import CategoryWindow from '../components/windows/CategoryWindow.js';
 import {IntlProvider} from 'react-intl';
 import messages from '../messages.js';
+import routes from "../routes";
 
 describe('CategoryWindow', () => {
+  for (let propertyName in routes) {
+    if(typeof(routes[propertyName])!== 'function')
+      routes[propertyName] = 'http://localhost:3000' + routes[propertyName];
+  }
+
   test('should display category name', async () => {
     let categories;
-    await wait(() => axios.get('http://localhost:3000/categories')
+    await wait(() => axios.get(routes.categories)
       .then(res => {
         categories = res.data;
       })
@@ -28,7 +34,7 @@ describe('CategoryWindow', () => {
           }}
           editCategory={() => {
           }}
-          categoryURL={`http://localhost:3000/categories/${category.id}`}
+          categoryURL={routes.categoryById(category.id)}
         />
       </IntlProvider>);
 
