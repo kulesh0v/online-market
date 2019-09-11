@@ -290,7 +290,7 @@ const Shop = (props) => {
                       closeWindow={closeWindow}
                       addCategory={addCategory}
                       editCategory={editCategory}
-                      categoryURL={`/categories${categoryId}`}
+                      categoryURL={`/categories/${categoryId}`}
                     />
                   }
                   }/>

@@ -29,7 +29,7 @@ const CategoryWindow = (props) => {
     }
   };
 
-  if (!(!props.categoryURL || name !== '')) {
+  if (props.categoryURL && name === '') {
     return <div style={{display: 'flex'}}>
       <div style={{margin: 'auto'}}>
         <Spin size="large"/>
@@ -43,6 +43,7 @@ const CategoryWindow = (props) => {
         <Form style={{marginTop: 36}}>
           <Form.Item>
             <Input
+              data-testid="category-name"
               addonBefore={"Category name: "}
               value={name}
               onChange={(e) => setName(e.target.value)}/>
