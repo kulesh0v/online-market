@@ -40,18 +40,18 @@ const Product = (props) => {
         ]
         || [
 
-          <div onClick={reduceAmount} data-testid="reduce-button" onMouseDown={(e) => e.preventDefault()}>
+          <div onClick={reduceAmount} data-testid={`reduce-button-${props.product.id}`} onMouseDown={(e) => e.preventDefault()}>
             <Icon type="minus"/>
           </div>,
 
-          <div onClick={() => {
+          <div data-testid={`add-button-${props.product.id}`} onClick={() => {
             productCounter && props.addToBasket(props.product.id, productCounter);
             setUserWish(0);
           }}>
-            <FormattedMessage id={'add'}/>{` ${productCounter} `} <FormattedMessage id={'toBasket'}/>
+            <FormattedMessage id={'add'}/> {productCounter} <FormattedMessage id={'toBasket'}/>
           </div>,
 
-          <div onClick={increaseAmount} data-testid="increase-button" onMouseDown={(e) => e.preventDefault()}>
+          <div onClick={increaseAmount} data-testid={`increase-button-${props.product.id}`} onMouseDown={(e) => e.preventDefault()}>
             <Icon type="plus"/>
           </div>
         ]

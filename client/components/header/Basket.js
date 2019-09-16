@@ -13,7 +13,7 @@ const Basket = (props) => {
           <Card title={<span data-testid={`name-amount-${product.id}`}>{`${product.name} x ${product.amount}`}</span>} size={"small"}>
             <img style={{display: 'inline-block', marginRight: 12}} width={70} src={product.url}/>
             <span data-testid={`price-${product.price}`} style={{marginRight: 12, color: 'firebrick'}}>${product.price}</span>
-            <Button className={"clear-button"} onClick={() => props.removeFromBasket(product.id)}>
+            <Button data-testid={`delete-from-basket-button-${product.id}`} className={"clear-button"} onClick={() => props.removeFromBasket(product.id)}>
               <Icon type={'delete'}/>
             </Button>
           </Card>
@@ -43,7 +43,7 @@ const Basket = (props) => {
         !totalPrice &&
         <Menu.Item key={'empty'}>
           <div style={{display: 'flex'}}>
-            <span style={{margin: 'auto'}}>Empty</span>
+            <span data-testid="empty-basket" style={{margin: 'auto'}}>Empty</span>
           </div>
         </Menu.Item>
 

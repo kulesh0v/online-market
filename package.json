@@ -53,6 +53,7 @@
     "@babel/preset-env": "^7.5.5",
     "@babel/preset-react": "^7.0.0",
     "@babel/register": "^7.5.5",
+    "@testing-library/react-hooks": "^2.0.1",
     "babel-loader": "^8.0.0-beta.6",
     "babel-plugin-transform-runtime": "^6.23.0",
     "copy-webpack-plugin": "^5.0.4",
@@ -67,7 +68,9 @@
     "webpack-dev-middleware": "^3.7.0"
   },
   "nodemonConfig": {
-    "ignore": ["*.test.js"]
+    "ignore": [
+      "*.test.js"
+    ]
   },
   "type": "module"
 }

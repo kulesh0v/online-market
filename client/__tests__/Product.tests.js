@@ -91,16 +91,16 @@ describe('Product', () => {
         }}
       />
     </IntlProvider>);
-    fireEvent.click(getByTestId('increase-button'));
-    fireEvent.click(getByTestId('increase-button'));
+    fireEvent.click(getByTestId(`increase-button-${exampleProduct.id}`));
+    fireEvent.click(getByTestId(`increase-button-${exampleProduct.id}`));
     expect(getByText('Add 2 to basket') !== null).toBe(true);
-    fireEvent.click(getByTestId('increase-button'));
+    fireEvent.click(getByTestId(`increase-button-${exampleProduct.id}`));
     expect(getByText('Add 2 to basket') !== null).toBe(true);
-    fireEvent.click(getByTestId('reduce-button'));
+    fireEvent.click(getByTestId(`reduce-button-${exampleProduct.id}`));
     expect(getByText('Add 1 to basket') !== null).toBe(true);
-    fireEvent.click(getByTestId('reduce-button'));
+    fireEvent.click(getByTestId(`reduce-button-${exampleProduct.id}`));
     expect(getByText('Add 0 to basket') !== null).toBe(true);
-    fireEvent.click(getByTestId('reduce-button'));
+    fireEvent.click(getByTestId(`reduce-button-${exampleProduct.id}`));
     expect(getByText('Add 0 to basket') !== null).toBe(true);
   });
 
@@ -116,8 +116,8 @@ describe('Product', () => {
         }}
       />
     </IntlProvider>);
-    fireEvent.click(getByTestId('increase-button'));
-    fireEvent.click(getByTestId('increase-button'));
+    fireEvent.click(getByTestId(`increase-button-${exampleProduct.id}`));
+    fireEvent.click(getByTestId(`increase-button-${exampleProduct.id}`));
     fireEvent.click(getByText('Add 2 to basket'));
     expect(getByText('Add 0 to basket') !== null).toBe(true);
   });
