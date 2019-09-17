@@ -4,8 +4,8 @@ import '@testing-library/jest-dom/extend-expect'
 import "@babel/polyfill"
 import axios from 'axios';
 
-import messages from '../messages.js';
-import routes from '../routes.js';
+import messages from '../constants/messages.js';
+import routes from '../constants/routes.js';
 import Shop from "../components/Shop";
 
 describe('Shop', () => {

@@ -7,7 +7,7 @@ import {createBrowserHistory} from "history";
 
 import Filter from '../components/menu/filter/Filter.js';
 import {IntlProvider} from 'react-intl';
-import messages from '../messages.js';
+import messages from '../constants/messages.js';
 
 const history = createBrowserHistory();
 

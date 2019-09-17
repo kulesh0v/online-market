@@ -5,7 +5,7 @@ import "@babel/polyfill"
 
 import Product from '../components/products/Product.js';
 import {IntlProvider} from 'react-intl';
-import messages from '../messages.js';
+import messages from '../constants/messages.js';
 
 const exampleProduct = {
   id: '8',

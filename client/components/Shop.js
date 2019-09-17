@@ -18,7 +18,7 @@ import CategoryWindow from './windows/CategoryWindow.js';
 import Paginate from './Paginate.js';
 
 import {Layout} from 'antd'
-import routes from "../routes";
+import routes from "../constants/routes";
 
 const {Content, Footer} = Layout;
 

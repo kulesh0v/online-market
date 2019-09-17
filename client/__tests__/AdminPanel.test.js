@@ -7,7 +7,7 @@ import {createBrowserHistory} from "history";
 
 import AdminPanel from "../components/menu/AdminPanel.js";
 import {IntlProvider} from 'react-intl';
-import messages from '../messages.js';
+import messages from '../constants/messages.js';
 
 const history = createBrowserHistory();
 

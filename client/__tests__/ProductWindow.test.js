@@ -6,8 +6,8 @@ import axios from 'axios';
 
 import ProductWindow from '../components/windows/ProductWindow.js';
 import {IntlProvider} from 'react-intl';
-import messages from '../messages.js';
-import routes from '../routes.js';
+import messages from '../constants/messages.js';
+import routes from '../constants/routes.js';
 
 describe('ProductWindow', () => {
   for (let propertyName in routes) {

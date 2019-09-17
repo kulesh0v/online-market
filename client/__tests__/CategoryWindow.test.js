@@ -6,8 +6,8 @@ import axios from 'axios';
 
 import CategoryWindow from '../components/windows/CategoryWindow.js';
 import {IntlProvider} from 'react-intl';
-import messages from '../messages.js';
-import routes from "../routes";
+import messages from '../constants/messages.js';
+import routes from "../constants/routes";
 
 describe('CategoryWindow', () => {
   for (let propertyName in routes) {
