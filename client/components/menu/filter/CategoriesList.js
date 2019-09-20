@@ -25,7 +25,7 @@ const CategoriesList = (props) => {
             </Checkbox>
 
             {
-              props.adminMod &&
+              props.adminMode &&
               <span>
                 <Link to={`/editCategory/${category.id}`}>
                   <Button className="clear-button" style={{marginRight: 6}}>
@@ -51,7 +51,7 @@ CategoriesList.propTypes = {
   categories: PropTypes.array.isRequired,
   selectCategory: PropTypes.func.isRequired,
   removeCategory: PropTypes.func.isRequired,
-  adminMod: PropTypes.bool.isRequired,
+  adminMode: PropTypes.bool.isRequired,
   uncheckDeleted: PropTypes.func.isRequired,
   selectedCategories: PropTypes.arrayOf(PropTypes.number).isRequired,
 };

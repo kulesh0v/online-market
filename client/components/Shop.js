@@ -32,7 +32,7 @@ axiosCancel(axios, {
 const Shop = (props) => {
     const [products, setProducts] = useState([]);
     const [categories, setCategories] = useState([]);
-    const [adminMod, setAdminMod] = useState(false);
+    const [adminMode, setAdminMode] = useState(false);
     const [lastFilterConfig, setLastFilterConfig] = useState(undefined);
     const [locale, setLocale] = useState('en');
     const [productsAmount, setProductsAmount] = useState(0);
@@ -201,7 +201,7 @@ const Shop = (props) => {
         return (
           <ProductList
             products={products}
-            adminMod={adminMod}
+            adminMod={adminMode}
             removeProduct={removeProduct}
             addToBasket={addToBasket}
             basket={basket}
@@ -218,13 +218,7 @@ const Shop = (props) => {
 
           <Layout>
 
-            <Sidebar
-              categories={categories}
-              setAdminMod={setAdminMod}
-              adminMod={adminMod}
-              removeCategory={removeCategory}
-              collapsed={collapsed}
-              setCollapsed={setCollapsed}/>
+            <Sidebar/>
 
             <Layout>
 

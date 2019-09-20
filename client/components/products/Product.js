@@ -32,7 +32,7 @@ const Product = (props) => {
       title={props.product.name}
       cover={<img alt="product photo" src={props.product.url}/>}
       actions={
-        props.adminMod && [
+        props.adminMode && [
           <Link to={`/editProduct/${props.product.id}`} key="setting">
             <Icon type="edit"/>
           </Link>,

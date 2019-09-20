@@ -89,7 +89,7 @@ const Filter = (props) => {
       <CategoriesList
         categories={props.categories}
         selectCategory={selectCategory}
-        adminMod={props.adminMod}
+        adminMode={props.adminMode}
         removeCategory={props.removeCategory}
         uncheckDeleted={uncheckDeleted}
         selectedCategories={selectedCategories}/>
@@ -99,7 +99,7 @@ const Filter = (props) => {
 
 Filter.propTypes = {
   categories: PropTypes.array.isRequired,
-  adminMod: PropTypes.bool.isRequired,
+  adminMode: PropTypes.bool.isRequired,
   removeCategory: PropTypes.func.isRequired,
 };
 export default Filter;

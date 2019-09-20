@@ -1,10 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-
+import {Provider} from 'react-redux'
 import './index.css';
+import App from './containers/App.js';
+import store from './store.js';
 
-import messages from './messages.js';
-import routes from './routes.js';
-import Shop from './components/Shop.js';
 
-ReactDOM.render((<Shop messages={messages} routes={routes}/>), document.getElementById('root'));
+ReactDOM.render((
+  <Provider store={store}>
+    <App/>
+  </Provider>
+), document.getElementById('root'));

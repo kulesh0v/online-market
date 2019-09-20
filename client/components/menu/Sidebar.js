@@ -8,15 +8,14 @@ import {Layout, Row, Col, Button, Icon, Typography} from 'antd'
 const {Sider} = Layout;
 const {Text} = Typography;
 
-const Sidebar = (props) => {
-
+const Sidebar = ({setCollapsed, setAdminMode, collapsed, categories, filter, adminMode, removeCategory}) => {
   return (
     <Sider
       trigger={null}
       width={240}
       collapsedWidth="0"
       theme={'light'}
-      collapsible collapsed={props.collapsed}
+      collapsible collapsed={collapsed}
     >
       <Link to={'/'}>
         <Button className={'clear-button'} style={{fontSize: 18, marginLeft: 18, marginTop: 16}}>
@@ -25,21 +24,21 @@ const Sidebar = (props) => {
       </Link>
 
       <Filter
-        categories={props.categories}
-        filter={props.filter}
-        adminMod={props.adminMod}
-        removeCategory={props.removeCategory}
-        history={props.history}
+        categories={categories}
+        filter={filter}
+        adminMode={adminMode}
+        removeCategory={removeCategory}
+        history={history}
       />
       <AdminPanel
-        setAdminMod={props.setAdminMod}
-        adminMod={props.adminMod}
+        setAdminMode={setAdminMode}
+        adminMode={adminMode}
       />
 
       <Row>
         <Col offset={2} span={20}>
           <Button style={{marginTop: 20, fontSize: 18, width: '100%'}}
-                  onClick={() => props.setCollapsed(true)}>
+                  onClick={() => setCollapsed()}>
             <Icon type={"left"}/>
           </Button>
         </Col>
@@ -51,11 +50,10 @@ const Sidebar = (props) => {
 
 Sidebar.propTypes = {
   categories: PropTypes.array.isRequired,
-  setAdminMod: PropTypes.func.isRequired,
-  adminMod: PropTypes.bool.isRequired,
-  removeCategory: PropTypes.func.isRequired,
+  adminMode: PropTypes.bool.isRequired,
   collapsed: PropTypes.bool.isRequired,
+  removeCategory: PropTypes.func.isRequired,
+  setAdminMode: PropTypes.func.isRequired,
   setCollapsed: PropTypes.func.isRequired,
 };
-
 export default Sidebar;

@@ -26,8 +26,8 @@ const AdminPanel = (props) => {
               <span style={{marginRight: 12}}>Admin mode</span>
               <Switch checkedChildren={'On'}
                       unCheckedChildren={'Off'}
-                      defaultChecked={props.adminMod}
-                      onChange={() => props.setAdminMod(!props.adminMod)}
+                      defaultChecked={props.adminMode}
+                      onChange={() => props.setAdminMode(!props.adminMode)}
               />
               </span>
       </div>
@@ -58,8 +58,8 @@ const AdminPanel = (props) => {
 };
 
 AdminPanel.propTypes = {
-  setAdminMod: PropTypes.func.isRequired,
-  adminMod: PropTypes.bool.isRequired,
+  setAdminMode: PropTypes.func.isRequired,
+  adminMode: PropTypes.bool.isRequired,
 };
 
 export default AdminPanel;

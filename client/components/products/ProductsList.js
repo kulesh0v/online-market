@@ -11,7 +11,7 @@ const ProductList = (props) => {
           <Col xs={24} sm={12} md={8} lg={8} xl={6} xxl={6} key={product.id}>
             <Product
               product={product}
-              adminMod={props.adminMod}
+              adminMod={props.adminMode}
               removeProduct={props.removeProduct}
               addToBasket={props.addToBasket}
               basket={props.basket}
