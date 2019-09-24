@@ -3,10 +3,10 @@ import {Link} from 'react-router-dom';
 import {Button, Menu, Layout, Icon, Col, Row} from 'antd'
 import {Typography} from 'antd';
 import Basket from "./Basket";
-import {toggleSidebar as actionToggleSidebar} from "../../actions/sidebar";
-import {setLocale as actionSetLocale} from "../../actions/global";
-import {removeFromBasket as actionRemoveFromBasket} from "../../actions/basket";
-import {buy as actionBuy} from "../../actions/basket";
+import {toggleSidebar as actionToggleSidebar} from "../../store/actions/sidebar";
+import {setLocale as actionSetLocale} from "../../store/actions/global";
+import {removeFromBasket as actionRemoveFromBasket} from "../../store/actions/basket";
+import {buy as actionBuy} from "../../store/actions/basket";
 import {useDispatch, useSelector} from 'react-redux'
 
 const {Text} = Typography;

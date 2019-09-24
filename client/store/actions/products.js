@@ -1,7 +1,7 @@
 import queryString from 'query-string';
-import {SET_LAST_FILTER_CONFIG, SET_PAGE_NUM, SET_PRODUCTS, SET_PRODUCTS_AMOUNT} from "../constants/actionTypes";
+import {SET_LAST_FILTER_CONFIG, SET_PAGE_NUM, SET_PRODUCTS, SET_PRODUCTS_AMOUNT} from "../actionTypes";
 import axios from "axios";
-import routes from '../constants/routes.js';
+import routes from '../../constants/routes.js';
 import {createBrowserHistory} from 'history';
 
 const history = createBrowserHistory();

@@ -4,8 +4,8 @@ import AdminPanel from './AdminPanel.js';
 import {Link} from 'react-router-dom';
 import {Layout, Row, Col, Button, Icon, Typography} from 'antd'
 import {useDispatch, useSelector} from 'react-redux'
-import {toggleAdminMod as actionToggleAdminMode, toggleSidebar as actionToggleSideBar} from "../../actions/sidebar";
-import {removeCategory} from "../../actions/categories";
+import {toggleAdminMod as actionToggleAdminMode, toggleSidebar as actionToggleSideBar} from "../../store/actions/sidebar";
+import {removeCategory} from "../../store/actions/categories";
 
 const {Sider} = Layout;
 const {Text} = Typography;

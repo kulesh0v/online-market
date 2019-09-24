@@ -6,8 +6,8 @@ import axios from 'axios';
 
 import App from "../components/App.js";
 import {Provider} from 'react-redux'
-import store from '../store.js';
-import {SET_ROUTES} from "../constants/actionTypes";
+import store from '../store/store.js';
+import {SET_ROUTES} from "../store/actionTypes";
 
 
 describe('Shop', () => {

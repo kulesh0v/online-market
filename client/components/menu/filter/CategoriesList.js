@@ -32,11 +32,13 @@ const CategoriesList = (props) => {
                     <FontAwesomeIcon icon={"edit"} color={"grey"} size={'sm'}/>
                   </Button>
                 </Link>
-                  <Button className="clear-button"
-                          onClick={() => {
-                            props.removeCategory(category.id);
-                            props.uncheckDeleted(category.id);
-                          }}>
+                  <Button
+                    className="clear-button"
+                    onClick={() => {
+                      props.removeCategory(category.id);
+                      props.uncheckDeleted(category.id);
+                    }}
+                  >
                     <FontAwesomeIcon icon={"trash-alt"} color={"grey"} size={'sm'}/>
                   </Button>
                 </span>

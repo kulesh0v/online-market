@@ -1,6 +1,6 @@
 import axios from 'axios';
-import {SET_CATEGORIES} from '../constants/actionTypes';
-import routes from '../constants/routes.js';
+import {SET_CATEGORIES} from '../actionTypes';
+import routes from '../../constants/routes.js';
 import {getProducts} from './products.js';
 
 export function getCategories() {

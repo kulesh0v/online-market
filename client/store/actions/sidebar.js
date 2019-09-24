@@ -1,4 +1,4 @@
-import {TOGGLE_ADMIN_PANEL, TOGGLE_SIDEBAR, TOGGLE_ADMIN_MODE} from '../constants/actionTypes.js';
+import {TOGGLE_ADMIN_PANEL, TOGGLE_SIDEBAR, TOGGLE_ADMIN_MODE} from '../actionTypes.js';
 
 export function toggleSidebar() {
   return {

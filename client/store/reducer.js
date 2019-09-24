@@ -10,7 +10,7 @@ import {
   SET_PAGE_NUM,
   SET_PRODUCTS_AMOUNT,
   SET_BASKET,
-} from './constants/actionTypes.js';
+} from './actionTypes.js';
 
 export default function (state = {}, action) {
   switch (action.type) {

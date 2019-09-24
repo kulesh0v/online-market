@@ -7,14 +7,14 @@ import {Layout} from 'antd'
 import queryString from 'query-string';
 import NavigationBar from "./header/NavigationBar.js";
 import CategoryWindow from './windows/CategoryWindow.js';
-import {addCategory as actionAddCategory, editCategory as actionEditCategory} from "../actions/categories";
-import {getProducts as actionGetProducts} from "../actions/products.js";
+import {addCategory as actionAddCategory, editCategory as actionEditCategory} from "../store/actions/categories";
+import {getProducts as actionGetProducts} from "../store/actions/products.js";
 import Sidebar from './menu/Sidebar.js';
 import {useDispatch, useSelector} from 'react-redux'
 import ProductList from "./products/ProductsList";
 import Paginate from './Paginate.js';
 import ProductWindow from './windows/ProductWindow.js';
-import {addProduct as actionAddProduct, editProduct as actionEditProduct} from "../actions/products";
+import {addProduct as actionAddProduct, editProduct as actionEditProduct} from "../store/actions/products";
 
 
 const {Content, Footer} = Layout;

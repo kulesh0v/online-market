@@ -2,8 +2,8 @@ import React from 'react'
 import Product from "./Product";
 import {Row, Col} from 'antd';
 import {useSelector, useDispatch} from 'react-redux';
-import {removeProduct as actionRemoveProduct} from "../../actions/products";
-import {addToBasket as actionAddToBasket} from "../../actions/basket";
+import {removeProduct as actionRemoveProduct} from "../../store/actions/products";
+import {addToBasket as actionAddToBasket} from "../../store/actions/basket";
 
 
 const ProductList = () => {

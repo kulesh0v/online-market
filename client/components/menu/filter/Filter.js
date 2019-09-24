@@ -92,7 +92,8 @@ const Filter = (props) => {
         adminMode={props.adminMode}
         removeCategory={props.removeCategory}
         uncheckDeleted={uncheckDeleted}
-        selectedCategories={selectedCategories}/>
+        selectedCategories={selectedCategories}
+      />
     </div>
   );
 };

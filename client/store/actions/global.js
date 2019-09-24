@@ -1,4 +1,4 @@
-import {SET_LOCALE} from "../constants/actionTypes";
+import {SET_LOCALE} from "../actionTypes";
 
 export function setLocale(locale) {
   return {

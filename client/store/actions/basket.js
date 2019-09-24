@@ -1,4 +1,4 @@
-import {SET_BASKET} from "../constants/actionTypes";
+import {SET_BASKET} from "../actionTypes";
 import axios from "axios/index";
 import {getProducts} from "./products";
 
@@ -18,7 +18,6 @@ export function addToBasket(id, amount) {
 
     }
     dispatch({type: SET_BASKET, basket: basket});
-    localStorage.setItem('omBasket', JSON.stringify(basket));
   }
 }
 
@@ -27,7 +26,6 @@ export function removeFromBasket(id) {
     const basket = getState().basket;
     basket.splice(basket.findIndex(p => p.id === id), 1);
     dispatch({type: SET_BASKET, basket: basket});
-    localStorage.setItem('omBasket', JSON.stringify(basket));
   }
 }
 
@@ -39,7 +37,6 @@ export function buy() {
         alert('Payment completed successfully');
         dispatch(getProducts(lastFilterConfig, pageNum));
         dispatch({type: SET_BASKET, basket: []});
-        localStorage.setItem('omBasket', JSON.stringify([]));
       })
       .catch((err) => alert(err));
   }
