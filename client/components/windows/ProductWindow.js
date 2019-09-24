@@ -110,7 +110,7 @@ const ProductWindow = (props) => {
 
           <Form.Item>
             <Input value={url}
-                   onChange={(e) => setName(e.target.value)}
+                   onChange={(e) => setUrl(e.target.value)}
                    addonBefore={<Icon type={'picture'}/>}/>
           </Form.Item>
 

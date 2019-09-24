@@ -1,14 +1,32 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import Filter from './filter/Filter.js';
 import AdminPanel from './AdminPanel.js';
 import {Link} from 'react-router-dom';
 import {Layout, Row, Col, Button, Icon, Typography} from 'antd'
+import {useDispatch, useSelector} from 'react-redux'
+import {toggleAdminMod as actionToggleAdminMode, toggleSidebar as actionToggleSideBar} from "../../actions/sidebar";
+import {removeCategory} from "../../actions/categories";
 
 const {Sider} = Layout;
 const {Text} = Typography;
 
-const Sidebar = ({setCollapsed, setAdminMode, collapsed, categories, filter, adminMode, removeCategory}) => {
+const Sidebar = () => {
+
+  const collapsed = useSelector(state => !state.visibilitySidebar);
+  const categories = useSelector(state => state.categories);
+  const adminMode = useSelector(state => state.adminMode);
+
+  const dispatch = useDispatch();
+  const toggleSidebar = () => {
+    dispatch(actionToggleSideBar());
+  };
+  const toggleAdminMode = () => {
+    dispatch(actionToggleAdminMode());
+  };
+  const removeCategoryById = (id) => {
+    dispatch(removeCategory(id))
+  };
+
   return (
     <Sider
       trigger={null}
@@ -25,20 +43,18 @@ const Sidebar = ({setCollapsed, setAdminMode, collapsed, categories, filter, adm
 
       <Filter
         categories={categories}
-        filter={filter}
         adminMode={adminMode}
-        removeCategory={removeCategory}
-        history={history}
+        removeCategory={removeCategoryById}
       />
       <AdminPanel
-        setAdminMode={setAdminMode}
+        toggleAdminMode={toggleAdminMode}
         adminMode={adminMode}
       />
 
       <Row>
         <Col offset={2} span={20}>
           <Button style={{marginTop: 20, fontSize: 18, width: '100%'}}
-                  onClick={() => setCollapsed()}>
+                  onClick={() => toggleSidebar()}>
             <Icon type={"left"}/>
           </Button>
         </Col>
@@ -48,12 +64,4 @@ const Sidebar = ({setCollapsed, setAdminMode, collapsed, categories, filter, adm
   )
 };
 
-Sidebar.propTypes = {
-  categories: PropTypes.array.isRequired,
-  adminMode: PropTypes.bool.isRequired,
-  collapsed: PropTypes.bool.isRequired,
-  removeCategory: PropTypes.func.isRequired,
-  setAdminMode: PropTypes.func.isRequired,
-  setCollapsed: PropTypes.func.isRequired,
-};
 export default Sidebar;

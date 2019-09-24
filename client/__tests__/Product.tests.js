@@ -38,7 +38,7 @@ describe('Product', () => {
         product={exampleProduct}
         addToBasket={() => {
         }}
-        adminMod={false}
+        adminMode={false}
         basket={[]}
         removeProduct={() => {
         }}
