@@ -32,7 +32,7 @@ export function removeFromBasket(id) {
 export function buy() {
   return (dispatch, getState) => {
     const {lastFilterConfig, pageNum, basket} = getState();
-    axios.put(props.routes.buy, JSON.stringify(basket), {headers: {'Content-Type': 'application/json',}})
+    axios.put(getState().routes.buy, JSON.stringify(basket), {headers: {'Content-Type': 'application/json',}})
       .then(() => {
         alert('Payment completed successfully');
         dispatch(getProducts(lastFilterConfig, pageNum));
