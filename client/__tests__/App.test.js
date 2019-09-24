@@ -4,18 +4,26 @@ import '@testing-library/jest-dom/extend-expect'
 import "@babel/polyfill"
 import axios from 'axios';
 
-import messages from '../constants/messages.js';
-import routes from '../constants/routes.js';
-import Shop from "../components/Shop";
+import App from "../components/App.js";
+import {Provider} from 'react-redux'
+import store from '../store.js';
+import {SET_ROUTES} from "../constants/actionTypes";
+
 
 describe('Shop', () => {
+  const routes = store.getState().routes;
   for (let propertyName in routes) {
     if (typeof(routes[propertyName]) !== 'function')
       routes[propertyName] = 'http://localhost:3000' + routes[propertyName];
   }
+  store.dispatch({type: SET_ROUTES, routes});
+
 
   test('should add products to basket', async () => {
-    const {getByTestId} = await render(<Shop messages={messages} routes={routes}/>);
+    const {getByTestId} = await render(
+      <Provider store={store}>
+        <App/>
+      </Provider>);
 
     let products;
     await axios.get(routes.products + '?page=0').then(res => {
@@ -23,7 +31,6 @@ describe('Shop', () => {
     }).catch(() => {
       console.log('WRONG TEST');
     });
-    console.table(products);
 
     await wait(() => {
       getByTestId(`increase-button-${products[0].id}`);
@@ -44,7 +51,10 @@ describe('Shop', () => {
   });
 
   test('should delete products from basket', async () => {
-    const {getByTestId} = await render(<Shop messages={messages} routes={routes}/>);
+    const {getByTestId} = await render(
+      <Provider store={store}>
+        <App/>
+      </Provider>);
 
     let products;
     await axios.get(routes.products + '?page=0').then(res => {

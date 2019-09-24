@@ -8,7 +8,6 @@ export function getCategories() {
   return dispatch =>
     axios.get(routes.categories)
       .then(res => {
-        console.table(res.data);
         dispatch({
           type: SET_CATEGORIES,
           categories: res.data,
