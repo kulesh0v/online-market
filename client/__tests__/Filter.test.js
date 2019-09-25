@@ -10,31 +10,31 @@ import {IntlProvider} from 'react-intl';
 import messages from '../constants/messages.js';
 
 const history = createBrowserHistory();
+const categories = [
+  {
+    id: 1,
+    name: '0_0',
+  },
+  {
+    id: 2,
+    name: '()_()',
+  }
+];
 
 describe('Filter', () => {
-  const categories = [
-    {
-      id: 1,
-      name: '0_0',
-    },
-    {
-      id: 2,
-      name: '()_()',
-    }
-  ];
-  const minPrice = '220';
-  const maxPrice = '400';
-  const uprice ='uprice';
-  const dprice='dprice';
-
+  beforeEach(() => {
+    window.history.pushState({}, '', '/')
+  });
 
   test('should change filter prices', () => {
+    const minPrice = '220';
+    const maxPrice = '400';
     const {getByTestId} = render(
       <Router history={history}>
         <IntlProvider locale={'en'} messages={messages['en']}>
           <Filter
             categories={categories}
-            adminMod={false}
+            adminMode={false}
             removeCategory={() => {
             }}
           />
@@ -59,7 +59,7 @@ describe('Filter', () => {
         <IntlProvider locale={'en'} messages={messages['en']}>
           <Filter
             categories={categories}
-            adminMod={false}
+            adminMode={false}
             removeCategory={() => {
             }}
           />
@@ -68,27 +68,29 @@ describe('Filter', () => {
     );
 
     fireEvent.click(getByTestId(`checkbox-${categories[0].id}`));
-    expect(location.search).toBe(`?categoryId=${categories[0].id}&maxPrice=${maxPrice}&minPrice=${minPrice}`);
+    expect(location.search).toBe(`?categoryId=${categories[0].id}`);
 
     fireEvent.click(getByTestId(`checkbox-${categories[1].id}`));
     expect(location.search)
-      .toBe(`?categoryId=${categories[0].id}&categoryId=${categories[1].id}&maxPrice=${maxPrice}&minPrice=${minPrice}`);
+      .toBe(`?categoryId=${categories[0].id}&categoryId=${categories[1].id}`);
 
     fireEvent.click(getByTestId(`checkbox-${categories[0].id}`));
-    expect(location.search).toBe(`?categoryId=${categories[1].id}&maxPrice=${maxPrice}&minPrice=${minPrice}`);
+    expect(location.search).toBe(`?categoryId=${categories[1].id}`);
 
     fireEvent.click(getByTestId(`checkbox-${categories[1].id}`));
-    expect(location.search).toBe(`?maxPrice=${maxPrice}&minPrice=${minPrice}`);
+    expect(location.search).toBe(``);
 
   });
 
   test('should change sort type', () => {
+    const uprice = 'uprice';
+    const dprice = 'dprice';
     const {getByTestId} = render(
       <Router history={history}>
         <IntlProvider locale={'en'} messages={messages['en']}>
           <Filter
             categories={categories}
-            adminMod={false}
+            adminMode={false}
             removeCategory={() => {
             }}
           />
@@ -97,13 +99,13 @@ describe('Filter', () => {
     );
 
     fireEvent.click(getByTestId('sort-type-price'));
-    expect(location.search).toBe(`?maxPrice=${maxPrice}&minPrice=${minPrice}&sortType=${uprice}`);
+    expect(location.search).toBe(`?sortType=${uprice}`);
 
     fireEvent.click(getByTestId('sort-type-price'));
-    expect(location.search).toBe(`?maxPrice=${maxPrice}&minPrice=${minPrice}&sortType=${dprice}`);
+    expect(location.search).toBe(`?sortType=${dprice}`);
 
     fireEvent.click(getByTestId('sort-type-new'));
-    expect(location.search).toBe(`?maxPrice=${maxPrice}&minPrice=${minPrice}&sortType`);
+    expect(location.search).toBe(`?sortType`);
 
   });
 

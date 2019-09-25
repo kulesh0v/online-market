@@ -10,10 +10,12 @@ import messages from '../constants/messages.js';
 import routes from "../constants/routes";
 
 describe('CategoryWindow', () => {
-  for (let propertyName in routes) {
-    if(typeof(routes[propertyName])!== 'function')
-      routes[propertyName] = 'http://localhost:3000' + routes[propertyName];
-  }
+  beforeAll(() => {
+    for (let propertyName in routes) {
+      if (typeof (routes[propertyName]) !== 'function')
+        routes[propertyName] = 'http://localhost:3000' + routes[propertyName];
+    }
+  });
 
   test('should display category name', async () => {
     let categories;
@@ -38,7 +40,7 @@ describe('CategoryWindow', () => {
         />
       </IntlProvider>);
 
-    await wait(()=>{
+    await wait(() => {
       getByTestId('category-name');
     });
 

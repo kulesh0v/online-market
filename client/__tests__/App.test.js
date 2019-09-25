@@ -10,13 +10,15 @@ import store from '../store/store.js';
 import {SET_ROUTES} from "../store/actionTypes";
 
 
-describe('Shop', () => {
-  const routes = store.getState().routes;
-  for (let propertyName in routes) {
-    if (typeof(routes[propertyName]) !== 'function')
-      routes[propertyName] = 'http://localhost:3000' + routes[propertyName];
-  }
-  store.dispatch({type: SET_ROUTES, routes});
+describe('App', () => {
+  beforeAll(() => {
+    const routes = store.getState().routes;
+    for (let propertyName in routes) {
+      if (typeof (routes[propertyName]) !== 'function')
+        routes[propertyName] = 'http://localhost:3000' + routes[propertyName];
+    }
+    store.dispatch({type: SET_ROUTES, routes});
+  });
 
 
   test('should add products to basket', async () => {
@@ -26,7 +28,7 @@ describe('Shop', () => {
       </Provider>);
 
     let products;
-    await axios.get(routes.products + '?page=0').then(res => {
+    await axios.get(store.getState().routes.products + '?page=0').then(res => {
       products = res.data.products;
     }).catch(() => {
       console.log('WRONG TEST');
@@ -57,7 +59,7 @@ describe('Shop', () => {
       </Provider>);
 
     let products;
-    await axios.get(routes.products + '?page=0').then(res => {
+    await axios.get(store.getState().routes.products + '?page=0').then(res => {
       products = res.data.products;
     }).catch(() => {
       console.log('WRONG TEST');

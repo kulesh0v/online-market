@@ -16,8 +16,11 @@ describe('AdminPanel', () => {
     const {getByTestId} = render(
       <Router history={history}>
         <IntlProvider locale={'en'} messages={messages['en']}>
-          <AdminPanel setAdminMod={() => {
-          }} adminMod={false}/>
+          <AdminPanel
+            toggleAdminMode={() => {
+            }}
+            adminMode={false}
+          />
         </IntlProvider>
       </Router>
     );
@@ -31,9 +34,10 @@ describe('AdminPanel', () => {
       <Router history={history}>
         <IntlProvider locale={'en'} messages={messages['en']}>
           <AdminPanel
-            setAdminMod={() => {
+            toggleAdminMode={() => {
             }}
-            adminMod={false}/>
+            adminMode={false}
+          />
         </IntlProvider>
       </Router>
     );
@@ -47,9 +51,10 @@ describe('AdminPanel', () => {
       <Router history={history}>
         <IntlProvider locale={'en'} messages={messages['en']}>
           <AdminPanel
-            setAdminMod={() => {
+            toggleAdminMode={() => {
             }}
-            adminMod={false}/>
+            adminMode={false}
+          />
         </IntlProvider>
       </Router>
     );

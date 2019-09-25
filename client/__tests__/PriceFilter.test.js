@@ -6,10 +6,9 @@ import "@babel/polyfill"
 import PriceFilter from '../components/menu/filter/PriceFilter.js';
 
 describe('PriceFilter', () => {
-  const minPrice = '220';
-  const maxPrice = '400';
-
   test('should check that filter prices are displayed correctly', () => {
+    const minPrice = '220';
+    const maxPrice = '400';
     const {getByTestId} = render(
       <PriceFilter
         changeMax={() => {

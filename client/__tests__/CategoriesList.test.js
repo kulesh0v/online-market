@@ -5,30 +5,32 @@ import "@babel/polyfill"
 
 import CategoriesList from '../components/menu/filter/CategoriesList.js';
 
+const categories = [
+  {
+    id: '1',
+    name: '0_0',
+  },
+  {
+    id: '2',
+    name: '()_()',
+  }
+];
+
 describe('CategoriesList', () => {
-
-  const categories = [
-    {
-      id: '1',
-      name: '0_0',
-    },
-    {
-      id: '2',
-      name: '()_()',
-    }
-  ];
-
   test('should check that all categories are displayed', () => {
-    const {getByText} = render(<CategoriesList
-      categories={categories}
-      selectCategory={() => {
-      }}
-      removeCategory={() => {
-      }}
-      adminMod={false}
-      uncheckDeleted={() => {
-      }}
-      selectedCategories={[]}/>);
+    const {getByText} = render(
+      <CategoriesList
+        categories={categories}
+        selectCategory={() => {
+        }}
+        removeCategory={() => {
+        }}
+        adminMode={false}
+        uncheckDeleted={() => {
+        }}
+        selectedCategories={[]}
+      />
+    );
     categories.forEach(category => {
       expect(getByText(category.name) !== null);
     });

@@ -13,10 +13,7 @@ export function getProducts(filterConfig, page) {
       lastFilterConfig: filterConfig,
     });
     page = page || 0;
-    let req = routes.products + '?';
-    req += queryString.stringify(filterConfig, {sort: false});
-    req += `&page=${page}`;
-    axios.get(req)
+    axios.get(routes.products + '?' + queryString.stringify({...filterConfig,page}, {sort: false}))
       .then(res => {
         dispatch({
           type: SET_PAGE_NUM,

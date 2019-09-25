@@ -11,7 +11,7 @@ import routes from '../constants/routes.js';
 
 describe('ProductWindow', () => {
   for (let propertyName in routes) {
-    if(typeof(routes[propertyName])!== 'function')
+    if (typeof (routes[propertyName]) !== 'function')
       routes[propertyName] = 'http://localhost:3000' + routes[propertyName];
   }
 
@@ -24,18 +24,20 @@ describe('ProductWindow', () => {
       })
       .catch(() => console.log('WRONG TEST'));
 
-    const component = await render(<IntlProvider locale={'en'} messages={messages['en']}>
-      <ProductWindow
-        closeWindow={() => {
-        }}
-        addProduct={() => {
-        }}
-        editProduct={() => {
-        }}
-        categoriesURL={routes.categories}
-        productURL={routes.productById(product.id)}
-      />
-    </IntlProvider>);
+    const component = await render(
+      <IntlProvider locale={'en'} messages={messages['en']}>
+        <ProductWindow
+          closeWindow={() => {
+          }}
+          addProduct={() => {
+          }}
+          editProduct={() => {
+          }}
+          categoriesURL={routes.categories}
+          productURL={routes.productById(product.id)}
+        />
+      </IntlProvider>
+    );
 
     await wait(() => {
       component.getByText('Name');
@@ -53,18 +55,20 @@ describe('ProductWindow', () => {
       })
       .catch(() => console.log('WRONG TEST'));
 
-    const component = await render(<IntlProvider locale={'en'} messages={messages['en']}>
-      <ProductWindow
-        closeWindow={() => {
-        }}
-        addProduct={() => {
-        }}
-        editProduct={() => {
-        }}
-        categoriesURL={routes.categories}
-        productURL={routes.productById(product.id)}
-      />
-    </IntlProvider>);
+    const component = await render(
+      <IntlProvider locale={'en'} messages={messages['en']}>
+        <ProductWindow
+          closeWindow={() => {
+          }}
+          addProduct={() => {
+          }}
+          editProduct={() => {
+          }}
+          categoriesURL={routes.categories}
+          productURL={routes.productById(product.id)}
+        />
+      </IntlProvider>
+    );
 
     await wait(() => {
       component.getByText('Price $');
@@ -82,18 +86,20 @@ describe('ProductWindow', () => {
       })
       .catch(() => console.log('WRONG TEST'));
 
-    const component = await render(<IntlProvider locale={'en'} messages={messages['en']}>
-      <ProductWindow
-        closeWindow={() => {
-        }}
-        addProduct={() => {
-        }}
-        editProduct={() => {
-        }}
-        categoriesURL={routes.categories}
-        productURL={routes.productById(product.id)}
-      />
-    </IntlProvider>);
+    const component = await render(
+      <IntlProvider locale={'en'} messages={messages['en']}>
+        <ProductWindow
+          closeWindow={() => {
+          }}
+          addProduct={() => {
+          }}
+          editProduct={() => {
+          }}
+          categoriesURL={routes.categories}
+          productURL={routes.productById(product.id)}
+        />
+      </IntlProvider>
+    );
 
     await wait(() => {
       component.getByText('Amount');
@@ -111,18 +117,20 @@ describe('ProductWindow', () => {
       })
       .catch(() => console.log('WRONG TEST'));
 
-    const component = await render(<IntlProvider locale={'en'} messages={messages['en']}>
-      <ProductWindow
-        closeWindow={() => {
-        }}
-        addProduct={() => {
-        }}
-        editProduct={() => {
-        }}
-        categoriesURL={routes.categories}
-        productURL={routes.productById(product.id)}
-      />
-    </IntlProvider>);
+    const component = await render(
+      <IntlProvider locale={'en'} messages={messages['en']}>
+        <ProductWindow
+          closeWindow={() => {
+          }}
+          addProduct={() => {
+          }}
+          editProduct={() => {
+          }}
+          categoriesURL={routes.categories}
+          productURL={routes.productById(product.id)}
+        />
+      </IntlProvider>
+    );
 
     await wait(() => {
       component.getByText('Amount');

@@ -18,79 +18,89 @@ const exampleProduct = {
 
 describe('Product', () => {
   test('should check that product has name', () => {
-    const {getByText} = render(<IntlProvider locale={'en'} messages={messages['en']}>
-      <Product
-        product={exampleProduct}
-        addToBasket={() => {
-        }}
-        adminMod={false}
-        basket={[]}
-        removeProduct={() => {
-        }}
-      />
-    </IntlProvider>);
+    const {getByText} = render(
+      <IntlProvider locale={'en'} messages={messages['en']}>
+        <Product
+          product={exampleProduct}
+          addToBasket={() => {
+          }}
+          adminMode={false}
+          basket={[]}
+          removeProduct={() => {
+          }}
+        />
+      </IntlProvider>
+    );
     expect(getByText(exampleProduct.name) !== null).toBe(true);
   });
 
   test('should check that product has price', () => {
-    const {getByText} = render(<IntlProvider locale={'en'} messages={messages['en']}>
-      <Product
-        product={exampleProduct}
-        addToBasket={() => {
-        }}
-        adminMode={false}
-        basket={[]}
-        removeProduct={() => {
-        }}
-      />
-    </IntlProvider>);
+    const {getByText} = render(
+      <IntlProvider locale={'en'} messages={messages['en']}>
+        <Product
+          product={exampleProduct}
+          addToBasket={() => {
+          }}
+          adminMode={false}
+          basket={[]}
+          removeProduct={() => {
+          }}
+        />
+      </IntlProvider>
+    );
     expect(getByText(`$${exampleProduct.price}`) !== null).toBe(true);
   });
 
   test('should check that product has amount', () => {
-    const {getByText} = render(<IntlProvider locale={'en'} messages={messages['en']}>
-      <Product
-        product={exampleProduct}
-        addToBasket={() => {
-        }}
-        adminMod={false}
-        basket={[]}
-        removeProduct={() => {
-        }}
-      />
-    </IntlProvider>);
+    const {getByText} = render(
+      <IntlProvider locale={'en'} messages={messages['en']}>
+        <Product
+          product={exampleProduct}
+          addToBasket={() => {
+          }}
+          adminMode={false}
+          basket={[]}
+          removeProduct={() => {
+          }}
+        />
+      </IntlProvider>
+    );
     expect(getByText(`In stock: ${exampleProduct.amount}`) !== null).toBe(true);
   });
 
   test('should check that product has picture', () => {
-    const {getByAltText} = render(<IntlProvider locale={'en'} messages={messages['en']}>
-      <Product
-        product={exampleProduct}
-        addToBasket={() => {
-        }}
-        adminMod={false}
-        basket={[]}
-        removeProduct={() => {
-        }}
-      />
-    </IntlProvider>);
+    const {getByAltText} = render(
+      <IntlProvider locale={'en'} messages={messages['en']}>
+        <Product
+          product={exampleProduct}
+          addToBasket={() => {
+          }}
+          adminMode={false}
+          basket={[]}
+          removeProduct={() => {
+          }}
+        />
+      </IntlProvider>
+    );
     const img = getByAltText('product photo');
     expect(img !== null).toBe(true);
     expect(img.src).toBe(exampleProduct.url);
   });
 
   test('should increase and reduce value of user wish counter', () => {
-    const {getByText, getByTestId} = render(<IntlProvider locale={'en'} messages={messages['en']}>
-      <Product
-        product={exampleProduct}
-        addToBasket={() => {
-        }}
-        adminMod={false}
-        basket={[]}
-        removeProduct={() => {
-        }}
-      />
-    </IntlProvider>);
+    const {getByText, getByTestId} = render(
+      <IntlProvider locale={'en'} messages={messages['en']}>
+        <Product
+          product={exampleProduct}
+          addToBasket={() => {
+          }}
+          adminMode={false}
+          basket={[]}
+          removeProduct={() => {
+          }}
+        />
+      </IntlProvider>
+    );
     fireEvent.click(getByTestId(`increase-button-${exampleProduct.id}`));
     fireEvent.click(getByTestId(`increase-button-${exampleProduct.id}`));
     expect(getByText('Add 2 to basket') !== null).toBe(true);
@@ -105,17 +115,19 @@ describe('Product', () => {
   });
 
   test('should add product to basket after increase', () => {
-    const {getByText, getByTestId} = render(<IntlProvider locale={'en'} messages={messages['en']}>
-      <Product
-        product={exampleProduct}
-        addToBasket={() => {
-        }}
-        adminMod={false}
-        basket={[]}
-        removeProduct={() => {
-        }}
-      />
-    </IntlProvider>);
+    const {getByText, getByTestId} = render(
+      <IntlProvider locale={'en'} messages={messages['en']}>
+        <Product
+          product={exampleProduct}
+          addToBasket={() => {
+          }}
+          adminMode={false}
+          basket={[]}
+          removeProduct={() => {
+          }}
+        />
+      </IntlProvider>
+    );
     fireEvent.click(getByTestId(`increase-button-${exampleProduct.id}`));
     fireEvent.click(getByTestId(`increase-button-${exampleProduct.id}`));
     fireEvent.click(getByText('Add 2 to basket'));
