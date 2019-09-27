@@ -15,6 +15,8 @@ import ProductList from "./products/ProductsList";
 import Paginate from './Paginate.js';
 import ProductWindow from './windows/ProductWindow.js';
 import {addProduct as actionAddProduct, editProduct as actionEditProduct} from "../store/actions/products";
+import Loader from "./learn.loader/Loader.js";
+import Categories from "./learn.loader/Categories.js";
 
 
 const {Content, Footer} = Layout;
@@ -113,6 +115,18 @@ const App = () => {
                     categoriesURL={routes.categories}
                   />
                 }
+                }/>
+
+              <Route
+                exact path={'/loader'}
+                component={() =>
+                  <Loader url={routes.categories}>
+                    {
+                      ({ data, loading, error }) => (
+                        <Categories categories={data}/>
+                      )
+                    }
+                  </Loader>
                 }/>
             </Content>
 
