@@ -17,7 +17,8 @@ export default {
     productName: 'Product name',
     categoryName: 'Category name',
     toBasket: 'to basket',
-    add: 'Add'
+    add: 'Add',
+    loadingError: 'An error has occurred on the server that we are already fixing'
   },
   ru: {
     addProduct: 'Доб. продукт',
@@ -37,8 +38,8 @@ export default {
     productName: 'Название продукта',
     categoryName: 'Название категории',
     toBasket: 'в корзину',
-    add: 'Доб.'
-
+    add: 'Доб.',
+    loadingError: 'На сервере возникла ошибка, которую мы уже исправляем',
 
   },
 }

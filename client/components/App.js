@@ -1,5 +1,5 @@
 import React from 'react';
-import {IntlProvider} from 'react-intl';
+import {FormattedMessage, IntlProvider} from 'react-intl';
 import {Router, Route} from 'react-router-dom';
 import {createBrowserHistory} from 'history';
 import messages from '../constants/messages.js';
@@ -16,8 +16,9 @@ import Paginate from './Paginate.js';
 import ProductWindow from './windows/ProductWindow.js';
 import {addProduct as actionAddProduct, editProduct as actionEditProduct} from "../store/actions/products";
 import Loader from "./learn.loader/Loader.js";
-import Categories from "./learn.loader/Categories.js";
-
+import Category from "./learn.loader/Category.js";
+import Spinner from "./learn.loader/Spinner";
+import LoadingError from './learn.loader/LoadingError.js';
 
 const {Content, Footer} = Layout;
 const history = createBrowserHistory();
@@ -122,15 +123,54 @@ const App = () => {
                 component={() =>
                   <Loader url={routes.categories}>
                     {
-                      ({ data, loading, error }) => (
-                        <Categories categories={data}/>
-                      )
+                      ({data, isLoading, error}) => {
+                        if (isLoading) {
+                          return (
+                            <Spinner isLoading={isLoading}/>
+                          );
+                        }
+                        if (data) {
+                          return data.map(category => {
+                              return <Loader key={category.id}
+                                             url={routes.products + `/?categoryId=${category.id}&page=0`}>
+                                {
+                                  ({data, isLoading, error}) => {
+                                    if (isLoading) {
+                                      return (
+                                        <div>
+                                          <Category category={category} products={[]}/>
+                                          <Spinner isLoading={isLoading}/>
+                                        </div>
+                                      )
+                                    }
+                                    if (data) {
+                                      return (
+                                        <Category
+                                          key={category.id}
+                                          category={category}
+                                          products={data.products}
+                                        />
+                                      )
+                                    }
+                                    if (error) {
+                                      return <LoadingError/>;
+                                    }
+                                  }
+                                }
+                              </Loader>
+                            }
+                          )
+                        }
+                        if (error) {
+                          return <LoadingError/>;
+                        }
+                      }
                     }
                   </Loader>
                 }/>
             </Content>
 
-            <Route
+            < Route
               exact path={'/'}
               component={() =>
                 <Layout>
