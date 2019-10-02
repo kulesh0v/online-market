@@ -33,6 +33,7 @@
     "axios-cancel": "^0.2.2",
     "babel-core": "^6.26.3",
     "connect-history-api-fallback": "^1.6.0",
+    "dateformat": "^3.0.3",
     "express": "^4.17.1",
     "loki": "^0.17.1",
     "lokijs": "^1.5.7",

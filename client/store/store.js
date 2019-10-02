@@ -5,6 +5,7 @@ import thunk from 'redux-thunk';
 import {getCategories} from "./actions/categories";
 import routes from '../constants/routes.js';
 import {getProducts} from "./actions/products";
+import actionLogger from './middlewares/actionLogger.js';
 
 let basket = localStorage.getItem('omBasket');
 try {
@@ -29,7 +30,7 @@ const storeInit = {
   locale: 'en',
   routes: routes,
 };
-const store = createStore(reducer, storeInit, composeWithDevTools(applyMiddleware(thunk)));
+const store = createStore(reducer, storeInit, composeWithDevTools(applyMiddleware(thunk, actionLogger)));
 store.dispatch(getCategories());
 store.dispatch(getProducts(storeInit.lastFilterConfig, storeInit.pageNum));
 store.subscribe(() => {
