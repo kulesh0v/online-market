@@ -4,8 +4,8 @@ import axios from 'axios';
 import {useState, useEffect} from 'react';
 
 const Loader = ({url, children}) => {
-  const [data, setData] = useState(undefined);
-  const [error, setError] = useState(undefined);
+  const [data, setData] = useState();
+  const [error, setError] = useState();
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {

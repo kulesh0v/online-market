@@ -131,33 +131,39 @@ const App = () => {
                         }
                         if (data) {
                           return data.map(category => {
-                              return <Loader key={category.id}
-                                             url={routes.products + `/?categoryId=${category.id}&page=0`}>
-                                {
-                                  ({data, isLoading, error}) => {
-                                    if (isLoading) {
-                                      return (
-                                        <div>
-                                          <Category category={category} products={[]}/>
-                                          <Spinner isLoading={isLoading}/>
-                                        </div>
-                                      )
-                                    }
-                                    if (data) {
-                                      return (
-                                        <Category
-                                          key={category.id}
-                                          category={category}
-                                          products={data.products}
-                                        />
-                                      )
-                                    }
-                                    if (error) {
-                                      return <LoadingError/>;
+                              return (
+                                <Loader
+                                  key={category.id}
+                                  url={routes.products + `/?categoryId=${category.id}&page=0`}
+                                >
+                                  {
+                                    ({data, isLoading, error}) => {
+                                      if (isLoading) {
+                                        return (
+                                          <div>
+                                            <Category
+                                              category={category}
+                                              products={[]}
+                                            />
+                                            <Spinner isLoading={isLoading}/>
+                                          </div>
+                                        )
+                                      }
+                                      if (data) {
+                                        return (
+                                          <Category
+                                            category={category}
+                                            products={data.products}
+                                          />
+                                        )
+                                      }
+                                      if (error) {
+                                        return <LoadingError/>;
+                                      }
                                     }
                                   }
-                                }
-                              </Loader>
+                                </Loader>
+                              );
                             }
                           )
                         }

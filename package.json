@@ -35,6 +35,7 @@
     "connect-history-api-fallback": "^1.6.0",
     "dateformat": "^3.0.3",
     "express": "^4.17.1",
+    "graphql": "^14.5.8",
     "loki": "^0.17.1",
     "lokijs": "^1.5.7",
     "prop-types": "^15.7.2",

@@ -13,7 +13,7 @@ const Category = ({category, products}) => {
         {
           products.map(product => {
             return (
-              <div style={{width: 120, display: 'inline-block', margin: 6}}>
+              <div key={product.id} style={{width: 120, display: 'inline-block', margin: 6}}>
                 <img width={100} src={product.url} alt='product image'/>
                 <h5>{product.name}</h5>
                 <div style={{color: 'red'}}>{product.price}$</div>
