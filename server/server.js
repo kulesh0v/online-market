@@ -3,10 +3,10 @@ import webpackConfig from '../webpack.config.js';
 import webpack from 'webpack';
 import middleware from 'webpack-dev-middleware';
 import path from 'path';
+import graphqlHTTP from 'express-graphql';
 import productsApiRouter from './routes/productApi.js';
 import categoriesApiRouter from './routes/categoryApi.js';
-import ProductsSchema from './graphQL/ProductsSchema.js';
-import graphqlHTTP from 'express-graphql';
+import schema from './learn/graphqlSchema.js';
 
 const app = express();
 const compiler = webpack(webpackConfig);
@@ -19,10 +19,12 @@ app.use(express.json());
 
 app.use('/products', productsApiRouter);
 app.use('/categories', categoriesApiRouter);
-app.use('/products2', graphqlHTTP({
-  schema: ProductsSchema,
-  graphiql: true,
+//<LEARN>
+app.use('/graphql', graphqlHTTP({
+  schema: schema,
+  graphiql: true
 }));
+//</LEARN>
 
 app.get('*/bundle.js', (req, res) => {
   const filename = path.join(compiler.outputPath, 'bundle.js');

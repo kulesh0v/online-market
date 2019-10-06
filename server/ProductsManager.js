@@ -176,7 +176,7 @@ function ProductsManager() {
     filterProducts: function ({filterConfig, database}) {
       const products = database.getCollection('products');
       const sortType = _getSortType(filterConfig);
-      const page = filterConfig.page || 1;
+      const page = filterConfig.page || 0;
       const result = products
         .chain()
         .where((product) => {
@@ -196,8 +196,7 @@ function ProductsManager() {
         const products = database.getCollection('products');
         _validateProductId(id, products);
         return this.toSendObject(products.get(id));
-      }
-      catch (e) {
+      } catch (e) {
         throw e;
       }
     },
