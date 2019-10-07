@@ -15,10 +15,10 @@ import ProductList from "./products/ProductsList";
 import Paginate from './Paginate.js';
 import ProductWindow from './windows/ProductWindow.js';
 import {addProduct as actionAddProduct, editProduct as actionEditProduct} from "../store/actions/products";
-import Loader from "./learn.loader/Loader.js";
-import Category from "./learn.loader/Category.js";
-import Spinner from "./learn.loader/Spinner";
-import LoadingError from './learn.loader/LoadingError.js';
+import Loader from "./learn/loader/Loader.js";
+import Category from "./learn/loader/Category.js";
+import Spinner from "./learn/loader/Spinner";
+import LoadingError from './learn/loader/LoadingError.js';
 
 const {Content, Footer} = Layout;
 const history = createBrowserHistory();
