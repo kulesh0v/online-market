@@ -19,6 +19,7 @@ import Loader from "./learn/loader/Loader.js";
 import Category from "./learn/loader/Category.js";
 import Spinner from "./learn/loader/Spinner";
 import LoadingError from './learn/loader/LoadingError.js';
+import Main from './learn/graphql/Main.js';
 
 const {Content, Footer} = Layout;
 const history = createBrowserHistory();
@@ -49,147 +50,151 @@ const App = () => {
   return (
     <Router history={history}>
       <IntlProvider locale={locale} messages={messages[locale]}>
-        <Layout>
 
-          <Sidebar/>
-
-          <Layout>
-
-            <NavigationBar/>
-
-            <Content>
-
-              <Route
-                exact path={'/'}
-                component={({location}) => {
-                  const params = queryString.parse(location.search);
-                  const page = --params.page;
-                  delete params.page;
-                  getProducts(params, page);
-                  return <ProductList/>;
-                }}
-              />
-
-              <Route
-                exact path={'/addCategory'}
-                component={() =>
-                  <CategoryWindow
-                    closeWindow={closeWindow}
-                    addCategory={addCategory}
-                    editCategory={editCategory}
-                  />
-                }/>
-
-              <Route
-                exact path={'/editCategory/:categoryId'}
-                component={({match}) => {
-                  const {categoryId} = match.params;
-                  return <CategoryWindow
-                    closeWindow={closeWindow}
-                    addCategory={addCategory}
-                    editCategory={editCategory}
-                    categoryURL={routes.categoryById(categoryId)}
-                  />
-                }
-                }/>
-
-              <Route
-                exact path={'/addProduct'}
-                component={() =>
-                  <ProductWindow
-                    addProduct={addProduct}
-                    closeWindow={closeWindow}
-                    editProduct={editProduct}
-                    categoriesURL={routes.categories}
-                  />
-                }/>
-
-              <Route
-                exact path={'/editProduct/:productId'}
-                component={({match}) => {
-                  const {productId} = match.params;
-                  return <ProductWindow
-                    addProduct={addProduct}
-                    closeWindow={closeWindow}
-                    editProduct={editProduct}
-                    productURL={routes.productById(productId)}
-                    categoriesURL={routes.categories}
-                  />
-                }
-                }/>
-
-              <Route
-                exact path={'/loader'}
-                component={() =>
-                  <Loader url={routes.categories}>
-                    {
-                      ({data, isLoading, error}) => {
-                        if (isLoading) {
-                          return (
-                            <Spinner isLoading={isLoading}/>
-                          );
-                        }
-                        if (data) {
-                          return data.map(category => {
-                              return (
-                                <Loader
-                                  key={category.id}
-                                  url={routes.products + `/?categoryId=${category.id}&page=0`}
-                                >
-                                  {
-                                    ({data, isLoading, error}) => {
-                                      if (isLoading) {
-                                        return (
-                                          <div>
-                                            <Category
-                                              category={category}
-                                              products={[]}
-                                            />
-                                            <Spinner isLoading={isLoading}/>
-                                          </div>
-                                        )
-                                      }
-                                      if (data) {
-                                        return (
-                                          <Category
-                                            category={category}
-                                            products={data.products}
-                                          />
-                                        )
-                                      }
-                                      if (error) {
-                                        return <LoadingError/>;
-                                      }
-                                    }
-                                  }
-                                </Loader>
-                              );
-                            }
-                          )
-                        }
-                        if (error) {
-                          return <LoadingError/>;
-                        }
-                      }
-                    }
-                  </Loader>
-                }/>
-            </Content>
-
-            < Route
-              exact path={'/'}
-              component={() =>
+        <Route
+          exact path={'/'}
+          component={({location}) => {
+            const params = queryString.parse(location.search);
+            const page = --params.page;
+            delete params.page;
+            getProducts(params, page);
+            return (
+              <Layout>
+                <Sidebar/>
                 <Layout>
-                  <Footer>
-                    <Paginate/>
-                  </Footer>
+                  <NavigationBar/>
+                  <Content>
+                    <ProductList/>
+                  </Content>
                 </Layout>
-              }
+              </Layout>
+            );
+          }}
+        />
+
+        <Route
+          exact path={'/addCategory'}
+          component={() =>
+            <CategoryWindow
+              closeWindow={closeWindow}
+              addCategory={addCategory}
+              editCategory={editCategory}
             />
+          }
+        />
 
-          </Layout>
+        <Route
+          exact path={'/editCategory/:categoryId'}
+          component={({match}) => {
+            const {categoryId} = match.params;
+            return <CategoryWindow
+              closeWindow={closeWindow}
+              addCategory={addCategory}
+              editCategory={editCategory}
+              categoryURL={routes.categoryById(categoryId)}
+            />
+          }}
+        />
 
-        </Layout>
+        <Route
+          exact path={'/addProduct'}
+          component={() =>
+            <ProductWindow
+              addProduct={addProduct}
+              closeWindow={closeWindow}
+              editProduct={editProduct}
+              categoriesURL={routes.categories}
+            />
+          }/>
+
+        <Route
+          exact path={'/editProduct/:productId'}
+          component={({match}) => {
+            const {productId} = match.params;
+            return <ProductWindow
+              addProduct={addProduct}
+              closeWindow={closeWindow}
+              editProduct={editProduct}
+              productURL={routes.productById(productId)}
+              categoriesURL={routes.categories}
+            />
+          }}
+        />
+
+        <Route
+          exact path={'/loader'}
+          component={() =>
+            <Loader url={routes.categories}>
+              {
+                ({data, isLoading, error}) => {
+                  if (isLoading) {
+                    return (
+                      <Spinner isLoading={isLoading}/>
+                    );
+                  }
+                  if (data) {
+                    return data.map(category => {
+                        return (
+                          <Loader
+                            key={category.id}
+                            url={routes.products + `/?categoryId=${category.id}&page=0`}
+                          >
+                            {
+                              ({data, isLoading, error}) => {
+                                if (isLoading) {
+                                  return (
+                                    <div>
+                                      <Category
+                                        category={category}
+                                        products={[]}
+                                      />
+                                      <Spinner isLoading={isLoading}/>
+                                    </div>
+                                  )
+                                }
+                                if (data) {
+                                  return (
+                                    <Category
+                                      category={category}
+                                      products={data.products}
+                                    />
+                                  )
+                                }
+                                if (error) {
+                                  return <LoadingError/>;
+                                }
+                              }
+                            }
+                          </Loader>
+                        );
+                      }
+                    )
+                  }
+                  if (error) {
+                    return <LoadingError/>;
+                  }
+                }
+              }
+            </Loader>
+          }/>
+
+        <Route
+          exact path={'/learnGraphql'}
+          component={() =>
+            <Main/>
+          }
+        />
+
+        <Route
+          exact path={'/'}
+          component={() =>
+            <Layout>
+              <Footer>
+                <Paginate/>
+              </Footer>
+            </Layout>
+          }
+        />
       </IntlProvider>
     </Router>
   )

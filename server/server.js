@@ -19,6 +19,7 @@ app.use(express.json());
 
 app.use('/products', productsApiRouter);
 app.use('/categories', categoriesApiRouter);
+
 //<LEARN>
 app.use('/graphql', graphqlHTTP({
   schema: schema,

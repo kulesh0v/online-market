@@ -33,8 +33,8 @@ module.exports = {
         }
       },
       {
-        test: /\.css$/i,
-        loader: ["style-loader", "css-loader"]
+        test: /\.(css|less)$/i,
+        loader: ["style-loader", "css-loader", "less-loader"]
       },
     ]
   }
