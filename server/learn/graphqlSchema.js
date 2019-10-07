@@ -17,6 +17,7 @@ const ProductType = new GraphQLObjectType({
   fields: () => ({
     id: {type: GraphQLID},
     name: {type: GraphQLString},
+    url: {type: GraphQLString},
     price: {type: GraphQLFloat},
     amount: {type: GraphQLInt},
     categoryId: {type: GraphQLID},
@@ -32,18 +33,26 @@ const ProductType = new GraphQLObjectType({
   }),
 });
 
+const ProductsListType = new GraphQLObjectType({
+  name: 'ProductsList',
+  fields: () => ({
+    productsAmount: {type: GraphQLInt},
+    products: {type: new GraphQLList(ProductType)},
+  }),
+});
+
 const CategoryType = new GraphQLObjectType({
   name: 'Category',
   fields: () => ({
     id: {type: GraphQLID},
     name: {type: GraphQLString},
-    products: {
-      type: new GraphQLList(ProductType),
+    productsList: {
+      type: ProductsListType,
       resolve(parent, args) {
         return productManager.filterProducts({
-          filterConfig: {categoryId: parent.id.toString(), page: 0},
+          filterConfig: {categoryId: parent.id.toString()},
           database,
-        }).products;
+        });
       },
     }
   }),
@@ -73,24 +82,29 @@ const Query = new GraphQLObjectType({
       }
     },
     categories: {
+      args: {ids: {type: new GraphQLList(GraphQLID)}},
       type: new GraphQLList(CategoryType),
       resolve(parent, args) {
-        return productManager.getCategories({database});
+        return args.ids ?
+          productManager.getCategories({database}).filter(c => args.ids.includes(c.id.toString())) :
+          productManager.getCategories({database});
       }
     },
 
-    products: {
-      type: new GraphQLList(ProductType),
+    productsList: {
+      type: ProductsListType,
       args: {
         minPrice: {type: GraphQLFloat},
-        categoryId: {type: GraphQLList},
+        maxPrice: {type: GraphQLFloat},
+        categoryId: {type: new GraphQLList(GraphQLID)},
+        page: {type: GraphQLInt},
       },
       resolve(parent, args) {
         return productManager.filterProducts({
-          filterConfig: {minPrice: args.minPrice},
+          filterConfig: args,
           database,
-        }).products;
-      }
+        });
+      },
     }
   },
 });

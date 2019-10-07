@@ -176,7 +176,6 @@ function ProductsManager() {
     filterProducts: function ({filterConfig, database}) {
       const products = database.getCollection('products');
       const sortType = _getSortType(filterConfig);
-      const page = filterConfig.page || 0;
       const result = products
         .chain()
         .where((product) => {
@@ -186,7 +185,9 @@ function ProductsManager() {
         .simplesort(sortType.type, sortType.flag);
       return {
         productsAmount: Math.ceil(result.data().length),
-        products: result.offset(PAGE_SIZE * (page)).limit(PAGE_SIZE).data().map((p) => this.toSendObject(p))
+        products: typeof filterConfig.page !== 'undefined' ?
+          result.offset(PAGE_SIZE * (filterConfig.page)).limit(PAGE_SIZE).data().map((p) => this.toSendObject(p)) :
+          result.data().map((p) => this.toSendObject(p)),
       };
     },
 
