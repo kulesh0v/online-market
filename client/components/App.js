@@ -1,5 +1,5 @@
 import React from 'react';
-import {FormattedMessage, IntlProvider} from 'react-intl';
+import {IntlProvider} from 'react-intl';
 import {Router, Route} from 'react-router-dom';
 import {createBrowserHistory} from 'history';
 import messages from '../constants/messages.js';
@@ -139,32 +139,30 @@ const App = () => {
                             key={category.id}
                             url={routes.products + `/?categoryId=${category.id}&page=0`}
                           >
-                            {
-                              ({data, isLoading, error}) => {
-                                if (isLoading) {
-                                  return (
-                                    <div>
-                                      <Category
-                                        category={category}
-                                        products={[]}
-                                      />
-                                      <Spinner isLoading={isLoading}/>
-                                    </div>
-                                  )
-                                }
-                                if (data) {
-                                  return (
+                            {({data, isLoading, error}) => {
+                              if (isLoading) {
+                                return (
+                                  <div>
                                     <Category
                                       category={category}
-                                      products={data.products}
+                                      products={[]}
                                     />
-                                  )
-                                }
-                                if (error) {
-                                  return <LoadingError/>;
-                                }
+                                    <Spinner isLoading={isLoading}/>
+                                  </div>
+                                )
                               }
-                            }
+                              if (data) {
+                                return (
+                                  <Category
+                                    category={category}
+                                    products={data.products}
+                                  />
+                                )
+                              }
+                              if (error) {
+                                return <LoadingError/>;
+                              }
+                            }}
                           </Loader>
                         );
                       }
@@ -179,7 +177,7 @@ const App = () => {
           }/>
 
         <Route
-          exact path={'/learnGraphql'}
+          exact path={'/gql'}
           component={() =>
             <Main/>
           }
