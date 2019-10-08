@@ -14,14 +14,16 @@ const Products = () => {
   if (data) {
     return (
       <div>
-        {
-          data.productsList.products.map(product => (
-            <div key={product.id} className={'product'}>
-              <div>{product.name}</div>
-              <img width={200} src={product.url}/>
-            </div>
-          ))
-        }
+        <ul className="products">
+          {
+            data.productsList.products.map(product => (
+              <li key={product.id} className="product">
+                <div className="product-name">{product.name}</div>
+                <img className="product-img" src={product.url}/>
+              </li>
+            ))
+          }
+        </ul>
       </div>
     );
   }

@@ -12,3 +12,12 @@ export const productsQuery = gql`
     }
   }
 `;
+
+export const categoriesQuery = gql `
+  query {
+    categories {
+      name
+      id
+    }
+  }
+`;
