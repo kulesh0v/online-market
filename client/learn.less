@@ -1,97 +1,99 @@
-@indent: 6px;
-@mainColor: #126308;
-@sidebarWidth: 300px;
-@stdFontSize: 15px;
-@marginByNavbar: @indent * 10;
-@markupBorder: 1px solid @mainColor;
-@behindNavbar: -1;
+.react-shop-graphql {
+  @indent: 6px;
+  @mainColor: #126308;
+  @sidebarWidth: 300px;
+  @stdFontSize: 15px;
+  @marginByNavbar: @indent * 10;
+  @markupBorder: 1px solid @mainColor;
+  @behindNavbar: -1;
 
-.navbar {
-  top: 0;
-  position: fixed;
-  width: 100%;
-  background-color: @mainColor;
-  height: @indent * 8;
+  .std-button {
+    border: solid @mainColor 1px;
+    display: inline-block;
+    background: #fff;
+    border-radius: 4px;
+    padding: 4px 12px;
+    margin-left: @indent * 2;
+  }
+
+  .navbar {
+    top: 0;
+    position: fixed;
+    width: 100%;
+    background-color: @mainColor;
+    height: @indent * 8;
+
+    .navbar-content {
+      position: relative;
+      width: 100%;
+
+      .navbar-brand {
+        position: absolute;
+        top: @indent *1.5;
+        left: @indent * 2;
+        color: #fff;
+        font-size: @indent *3;
+      }
+    }
+  }
+
+  .content-container {
+    margin-left: @sidebarWidth + @indent;
+    margin-top: @marginByNavbar;
+
+    .products-container {
+      font-size: @stdFontSize;
+      .products {
+        list-style-type: none;
+
+        .product {
+          border-bottom: @markupBorder;
+          padding: @indent * 2;
+          margin: @indent;
+          max-width: 1080px;
+
+          .product-img {
+            display: inline-block;
+            width: 360px;
+            max-width: 50%;
+          }
+
+          .product-name {
+            font-size: @indent * 2.5;
+          }
+        }
+      }
+    }
+  }
+
+  .sidebar-container {
+    top: 0;
+    left: 0;
+    padding-top: @marginByNavbar;
+    position: fixed;
+    display: block;
+    float: left;
+    border-right: @markupBorder;
+    height: 100%;
+
+    .sidebar {
+      height: 100%;
+      width: @sidebarWidth;
+      line-height: 1.5;
+      font-size: @stdFontSize;
+
+      .sidebar-buttons {
+        margin: @indent * 3;
+      }
+
+      .category {
+        margin-left: @indent * 3;
+      }
+
+      .category-name {
+        margin-left: @indent;
+      }
+    }
+  }
 }
 
-.navbar-content {
-  position: relative;
-  width: 100%;
-}
-
-.navbar-brand {
-  position: absolute;
-  top: @indent *1.5;
-  left: @indent * 2;
-  color: #fff;
-  font-size: @indent *3;
-}
-
-.content-container {
-  margin-left: @sidebarWidth + @indent;
-  margin-top: @marginByNavbar;
-}
-
-.products {
-  list-style-type: none;
-}
-
-.products-container {
-  font-size: @stdFontSize;
-}
-
-.product {
-  border-bottom: @markupBorder;
-  padding: @indent * 2;
-  margin: @indent;
-  max-width: 1080px;
-}
-
-.product-img {
-  display: inline-block;
-  width: 360px;
-  max-width: 50%;
-}
-
-.product-name {
-  font-size: @indent * 2.5;
-}
-
-.sidebar {
-  height: 100%;
-  width: @sidebarWidth;
-  line-height: 1.5;
-  font-size: @stdFontSize;
-}
-
-.sidebar-container {
-  top: 0;
-  left: 0;
-  padding-top: @marginByNavbar;
-  position: fixed;
-  display: block;
-  float: left;
-  border-right: @markupBorder;
-  height: 100%;
-}
-
-.sidebar-buttons {
-  margin: @indent * 3;
-}
-
-.std-button {
-  border: solid @mainColor 1px;
-  display: inline-block;
-  background: #fff;
-  border-radius: 4px;
-  padding: 4px 12px;
-  margin-left: @indent * 2;
-}
-
-.category {
-  margin-left: @indent * 3;
-}
-
-.category-name {
-  margin-left: @indent;
-}

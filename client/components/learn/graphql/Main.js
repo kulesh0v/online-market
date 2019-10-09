@@ -17,7 +17,7 @@ const Main = () => {
       <Route
         exact path={'/gql'}
         component={() => (
-         <div>
+         <div className='react-shop-graphql'>
 
            <Navbar/>
 
