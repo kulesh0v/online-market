@@ -1,6 +1,7 @@
 .react-shop-graphql {
   @indent: 6px;
-  @mainColor: #126308;
+  @mainColor: #1f1f3e;
+  @dangerColor: #c2312f;
   @sidebarWidth: 300px;
   @stdFontSize: 15px;
   @marginByNavbar: @indent * 10;
@@ -53,14 +54,67 @@
           max-width: 1080px;
 
           .product-img {
-            display: inline-block;
-            width: 360px;
+            float: left;
+            width: 200px;
             max-width: 50%;
+            min-width: 100px;
           }
 
           .product-name {
-            font-size: @indent * 2.5;
+            max-width: 15%;
+            float: left;
+            p {
+              font-size: @indent * 2;
+            }
           }
+
+          .product-info-container {
+            vertical-align: top;
+          }
+
+          .product-info {
+            height: 200px;
+            display: inline-block;
+            list-style-type: none;
+            vertical-align: top;
+          }
+
+          .product-price {
+            color: @dangerColor;
+          }
+
+          .product-ratings {
+            vertical-align: top;
+            display: inline-block;
+            margin-left: @indent * 4;
+
+            .text-info {
+              float: left;
+            }
+
+            .rating {
+              @height: 22px;
+              @liteGrey: #dcdcdc;
+              background: @liteGrey;
+              border-radius: 2px;
+              width: 150px;
+              margin-bottom: @indent;
+
+              .progress {
+                height: 22px;
+                border: 1px solid @mainColor;
+                background: @mainColor;
+                border-radius: 2px;
+              }
+            }
+
+            ol {
+              text-align: center;
+              float: left;
+            }
+
+          }
+
         }
       }
     }

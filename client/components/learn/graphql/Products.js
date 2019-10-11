@@ -1,6 +1,7 @@
 import React from 'react'
 import {useQuery} from '@apollo/react-hooks';
 import {productsQuery} from './queries.js';
+import Ratings from './Ratings.js';
 
 const Products = () => {
   const {loading, error, data} = useQuery(productsQuery);
@@ -18,8 +19,24 @@ const Products = () => {
           {
             data.productsList.products.map(product => (
               <li key={product.id} className="product">
-                <div className="product-name">{product.name}</div>
+
                 <img className="product-img" src={product.url}/>
+
+                <div className="product-name">
+                  <h4>{product.name}</h4>
+                  <p>{product.category.name}</p>
+                </div>
+
+                <div className="product-info-container">
+
+                  <ul className="product-info">
+                    <li key="price" className="product-price">${product.price}</li>
+                    <li key="amount">In stock: {product.amount}</li>
+                  </ul>
+
+                  <Ratings ratings={{amount: 2000, score: 4.5}}/>
+
+                </div>
               </li>
             ))
           }

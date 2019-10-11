@@ -8,6 +8,10 @@ export const productsQuery = gql`
        name
        price
        url
+       amount
+       category{
+        name
+       }
       }
     }
   }
