@@ -1,4 +1,4 @@
-import loki from  'lokijs';
+import loki from 'lokijs';
 
 const db = new loki('products.db', {
   autoload: true,
@@ -244,6 +244,12 @@ function databaseInitialize() {
         id: '5'
       }
     ]);
+  }
+
+  let ratings = db.getCollection('ratings');
+  if (!ratings) {
+    ratings = db.addCollection('ratings');
+    ratings.insert([]);
   }
 }
 

@@ -44,6 +44,7 @@
 
     .products-container {
       font-size: @stdFontSize;
+
       .products {
         list-style-type: none;
 
@@ -51,32 +52,23 @@
           border-bottom: @markupBorder;
           padding: @indent * 2;
           margin: @indent;
-          max-width: 1080px;
+          width: 750px;
+          display: -webkit-flex;
+          -webkit-flex-wrap: wrap;
 
           .product-img {
-            float: left;
             width: 200px;
-            max-width: 50%;
-            min-width: 100px;
-          }
-
-          .product-name {
-            max-width: 15%;
-            float: left;
-            p {
-              font-size: @indent * 2;
-            }
-          }
-
-          .product-info-container {
-            vertical-align: top;
           }
 
           .product-info {
-            height: 200px;
-            display: inline-block;
-            list-style-type: none;
-            vertical-align: top;
+            margin-left: @indent * 4;
+            width: 25%;
+            display: flex;
+            flex-direction: column;
+          }
+
+          .product-category-name {
+            font: @stdFontSize/1.5;
           }
 
           .product-price {
@@ -84,12 +76,25 @@
           }
 
           .product-ratings {
-            vertical-align: top;
-            display: inline-block;
+            margin-top: @indent / 3;
             margin-left: @indent * 4;
+            display: inline-flex;
 
             .text-info {
-              float: left;
+              display: flex;
+              justify-content: center;
+              flex-direction: column;
+              color: @mainColor;
+              text-align: center;
+
+              .amount {
+                margin-right: @indent  / 2;
+              }
+
+              .score {
+                border-radius: @indent * 2;
+                font-size: @indent * 6;
+              }
             }
 
             .rating {
@@ -107,12 +112,6 @@
                 border-radius: 2px;
               }
             }
-
-            ol {
-              text-align: center;
-              float: left;
-            }
-
           }
 
         }
