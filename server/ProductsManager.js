@@ -1,4 +1,11 @@
-import {ProductNotFoundError, CategoryNotFoundError, FieldError, eCodes, ErrorsList} from './Errors.js';
+import {
+  ProductNotFoundError,
+  CategoryNotFoundError,
+  RatingNotFoundError,
+  FieldError,
+  eCodes,
+  ErrorsList
+} from './Errors.js';
 
 function ProductsManager() {
   const PAGE_SIZE = 8;
@@ -163,6 +170,39 @@ function ProductsManager() {
     }
   }
 
+  function _validateRatingId(id, ratings) {
+    if (!ratings.get(id)) {
+      throw new RatingNotFoundError();
+    }
+  }
+
+  function _validateRating(rating) {
+    const errors = new ErrorsList();
+    try {
+      if (!rating) {
+        errors.add(new FieldError('rating', eCodes.IS_REQUIRED));
+      } else {
+        if (typeof rating !== 'number') {
+          errors.add(new FieldError('rating', eCodes.IS_NOT_NUMBER));
+        } else {
+          if (rating < 0) {
+            errors.add(new FieldError('rating', eCodes.NOT_POSITIVE));
+          } else {
+            if (rating > 5) {
+              errors.add(new FieldError('rating', eCodes.TOO_LONG));
+            }
+          }
+        }
+      }
+      if (errors.size) {
+        throw  errors;
+      }
+    } catch (e) {
+      throw e;
+    }
+  }
+
+
   return {
 
     toSendObject: function (lokiObject) {
@@ -296,6 +336,31 @@ function ProductsManager() {
         _validateCategoryId(id, categories);
         products.remove(products.find({categoryId: Number(id)}));
         categories.remove(categories.get(id));
+      } catch (e) {
+        throw e;
+      }
+    },
+
+    getRating: function ({id, database}) {
+      const ratings = database.getCollection('ratings');
+      try {
+        _validateRatingId(id, ratings);
+        return this.toSendObject(ratings.get(id));
+      } catch (e) {
+        throw e;
+      }
+    },
+
+    addRating: function ({rating, productId, database}) {
+      const ratings = database.getCollection('ratings');
+      const products = database.getCollection('products');
+      try {
+        _validateProductId(productId, products);
+        const product = products.get(productId);
+        _validateRating(rating);
+        const tmp = ratings.insert({rating, productId});
+        product.ratingsIds.push(tmp.$loki);
+        return tmp;
       } catch (e) {
         throw e;
       }

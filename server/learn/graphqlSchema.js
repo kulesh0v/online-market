@@ -20,6 +20,22 @@ const ProductType = new GraphQLObjectType({
     url: {type: GraphQLString},
     price: {type: GraphQLFloat},
     amount: {type: GraphQLInt},
+    ratingsIds: {type: GraphQLList(GraphQLID)},
+    ratings: {
+      type: GraphQLList(RatingType),
+      resolve(parent, args) {
+        return Promise.all(parent.ratingsIds.map(ratingId =>
+          new Promise((res, rej) => {
+            setTimeout(_ => {
+              res(productManager.getRating({
+                id: ratingId,
+                database: database,
+              }))
+            }, 1000)
+          })
+        ));
+      }
+    },
     categoryId: {type: GraphQLID},
     category: {
       type: CategoryType,
@@ -29,8 +45,17 @@ const ProductType = new GraphQLObjectType({
           database,
         });
       }
-    }
+    },
   }),
+});
+
+const RatingType = new GraphQLObjectType({
+  name: 'Rating',
+  fields: () => ({
+    id: {type: GraphQLID},
+    productId: {type: GraphQLID},
+    rating: {type: GraphQLInt},
+  })
 });
 
 const ProductsListType = new GraphQLObjectType({
@@ -109,6 +134,37 @@ const Query = new GraphQLObjectType({
   },
 });
 
+const Mutation = new GraphQLObjectType({
+  name: 'Mutation',
+  fields: {
+    addRating: {
+      type: RatingType,
+      args: {
+        rating: {type: GraphQLInt},
+        productId: {type: GraphQLID},
+      },
+      errors: {type: GraphQLString},
+      resolve(parent, args) {
+        return new Promise((res, rej) => {
+          setTimeout(() => {
+            const result = productManager.addRating({
+              rating: args.rating,
+              productId: args.productId,
+              database
+            });
+            if (Math.random() > 0.5) {
+              res({...result, id: result.$loki});
+            } else {
+              rej({message: 'error'})
+            }
+          })
+        });
+      }
+    }
+  },
+});
+
 export default new GraphQLSchema({
   query: Query,
+  mutation: Mutation,
 });

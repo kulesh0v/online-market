@@ -12,6 +12,13 @@ class CategoryNotFoundError extends Error {
   }
 }
 
+class RatingNotFoundError extends Error {
+  constructor() {
+    super('Rating not found');
+    this.status = 404;
+  }
+}
+
 class FieldError extends Error {
   constructor(field, code) {
     super();
@@ -52,4 +59,4 @@ const
     NOT_POSITIVE: 'NOT_POSITIVE',
   });
 
-export {ProductNotFoundError, CategoryNotFoundError, FieldError, eCodes, ErrorsList};
+export {ProductNotFoundError, CategoryNotFoundError, FieldError, eCodes, ErrorsList, RatingNotFoundError};

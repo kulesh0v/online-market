@@ -1,5 +1,7 @@
 import {gql} from 'apollo-boost';
 
+console.log(typeof gql);
+
 export const productsQuery = gql`
   query {
     productsList{
@@ -11,6 +13,9 @@ export const productsQuery = gql`
        amount
        category{
         name
+       }
+       ratings{
+        rating
        }
       }
     }

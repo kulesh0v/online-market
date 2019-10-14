@@ -1,5 +1,5 @@
 import React from 'react';
-import ApolloClient from 'apollo-boost';
+import ApolloClient, { InMemoryCache } from 'apollo-boost';
 import {ApolloProvider} from '@apollo/react-hooks';
 import Products from './Products.js';
 import Navbar from './Navbar.js';
@@ -8,6 +8,9 @@ import {Route} from 'react-router-dom';
 
 const client = new ApolloClient({
   url: '/graphql',
+  cache: new InMemoryCache({
+    addTypename: false
+  })
 });
 
 const Main = () => {
@@ -17,21 +20,21 @@ const Main = () => {
       <Route
         exact path={'/gql'}
         component={() => (
-         <div className='react-shop-graphql'>
+          <div className='react-shop-graphql'>
 
-           <Navbar/>
+            <Navbar/>
 
-           <div className="sidebar-container">
-             <Sidebar/>
-           </div>
+            <div className="sidebar-container">
+              <Sidebar/>
+            </div>
 
-           <div className="content-container">
-             <div className="products-container">
-               <Products/>
-             </div>
-           </div>
+            <div className="content-container">
+              <div className="products-container">
+                <Products/>
+              </div>
+            </div>
 
-         </div>
+          </div>
         )}
       />
 

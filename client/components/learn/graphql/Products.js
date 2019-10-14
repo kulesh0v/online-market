@@ -27,7 +27,7 @@ const Products = () => {
                 <span className="product-price">${product.price}</span>
                 <span>In stock: {product.amount}</span>
               </div>
-              <Ratings ratings={{amount: 2000, score: 4.5}}/>
+              <Ratings ratings={product.ratings} id={product.id}/>
             </li>
           ))
         }

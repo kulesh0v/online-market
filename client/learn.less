@@ -1,5 +1,6 @@
 .react-shop-graphql {
   @indent: 6px;
+  @liteGrey: #dcdcdc;
   @mainColor: #1f1f3e;
   @dangerColor: #c2312f;
   @sidebarWidth: 300px;
@@ -7,6 +8,11 @@
   @marginByNavbar: @indent * 10;
   @markupBorder: 1px solid @mainColor;
   @behindNavbar: -1;
+
+  .clear-button {
+    border: 0;
+    background: transparent;
+  }
 
   .std-button {
     border: solid @mainColor 1px;
@@ -24,17 +30,17 @@
     background-color: @mainColor;
     height: @indent * 8;
 
-    .navbar-content {
+    &-content {
       position: relative;
       width: 100%;
+    }
 
-      .navbar-brand {
-        position: absolute;
-        top: @indent *1.5;
-        left: @indent * 2;
-        color: #fff;
-        font-size: @indent *3;
-      }
+    &-brand {
+      position: absolute;
+      top: @indent *1.5;
+      left: @indent * 2;
+      color: #fff;
+      font-size: @indent *3;
     }
   }
 
@@ -56,26 +62,26 @@
           display: -webkit-flex;
           -webkit-flex-wrap: wrap;
 
-          .product-img {
+          &-img {
             width: 200px;
           }
 
-          .product-info {
+          &-info {
             margin-left: @indent * 4;
             width: 25%;
             display: flex;
             flex-direction: column;
           }
 
-          .product-category-name {
+          &-category-name {
             font: @stdFontSize/1.5;
           }
 
-          .product-price {
+          &-price {
             color: @dangerColor;
           }
 
-          .product-ratings {
+          &-ratings {
             margin-top: @indent / 3;
             margin-left: @indent * 4;
             display: inline-flex;
@@ -88,7 +94,7 @@
               text-align: center;
 
               .amount {
-                margin-right: @indent  / 2;
+                margin-right: @indent / 2;
               }
 
               .score {
@@ -97,9 +103,31 @@
               }
             }
 
+            .buttons {
+              color: @liteGrey;
+
+              .message {
+               color: @mainColor;
+                max-width: 100px;
+              }
+            }
+
+            .buttons:hover {
+              button {
+                color: @mainColor;
+              }
+
+              button:hover ~ button {
+                color: @liteGrey;
+              }
+            }
+
+            .hover-button {
+              color: @mainColor;
+            }
+
             .rating {
               @height: 22px;
-              @liteGrey: #dcdcdc;
               background: @liteGrey;
               border-radius: 2px;
               width: 150px;
@@ -141,10 +169,10 @@
 
       .category {
         margin-left: @indent * 3;
-      }
 
-      .category-name {
-        margin-left: @indent;
+        &-name {
+          margin-left: @indent;
+        }
       }
     }
   }
