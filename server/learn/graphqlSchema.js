@@ -144,21 +144,25 @@ const Mutation = new GraphQLObjectType({
         productId: {type: GraphQLID},
       },
       errors: {type: GraphQLString},
-      resolve(parent, args) {
-        return new Promise((res, rej) => {
-          setTimeout(() => {
-            const result = productManager.addRating({
-              rating: args.rating,
-              productId: args.productId,
-              database
-            });
-            if (Math.random() > 0.5) {
-              res({...result, id: result.$loki});
-            } else {
-              rej({message: 'error'})
-            }
+      async resolve(parent, args) {
+        try {
+          return await new Promise((res, rej) => {
+            setTimeout(() => {
+              if (Math.random() > 0.5) {
+                const result = productManager.addRating({
+                  rating: args.rating,
+                  productId: args.productId,
+                  database
+                });
+                res({...result, id: result.$loki});
+              } else {
+                rej(new Error('You have already rated this item'))
+              }
+            }, 2000);
           })
-        });
+        } catch (e) {
+          throw e;
+        }
       }
     }
   },

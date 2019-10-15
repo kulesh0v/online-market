@@ -1,25 +1,22 @@
 import React from 'react';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import {useMutation} from '@apollo/react-hooks';
-import {addRatingMutation} from './mutations.js';
-import {faUser, faStar, faSmile} from '@fortawesome/free-solid-svg-icons'
+import {faUser, faStar} from '@fortawesome/free-solid-svg-icons'
 import {useState} from 'react';
 
-const Rating = ({id, ratings}) => {
-    const [userOpinion, setUserOpinion] = useState();
-    const [addRating, {error}] = useMutation(addRatingMutation);
-    let score = 0;
-    let widths = [0, 0, 0, 0, 0];
-    console.log(error);
+export const calculateWidths = (ratings) => {
+  const widths = [0, 0, 0, 0, 0];
+  ratings.forEach(r => widths[r.rating - 1]++);
+  return widths.map(width => width ? (width / ratings.length * 100) : width)
+};
 
-    const calculateRating = () => {
-      ratings.forEach(r => {
-        widths[r.rating - 1]++;
-        score += r.rating;
-      });
-      widths = widths.map(width => width ? Math.floor(width / ratings.length * 100) : width);
-      score = score ? (score / ratings.length).toFixed(1) : score;
-    };
+export const calculateScore = (ratings) => {
+  let score = 0;
+  ratings.forEach(r => score += r.rating);
+  return score ? (score / ratings.length).toFixed(1) : score.toFixed(0);
+};
+
+const Rating = ({id, ratings, addRating, ratingResult}) => {
+    const [userOpinion, setUserOpinion] = useState();
 
     const renderButtons = () => {
       const buttons = [];
@@ -28,14 +25,16 @@ const Rating = ({id, ratings}) => {
 
         if (userOpinion) {
           buttons[i] = <FontAwesomeIcon key={i} className={i < userOpinion ? "hover-button" : ""} icon={faStar}/>;
-
         } else {
           buttons[i] = (
-            <button key={i} className="clear-button" onClick={() => {
-              addRating({variables: {productId: id, rating}});
-              ratings.push({rating});
-              setUserOpinion(rating);
-            }}>
+            <button
+              key={i}
+              className="clear-button"
+              onClick={() => {
+                addRating({variables: {productId: id, rating}});
+                setUserOpinion(rating);
+              }}
+            >
               <FontAwesomeIcon icon={faStar}/>
             </button>
           );
@@ -45,7 +44,22 @@ const Rating = ({id, ratings}) => {
       return buttons;
     };
 
-    calculateRating();
+    const renderResult = () => {
+      if (ratingResult.loading) {
+        return (<h4 className="message">Loading...</h4>);
+      }
+      if (ratingResult.error) {
+        if (userOpinion) {
+          setUserOpinion();
+        }
+        return ratingResult.error.graphQLErrors.map((error, index) => (
+          <h5 key={index} className="message">{error.message}</h5>
+        ));
+      }
+      if (userOpinion) {
+        return <h5 className="message">Thanks for the feedback</h5>
+      }
+    };
 
     return (
       <div>
@@ -53,7 +67,7 @@ const Rating = ({id, ratings}) => {
 
           <div className="text-info">
 
-            <span className="score">{score}</span>
+            <span className="score">{calculateScore(ratings)}</span>
 
             <span>
             <span className="amount">{ratings.length}</span>
@@ -62,19 +76,14 @@ const Rating = ({id, ratings}) => {
 
             <div className="buttons">
               {renderButtons()}
-              {
-                userOpinion &&
-                <div className="message">
-                  Thanks for the feedback :)
-                </div>
-              }
+              {renderResult()}
             </div>
 
           </div>
 
           <ol reversed>
             {
-              widths.map((width, index) =>
+              calculateWidths(ratings).map((width, index) =>
                 <li key={index} className="rating">
                   <div className="progress" style={{width: `${width}%`,}}/>
                 </li>
